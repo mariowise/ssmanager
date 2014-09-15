@@ -1,0 +1,28 @@
+{% extends 'template_presentacion.html' %}
+{% load bootstrap_tags %}
+{% block title %} SSM: Regístrate! {% endblock %}
+{%block content%}
+	
+	
+	<!-- Inicio contenedor Descripcion -->
+	<div class="row signup-content">
+		<div class="col-md-8 text-justify">
+			<!-- Inicio contenedor Logo -->
+			<div class="container-signup text-center">
+				<img src="/media/img/logos/LogoFinal.png">
+			</div> <!-- Fin contenedor Logo -->
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quoquo labefactant mucius iactare rationem sensibus memoria, cognita didicisset polyaeno vera amet afflueret legerint fortitudo constringendos ullo. Quorum ultimum sis omnem intellegunt, desideraturam futurove municipem efficiat dicitur istis intemperantiam severa sale populo, utilitas homini pertineant refugiendi fortunae inimicus etiamsi sane, amori hunc ostendis medeam percussit doceat meminerit facilius gravissimas praetermissum, oderit recte facerem hostis existimo erudito partis nocet, locupletiorem morbos proficiscuntur fastidii esset. Publicam aetatis, ornatum quaerat plusque affert acutus. Virtutibus esset.</p>
+		</div><!-- Fin Inicio contenedor Descripcion -->
+		<!-- Inicio contenedor Registro -->
+		<div class="col-md-4 ">
+			<form action="." method="POST">
+				{%csrf_token%}
+				{{ form|as_bootstrap}}
+				<button type="submit" class="btn btn-default">Registrar</button>
+			</form>		
+		</div><!-- Fin contenedor Registro -->		
+	</div>
+	
+	
+		
+{%endblock%}

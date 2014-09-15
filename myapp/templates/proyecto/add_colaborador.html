@@ -1,0 +1,69 @@
+{%extends 'template_proyecto.html'%}
+{% load bootstrap_tags %}
+{% block title %}SSM: {{proyecto.name_ssp}}{% endblock title %}
+{% block brand-name %}{{proyecto.name_ssp}}{% endblock brand-name %}
+{% block content %}
+<div class="row">
+        <div class="col-md-4 col-md-offset-4">
+                <div class="container-img-newssp text-center">
+                        <img src="/media/img/logos/LogoFinal.png">
+                </div>
+                {%if status%}
+                {%if status == "1" %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <strong>Colaborador Ingresado</strong> 
+                </div>
+                {%endif%}
+                {%if status == "0" %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <strong>El Usuario no Existe</strong> 
+                </div>
+                {%endif%}
+                {%if status == "2" %}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <strong>El Usuario ya pertenece a {{proyecto.name_ssp}}</strong> 
+                </div>
+                {%endif%}
+                {%endif%}
+                <form action="." method="POST">
+                        {% csrf_token %}
+                        {{form|as_bootstrap}}
+                        <button type="submit" name="create_ssp" class="btn btn-default">Agregar Colaborador</button>
+                        
+                </form> 
+        </div>
+</div>
+<div class="row userThum">
+        {%if usuarios%}
+        <h2>Colaboradores en {{proyecto.name_ssp}}</h2>
+        {%endif%}
+        {% for u in  usuarios %}
+        <div class="col-md-3">
+                <div class="thumbnail">
+                        <a href="/profile/{{proyecto.id}}/{{u.id}}"><img src="/files/serve/{{u.get_profile.photo_user}}"></a>
+                        <div class="caption">
+                                <h3>{{u.get_username}}</h3>
+                                <p><strong>Nombre: </strong><br>{{u.first_name}} {{u.last_name}}</p>
+                                <p><strong>E-mail: </strong><br>{{u.email}}</p>
+                                <p><strong>Sitio: </strong><br>
+                                        {%if u.get_profile.url_user%}
+                                        <a href="{{u.get_profile.url_user}}" target="_blank">Sitio de {{u.get_username}}</a>
+                                        {%else%}
+                                        No posee sitio
+                                        {%endif%}
+                                </p>
+                                {% if user.id == proyecto.manager.id %}
+                                <a href="/delContrib/{{proyecto.id}}/{{u.id}}"><div class="btn btn-primary sing-up">Desvincular Colaborador</div></a>
+                                {% endif %}
+                        </div>
+                </div>
+        </div>
+        {% endfor %}
+</div>
+
+{% endblock %}
+
+

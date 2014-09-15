@@ -1,0 +1,21 @@
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+#wrapper {
+	min-height: 100%;
+	position: relative;
+	
+	& > #header-ghost { height: @header-height; }
+	& > #footer-ghost { height: @footer-height; }
+	& > #footer {
+		width: 100%;
+		height: @footer-height;
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+	}
+}

@@ -1,0 +1,28 @@
+{% extends 'template_presentacion.html' %}
+{% load bootstrap_tags %}
+{% block title %} SSM: Iniciar Sesión {% endblock %}
+{%block content%}
+<!-- Inicio contenedor Logo -->
+<div class="container-logo text-center ">
+	<img src="/media/img/logos/LogoFinal.png">
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vix contineri putavisset vestra, posidonium. Sumus possim sabinum disputata una, artem ferantur, nos omnino emolumenti. Verissimum videretur siculis viros, suscepi terminatas amice laboramus, solitudo, porro, unam perpauca accedit vim. Potius. Oratio ornatum vitam efficeret, se inferiorem saluto servire saperet, incidant satisfacit liberamur monstret provincias placuit, duo virtute utuntur laetamur mox vindicet refugiendi, hostis praetermittenda. Secundum impediri utilitas insequitur. Neglegit opes. Iuberet ubi conquisitis commenticiam malit turpis theophrastus superstitio tu, videri, inferiorem sin.</p>
+</div> <!-- Fin contenedor Logo -->
+<!-- Inicio Formulario Login -->
+<div class="col-md-4 col-sm-offset-4 text-center container-login">
+	<img src="/media/img/login_html/login/img1.png" alt="Imagen 1">
+	<h3>Iniciar Sesión</h3>
+	{%if status %}
+	<div class="alert alert-danger alert-dismissible" role="alert">
+		<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		<strong>{{status}}</strong> 
+	</div>
+	{%endif%}
+	<form action="." method="POST" class="text-justify">
+		{%csrf_token%}
+		{{ form|as_bootstrap}}
+		<button type="submit" class="btn btn-primary login-btn">Acceder</button>
+	</form>
+	<a href="{% url 'vista_signup' %}"><strong>¿Eres Nuevo en SSM? Crea una cuenta</strong></a><br>
+	<a href="{% url 'vista_recover' %}"><strong>Olvide mi contraseña</strong></a><br>
+</div><!-- Fin Formulario Login -->
+{%endblock%}

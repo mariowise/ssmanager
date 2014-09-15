@@ -1,0 +1,35 @@
+{% extends 'template_principal.html' %}
+{% block title %} SSM: Inicio {% endblock %}
+{%block content%}
+	<div class="container-principal">
+		<div class="row">
+			<div class="col-sm-4">
+				<h2>Mis Soft System Projects</h2><br>
+				{%if proyectos%}
+				<div class="list-group">
+					{%for p in proyectos%}
+						<a href="../project/{{p.id}}" class="list-group-item "> <h4 class="list-group-item-heading glyphicon glyphicon-book"> {{p.name_ssp}}</h4>
+    					<p class="list-group-item-text"><br><strong>Descripción:</strong> {{p.description_ssp}}</p></a>
+					{%endfor%}
+				</div>
+				{%else%}
+					<p>Aun no haz creado nuevos Soft System Projects</p>
+				{%endif%}
+			
+		
+		
+				<h2>Soft System Projects (Colaborador)</h2><br>
+				{%if proyectosColabora%}
+				<div class="list-group">
+					{%for p in proyectosColabora%}
+						<a href="../project/{{p.id}}" class="list-group-item "> <h4 class="list-group-item-heading glyphicon glyphicon-book"> {{p.name_ssp}}</h4>
+    					<p class="list-group-item-text"><br><strong>Descripción:</strong> {{p.description_ssp}}</p></a>
+					{%endfor%}
+				</div>
+				{%else%}
+					<p>Aun no colaboras en un Soft System Projects</p>
+				{%endif%}
+			</div>
+		</div>
+	</div>
+{%endblock%}

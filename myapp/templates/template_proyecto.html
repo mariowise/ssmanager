@@ -20,32 +20,32 @@
 				<ul class="nav navbar-nav nav-principal">
 					<li><a href="#" class="glyphicon glyphicon-facetime-video" title="Video Conferencia"></a></li>
 					<li><a href="#" class="glyphicon glyphicon-comment" title="Chat"></a></li>
-                                     <li><a href="#" class="glyphicon glyphicon-envelope" title="Mensaje"></a></li>
-                                     <li><a href="/addContrib/{{proyecto.id}}" class ="glyphicon glyphicon-user" title="Colaboradores"></a></li>          
-                                     <li><a href="#" class ="glyphicon glyphicon-bell" title="Notificaciones"></a></li>
-                                     <li class="dropdown">
-                                            <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
-                                                   Estados <span class="caret"></span>
-                                           </a>
-                                           <ul class="dropdown-menu" role="menu">
-                                                <li><a href="/project/{{proyecto.id}}">Estado Uno</a></li>
-                                                   <li><a href="#">Estado Dos</a></li>
-                                                   <li><a href="#">Estado Tres</a></li>
-                                           </ul>
-                                   </li>
-                                   <li class="dropdown">
-                                    <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
-                                           General <span class="caret"></span>
-                                   </a>
-                                   <ul class="dropdown-menu" role="menu">
-                                           <li><a href="{% url 'vista_principal' %}">Inicio</a></li>
-                                           <li><a href="{% url 'vista_logout' %}">Cerrar Sesión</a></li>
-                                           <li><a href="{% url 'vista_tour' %}"target="_blank">Ayuda</a></li>
-                                   </ul>
-                           </li>	
-                   </ul>
-           </div><!-- /.navbar-collapse -->
-   </div><!-- /.container-fluid -->
+         <li><a href="#" class="glyphicon glyphicon-envelope" title="Mensaje"></a></li>
+         <li><a href="/addContrib/{{proyecto.id}}" class ="glyphicon glyphicon-user" title="Colaboradores"></a></li>          
+         <li><a href="#" class ="glyphicon glyphicon-bell" title="Notificaciones"></a></li>
+         <li class="dropdown">
+          <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
+           Estados <span class="caret"></span>
+         </a>
+         <ul class="dropdown-menu" role="menu">
+          <li><a href="/project/{{proyecto.id}}">Estado Uno</a></li>
+          <li><a href="#">Estado Dos</a></li>
+          <li><a href="#">Estado Tres</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
+         General <span class="caret"></span>
+       </a>
+       <ul class="dropdown-menu" role="menu">
+         <li><a href="{% url 'vista_principal' %}">Inicio</a></li>
+         <li><a href="{% url 'vista_logout' %}">Cerrar Sesión</a></li>
+         <li><a href="{% url 'vista_tour' %}"target="_blank">Ayuda</a></li>
+       </ul>
+     </li>	
+   </ul>
+ </div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
 </nav>
 
 {%block content%}

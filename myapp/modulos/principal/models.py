@@ -41,6 +41,8 @@ class ContribField(ListField):
     def formfield(self, **kwargs):
         return models.Field.formfield(self, StringListField, **kwargs)
 
+	
+
 class userSoftSystemProject(models.Model):
 
 	manager = models.ForeignKey(User)
@@ -49,6 +51,7 @@ class userSoftSystemProject(models.Model):
 	date_spp = models.DateTimeField(auto_now_add=True, blank=False)
 	privacy_ssp = models.CharField(max_length=50)
 	contribs_ssp = ContribField()
+	
 
 	def __unicode__(self):
 		return self.name_ssp

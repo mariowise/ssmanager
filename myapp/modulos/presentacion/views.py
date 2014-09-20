@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, render 
-from myapp.modulos.presentacion.forms import RegisterForm, LoginForm, RecoverPasswordForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from myapp.modulos.principal.models import userProfile
-from google.appengine.api import mail
-from django.core.mail import send_mail
+from myapp.modulos.presentacion.forms import RegisterForm, LoginForm, RecoverPasswordForm
+from myapp.modulos.presentacion.functions import randomPassword, enviarCorreoRecover
+
 
 # Create your views here.
 def welcome_view(request):
@@ -73,29 +73,16 @@ def logout_view(request):
 def recover_view(request):
  	form = RecoverPasswordForm()
  	status=""
+ 	
  	if request.method == "POST":
  		form = RecoverPasswordForm(request.POST)
  		if form.is_valid():
- 			message = mail.EmailMessage(sender="Aldo Navarrete <arden.papifunk@gmail.com>",
- 				subject="Your account has been approved")
-
- 			message.to = "Aldo Navarrete <aldo.navarrete@usach.cl>"
- 			message.body = """
- 			Dear Albert:
-
- 			Your example.com account has been approved.  You can now visit
- 			http://www.example.com/ and sign in using your Google Account to
- 			access new features.
-
- 			Please let us know if you have any questions.
-
- 			The example.com Team
- 			"""
-
- 			message.send()
-			
- 			#send_mail('test email', 'hello world', 'arden.papifun@gmail.com', ['aldo.navarrete@usach.cl'])
-
+ 			email = form.cleaned_data['email']
+ 			newPassword = randomPassword()
+ 			user = User.objects.get(email=email)
+ 			user.set_password(newPassword)
+ 			user.save()
+ 			enviarCorreoRecover(email, newPassword)
  			status="Correo enviado"
  			form = RecoverPasswordForm()
  			ctx={'status' : status, 'form' : form}

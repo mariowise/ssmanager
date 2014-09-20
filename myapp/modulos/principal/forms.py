@@ -36,7 +36,7 @@ class UserNotifications(forms.Form):
 
 class StringListField(forms.CharField):
     def prepare_value(self, value):
-        return ', '.join(value)
+        return ', '.join(str(value))
  
     def to_python(self, value):
         if not value:

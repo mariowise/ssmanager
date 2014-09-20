@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from myapp.modulos.principal.forms import UserSettings, UserPasswordChange, UserNotifications, UserNewProject
 from myapp.modulos.principal.models import userProfile, userSoftSystemProject
 from django.contrib.auth.models import User
-
+from myapp.modulos.estado_1.models import StateOne
 
 
 	# Create your views here.
@@ -139,12 +139,14 @@ def create_ssp_view(request):
 					ctx = {'status' : status, 'form' : form}
 					return render(request,'principal/user_new_ssp.html', ctx)
 
-				newSSP = userSoftSystemProject()
-				newSSP.manager = user
-				newSSP.name_ssp = name_ssp
-				newSSP.description_ssp = description_ssp
-				newSSP.privacy_ssp = privacy_ssp
-				newSSP.save()	
+				newSSP = userSoftSystemProject.objects.create(manager=user, name_ssp = name_ssp, description_ssp = description_ssp, privacy_ssp = privacy_ssp)
+				newStateOne = StateOne.objects.create(ssp_stateOne=newSSP)
+				newSSP.save()
+				newStateOne.save()
+				
+
+
+
 				return redirect('vista_principal')
 
 	ctx = {'form': form}

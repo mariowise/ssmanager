@@ -39,6 +39,31 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: estado_1_comentario
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: estado_1_etiqueta
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: estado_1_media
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: estado_1_pony
+  properties:
+  - name: __key__
+    direction: desc
+
+- kind: estado_1_video
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: principal_post
   properties:
   - name: __key__

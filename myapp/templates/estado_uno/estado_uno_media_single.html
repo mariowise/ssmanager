@@ -1,0 +1,142 @@
+{%extends 'estado_uno/estado_uno_general.html'%}
+{%load bootstrap_tags%}
+
+{% block state-content %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>{{media.name_media}}</strong></h3>
+	</div>
+	<div class="panel-body">
+
+		<div class="media text-center">
+			{%if media.type_media == '1'%}
+			<iframe width="560" height="315" src="//www.youtube.com/embed/{{embed}}" frameborder="0" allowfullscreen></iframe>
+			{%endif%}
+			{%if media.type_media == '2'%}
+			<img width="560" height="315" src="{{media.url_media}}"></img>
+			{%endif%}
+			{%if media.type_media == '3' or media.type_media == '4' or media.type_media == '5'%}
+			<a href="JavaScript:newPopup('{{media.url_media}}');">Abrir Archivo {{media.name_media}}</a>
+			{%endif%}
+
+
+		</div>	
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Descripción</strong></h3>
+	</div>
+	<div class="panel-body text-justify">
+		<p>{{media.description_media}}</p>
+	</div>	
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Etiquetas</strong></h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			{%if etiquetasMedia%}  
+			{% for e in etiquetasMedia %}
+			<tbody>
+				<tr>  
+					<td class="glyphicon glyphicon-tag"></td>
+					<td >{{e.name_tag}}</td>
+					<td ><button data-toggle="modal" data-target="#{{e.id}}" class="btn btn-default glyphicon glyphicon-eye-open">  </button></td>
+					<div class="modal fade" id="{{e.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title" id="myModalLabel">{{e.name_tag}}</h4>
+								</div>
+									<div class="modal-body">
+										<p>{{e.description_tag}}</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>	
+									</div>
+							</div>
+						</div>
+					</div>
+					<td><a onclick="return confirm('¿Deseas eliminar esta etiqueta de {{media.name_media}}?')" href="/eliminarEtiquetaMedia/{{media.id}}/{{e.id}}/" class="glyphicon glyphicon-remove"></a></td>
+				</tr>
+			</tbody>
+			{% endfor %}                 
+			{%else%}
+			<p><strong>El archivo no posee etiquetas</strong></p>
+			{%endif%}
+		</table>
+		<form method="POST" action="/etiquetarMedia/{{media.id}}/">
+			{%csrf_token%}
+			<div class="span4">
+				<p>
+					<select multiple="" name="e9" id="e9" style="width:300px" class="populate select2-offscreen" tabindex="-1">
+						{%if etiquetas%}
+						{% for e in etiquetas %}
+						<option value="{{e.id}}">{{e.name_tag}}</option>
+						{% endfor %}            
+						{%else%}
+						<option value=""></option>
+						{%endif%}
+					</select>
+					<button type="submit" name="etiquetarTag" class="btn btn-primary">Etiquetar</button>
+					
+				</p>
+			</div>
+		</form>
+		<button data-toggle="modal" data-target="#addTag" class="btn btn-primary">Crear etiqueta</button>
+		<div class="modal fade" id="addTag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="myModalLabel">Agregar Etiqueta</h4>
+					</div>
+					<form method="POST" action="/crearEtiqueta/{{proyecto.id}}/">
+						<div class="modal-body">
+							{%csrf_token%}
+							{{formaTag|as_bootstrap}}
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Crear</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Comentarios</strong></h3>
+	</div>
+	<div class="panel-body">
+		<div class="comentarios">
+			{% if comentarios%}
+			{% for c in comentarios %}
+			<div class="contenedor-comentario">
+				<img src="/files/serve/{{c.autor_comentary.get_profile.photo_user}}" />	
+				<a href="/profile/{{proyecto.id}}/{{c.autor_comentary.id}}"><strong>{{c.autor_comentary.get_username}}</strong></a><br>
+				<span class="sub-text">{{c.date_comentary}}</span>
+				<div class="comentario">			
+					<p >{{c.content_comentary}}</p>
+				</div>
+			</div>
+			{% endfor %}
+			{%else%}
+			<h2><strong>Aun no hay comentarios</strong></h2>
+			{%endif%}
+		</div>
+		<form id="box-comment" method="POST" action="/comentarMedia/{{media.id}}/">
+			{% csrf_token %}
+			{{formComentary|as_bootstrap}}
+			<button type="submit" class="btn btn-primary">Comentar</button>
+		</form>
+	</div>
+</div>
+{% endblock state-content %}
+
+

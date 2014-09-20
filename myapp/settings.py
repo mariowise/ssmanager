@@ -106,6 +106,8 @@ ROOT_URLCONF = 'myapp.urls'
 
 AUTH_PROFILE_MODULE = 'principal.userProfile'
 
+
+
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -135,6 +137,8 @@ INSTALLED_APPS = (
     'myapp.modulos.proyecto',
     'myapp.modulos.estado_1',
     'django_forms_bootstrap',
+
+   
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
 )
@@ -170,7 +174,7 @@ LOGGING = {
 
 DEFAULT_FILE_STORAGE = 'gaeblob_storage.backends.BlobPropertyStorage'
 LOGIN_URL = '/login/'
-#EMAIL_BACKEND = 'djangoappengine.mail.EmailBackend'
+
 
 
 

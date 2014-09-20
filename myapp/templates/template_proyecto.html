@@ -2,10 +2,24 @@
 <html>
 <head>
 	<title>{%block title%}{%endblock%}</title>
+  <link rel="icon" type="image/ico" href="/media/favicon/favicon.ico"/>
+  <link rel="shortcut icon" href="/media/favicon/favicon.ico">
 	<script type="text/javascript" src="/media/js/jquery.js"></script>
 	<script type="text/javascript" src="/media/js/bootstrap.js"></script>
 	<link rel="stylesheet/less" href="/media/less/style.less">
 	<script type="text/javascript" src="/media/js/less-1.4.1.min.js"></script>
+  <link href="/media/css/select2.css" rel="stylesheet"/>
+  <script src="/media/js/select2.js"></script>
+  <script>
+        $(document).ready(function() { $("#e9").select2(); });
+  </script>
+  <script type="text/javascript">
+// Popup window code
+    function newPopup(url) {
+      popupWindow = window.open(
+        url,'popUpWindow','height=700,width=800,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+    }
+  </script>
 </head>
 <body>
 	<nav class="navbar navbar-default" role="navigation">

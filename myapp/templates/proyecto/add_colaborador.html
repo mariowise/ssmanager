@@ -28,12 +28,14 @@
                 </div>
                 {%endif%}
                 {%endif%}
+                {%if proyecto.manager.get_username == user.get_username%}
                 <form action="." method="POST">
                         {% csrf_token %}
                         {{form|as_bootstrap}}
                         <button type="submit" name="create_ssp" class="btn btn-default">Agregar Colaborador</button>
                         
                 </form> 
+                {%endif%}
         </div>
 </div>
 <div class="row userThum">
@@ -56,7 +58,7 @@
                                         {%endif%}
                                 </p>
                                 {% if user.id == proyecto.manager.id %}
-                                <a href="/delContrib/{{proyecto.id}}/{{u.id}}"><div class="btn btn-primary sing-up">Desvincular Colaborador</div></a>
+                                <a onclick="return confirm('¿Deseas desvincular a {{u.get_username}}?')" href="/delContrib/{{proyecto.id}}/{{u.id}}"><div class="btn btn-primary sing-up">Desvincular Colaborador</div></a>
                                 {% endif %}
                         </div>
                 </div>

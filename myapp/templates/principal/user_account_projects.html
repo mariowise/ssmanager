@@ -10,7 +10,7 @@
 			<div class="panel-body">
 				<p><strong>Manager:</strong><br>{{p.manager.get_username}}</p>
 				<p><strong>Descripción:</strong><br>{{p.description_ssp}}</p>
-				<a href="/delContrib/{{p.id}}/{{user.id}}"><div class="btn btn-primary sing-up">Abandonar</div></a>
+				<a onclick="return confirm('¿Deseas abandonar {{p.name_ssp}}?')" href="/delContrib/{{p.id}}/{{user.id}}"><div class="btn btn-primary sing-up">Abandonar</div></a>
 			</div>
 		</div>
 		{% endfor %}

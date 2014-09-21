@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from myapp.modulos.principal.models import userSoftSystemProject
-from myapp.modulos.estado_1.forms import mediaForm, comentaryForm, etiquetaForm
-from myapp.modulos.estado_1.models import Media, StateOne, Comentario, Etiqueta
+from myapp.modulos.estado_1.forms import mediaForm, comentaryForm, etiquetaForm, nombreAnalisisForm, documentoForm
+from myapp.modulos.estado_1.models import Media, StateOne, Comentario, Etiqueta, Analisis, DocumentoAnalisis
 from myapp.modulos.estado_1.functions import video_id
 # Create your views here.
 @login_required(login_url='/login/')
@@ -22,7 +23,7 @@ def general_uno_view(request, id_ssp):
 	return render (request, 'estado_uno/estado_uno_general.html', ctx)
 
 @login_required(login_url='/login/')
-def media_view(request, id_type, id_ssp):
+def media_view(request, id_type, id_ssp, page):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
 	stateOne = StateOne.objects.get(ssp_stateOne=project)
 	tipo_media = id_type
@@ -31,33 +32,66 @@ def media_view(request, id_type, id_ssp):
 
 	if tipo_media == '1':
 		videos = stateOne.returnVideos()
+		paginator = Paginator(videos, 10)
+		try:
+			pagina = int(page)
+		except:
+			page = 1
+		try:
+			list_videos = paginator.page(pagina)
+		except (EmptyPage, InvalidPage):
+			list_videos = paginator.page(paginator.num_pages)
+
 		title = "Videos"
-		ctx = {'proyecto':project, 'media' : videos, 'tipo' : tipo_media, 'title' : title, 'form' : form}
+		ctx = {'proyecto':project, 'media' : list_videos, 'tipo' : tipo_media, 'title' : title, 'form' : form}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 
 	if tipo_media == '2':
 		imagenes = stateOne.returnImagenes()
+		paginator = Paginator(imagenes, 10)
+		try:
+			pagina = int(page)
+		except:
+			page = 1
+		try:
+			list_imagenes = paginator.page(pagina)
+		except (EmptyPage, InvalidPage):
+			list_imagenes = paginator.page(paginator.num_pages)
 		title = "Imagenes"
-		ctx = {'proyecto':project, 'media' : imagenes, 'tipo' : tipo_media, 'title' : title, 'form' : form}
+		ctx = {'proyecto':project, 'media' : list_imagenes, 'tipo' : tipo_media, 'title' : title, 'form' : form}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 
 	if tipo_media == '3':
 		audios = stateOne.returnAudios()
+		paginator = Paginator(audios, 10)
+		try:
+			pagina = int(page)
+		except:
+			page = 1
+		try:
+			list_audios = paginator.page(pagina)
+		except (EmptyPage, InvalidPage):
+			list_audios = paginator.page(paginator.num_pages)
 		title = "Audios"
-		ctx = {'proyecto':project, 'media' : audios, 'tipo' : tipo_media, 'title' : title, 'form' : form}
+		ctx = {'proyecto':project, 'media' : list_audios, 'tipo' : tipo_media, 'title' : title, 'form' : form}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 
 	if tipo_media == '4':
 		documentos = stateOne.returnDocumentos()
+		paginator = Paginator(documentos, 10)
+		try:
+			pagina = int(page)
+		except:
+			page = 1
+		try:
+			list_documentos = paginator.page(pagina)
+		except (EmptyPage, InvalidPage):
+			list_documentos = paginator.page(paginator.num_pages)
 		title = "Documentos"
-		ctx = {'proyecto':project, 'media' : documentos, 'tipo' : tipo_media, 'title' : title, 'form' : form}
+		ctx = {'proyecto':project, 'media' : list_documentos, 'tipo' : tipo_media, 'title' : title, 'form' : form}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 	
-	if tipo_media == '5':
-		analisis = stateOne.returnAnalisis()
-		title = "Analisis"
-		ctx = {'proyecto':project, 'media' : analisis, 'tipo' : tipo_media, 'title' : title, 'form' : form}
-		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
+	
 
 @login_required(login_url='/login/')
 def media_agregar_view(request, id_ssp):
@@ -133,9 +167,6 @@ def eliminar_media_view(request, id_ssp, id_media):
 	if media.type_media == '4':
 		del estado.ssp_documentos[estado.ssp_documentos.index(media.id)]
 
-	if media.type_media == '5':
-		del estado.ssp_analisis[estado.ssp_analisis.index(media.id)]
-
 	estado.save()
 	media.delete()
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -193,3 +224,117 @@ def eliminar_etiqueta_media_view(request, id_media,id_tag):
 	del media.tags_media[media.tags_media.index(id_tag)]
 	media.save()
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def analisis_view(request, id_ssp, page):
+	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	stateOne = StateOne.objects.get(ssp_stateOne=proyecto)
+	form = mediaForm()
+	newAnalisisForm = nombreAnalisisForm()
+	analisis = stateOne.returnAnalisis()
+	paginator = Paginator(analisis, 5)
+	try:
+		pagina = int(page)
+	except:
+		page = 1
+	try:
+		list_analisis = paginator.page(pagina)
+	except (EmptyPage, InvalidPage):
+		list_analisis = paginator.page(paginator.num_pages)
+	title = "Analisis"
+	ctx = {'proyecto':proyecto, 'media' : list_analisis, 'title' : title, 'form' : form, 'newAnalisisForm' : newAnalisisForm}
+	return render (request, 'estado_uno/estado_uno_analisis.html', ctx)
+	
+@login_required(login_url='/login/')
+def analisis_crear_view(request, id_ssp):
+	if request.method == "POST":
+		form = nombreAnalisisForm(request.POST)
+		if form.is_valid():
+			name_analisis = form.cleaned_data['name_analisis']
+			newAnalisis = Analisis.objects.create(name_analisis=name_analisis, created_by=request.user.get_username())
+			newAnalisis.save()
+
+			proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+			stateOne = StateOne.objects.get(ssp_stateOne=proyecto)
+			stateOne.ssp_analisis.append(newAnalisis.id)
+			stateOne.save()
+
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def analisis_eliminar_view(request, id_ssp, id_analisis):
+	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	stateOne = StateOne.objects.get(ssp_stateOne=proyecto)
+	analisis = Analisis.objects.get(id=id_analisis)
+	comentariosAnalisis = analisis.returnComments()
+	documentosAnalisis = analisis.returnDocuments()
+	for c in comentariosAnalisis:
+		c.delete()
+
+	for d in documentosAnalisis:
+		d.delete()
+
+	del stateOne.ssp_analisis[stateOne.ssp_analisis.index(analisis.id)]
+
+	stateOne.save()
+	analisis.delete()
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def analisis_desarrollo_view(request, id_ssp, id_analisis):
+	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	analisis = Analisis.objects.get(id=id_analisis)
+	documentosAnalisis = analisis.returnDocuments()
+	etiquetasAnalisis = analisis.returnTags()
+	estado = StateOne.objects.get(ssp_stateOne=proyecto)
+	etiquetas = estado.returnTags()
+	form = mediaForm()
+	formDocumento = documentoForm()
+	ctx={'form' : form, 'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'formDocumento' : formDocumento, 'etiquetasAnalisis' : etiquetasAnalisis, 'etiquetas' : etiquetas}
+	return render(request, 'estado_uno/estado_uno_desarrollo_analisis.html', ctx)
+
+@login_required(login_url='/login/')
+def analisis_newDocumento_view(request, id_analisis):
+	if request.method == "POST":
+		form = documentoForm(request.POST)
+		if form.is_valid():
+			name_documento = form.cleaned_data['name_documento']
+			url_documento = form.cleaned_data['url_documento']
+			newDocumento = DocumentoAnalisis.objects.create(name_documento=name_documento, url_documento=url_documento, shared_documento=request.user.get_username())
+			newDocumento.save()
+
+			analisis = Analisis.objects.get(id=id_analisis)
+			analisis.links_analisis.append(newDocumento.id)
+			analisis.save()
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def analisis_eliminarDocumento_view(request, id_analisis, id_documento):
+	documento = DocumentoAnalisis.objects.get(id=id_documento)
+	analisis = Analisis.objects.get(id=id_analisis)
+
+	del analisis.links_analisis[analisis.links_analisis.index(documento.id)]
+	analisis.save()
+
+	documento.delete()
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def eliminar_etiqueta_analisis_view(request, id_analisis,id_tag):
+	analisis = Analisis.objects.get(id=id_analisis)
+	del analisis.tags_analisis[analisis.tags_analisis.index(id_tag)]
+	analisis.save()
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def etiquetar_analisis_view(request, id_analisis):
+	tags = request.POST.getlist('e9')
+	if tags:
+		analisis = Analisis.objects.get(id=id_analisis)
+		for t in tags:
+			if not t in analisis.tags_analisis:
+				analisis.tags_analisis.append(t)
+		analisis.save()
+		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+	else:
+		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

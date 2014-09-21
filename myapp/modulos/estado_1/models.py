@@ -53,6 +53,13 @@ class Media(models.Model):
 			tagMedia.append(tV)
 		return tagMedia
 
+class DocumentoAnalisis(models.Model):
+	name_documento = models.CharField(max_length=200, blank=False, null=False)
+	url_documento = models.URLField(blank=False, null=False)
+	shared_documento = models.CharField(max_length=200, blank=False, null=False)
+	date_documento = models.DateTimeField(auto_now_add=True, blank=False)
+
+
 class Etiqueta(models.Model):
 	name_tag = models.CharField(max_length=200, blank=False, null=False)
 	description_tag = models.TextField(max_length=500, blank=False, null=False)
@@ -113,6 +120,42 @@ class StateOne(models.Model):
 		analisisID = self.ssp_analisis
 		analisis = []
 		for a in reversed(analisisID):
-			A = Media.objects.get(id=a)
+			A = Analisis.objects.get(id=a)
 			analisis.append(A)
 		return analisis
+
+class Analisis(models.Model):
+	name_analisis = models.CharField(max_length=200, blank=False, null=False)
+	description_analisis = models.TextField(max_length=500, blank=True, null=True)
+	links_analisis = Medias()
+	comments_analisis = Comentarios()
+	tags_analisis = Etiquetas()
+	created_by = models.CharField(max_length=200, blank=False, null=False)
+	date_analisis = models.DateTimeField(auto_now_add=True, blank=False)
+
+	def __unicode__(self):
+		return self.name_analisis	
+
+	def returnDocuments(self):
+		documentsID = self.links_analisis
+		documentsAnalisis = []
+		for c in documentsID:
+			cV = DocumentoAnalisis.objects.get(id=c)
+			documentsAnalisis.append(cV)
+		return documentsAnalisis
+
+	def returnComments(self):
+		ComentariosID = self.comments_analisis
+		comentariosAnalisis = []
+		for c in ComentariosID:
+			cV = Comentario.objects.get(id=c)
+			comentariosAnalisis.append(cV)
+		return comentariosAnalisis
+
+	def returnTags(self):
+		tagsID = self.tags_analisis
+		tagAnalisis = []
+		for t in tagsID:
+			tV = Etiqueta.objects.get(id=t)
+			tagAnalisis.append(tV)
+		return tagAnalisis

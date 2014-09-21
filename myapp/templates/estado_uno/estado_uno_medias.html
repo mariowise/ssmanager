@@ -45,6 +45,20 @@
               <p><strong>No existen {{title}}</strong></p>
             {%endif%}		
 		</table>
+		{%if media%}
+		<ul class="pagination">
+			{%if media.has_previous%}
+			<li><a href="/medias/{{tipo}}/{{proyecto.id}}/{{media.previous_page_number}}">&laquo;</a></li>
+			{%endif%}
+			{%if media.has_next%}
+			<li><a href="/medias/{{tipo}}/{{proyecto.id}}/{{media.next_page_number}}">&raquo;</a></li>
+			{%endif%}
+		</ul>
+		{%endif%}
+		{%if tipo == '5'%}
+			<a href="/newAnalisis/{{proyecto.id}}"><button type="button" class="btn btn-primary"> <strong>Crear un Análisis</strong> </button></a>
+		{%endif%}
 	</div>
 </div>
+
 {% endblock state-content %}

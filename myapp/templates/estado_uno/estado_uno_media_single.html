@@ -15,7 +15,7 @@
 			{%if media.type_media == '2'%}
 			<img width="560" height="315" src="{{media.url_media}}"></img>
 			{%endif%}
-			{%if media.type_media == '3' or media.type_media == '4' or media.type_media == '5'%}
+			{%if media.type_media == '3' or media.type_media == '4'%}
 			<a href="JavaScript:newPopup('{{media.url_media}}');">Abrir Archivo {{media.name_media}}</a>
 			{%endif%}
 

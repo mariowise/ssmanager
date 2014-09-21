@@ -21,4 +21,12 @@ class etiquetaForm(forms.Form):
 	name_tag = forms.CharField(label="Nombre de Etiqueta",widget=forms.TextInput(), required=True)
 	description_tag = forms.CharField(label="Descripcion Etiqueta", widget=forms.Textarea, required=True)
 
-	
+class nombreAnalisisForm(forms.Form):
+	name_analisis = forms.CharField(label="Nombre del Analisis", widget=forms.TextInput(), required=True)
+
+class analisisForm(forms.Form):
+	description_analisis = forms.CharField(label="Resumen del Analisis", widget=forms.Textarea, required=True)
+
+class documentoForm(forms.Form):
+	name_documento = forms.CharField(label="Nombre del Documento", widget=forms.TextInput(), required=True)
+	url_documento = forms.URLField(label="Link para Compartir", required=True)

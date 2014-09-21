@@ -50,11 +50,11 @@
         <div class="navbar-collapse collapse sidebar-navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="/project/{{proyecto.id}}" class="glyphicon glyphicon-time"> Recientes</a></li>
-            <li><a href="/medias/1/{{proyecto.id}}" class="glyphicon glyphicon-facetime-video"> Videos</a></li>
-            <li><a href="/medias/2/{{proyecto.id}}" class="glyphicon glyphicon-picture"> Imágenes</a></li>
-            <li><a href="/medias/3/{{proyecto.id}}" class="glyphicon glyphicon-volume-up"> Audios</a></li>
-            <li><a href="/medias/4/{{proyecto.id}}" class="glyphicon glyphicon-file"> Documentos</a></li>
-            <li><a href="/medias/5/{{proyecto.id}}" class="glyphicon glyphicon-book"> Análisis</a></li>
+            <li><a href="/medias/1/{{proyecto.id}}/1" class="glyphicon glyphicon-facetime-video"> Videos</a></li>
+            <li><a href="/medias/2/{{proyecto.id}}/1" class="glyphicon glyphicon-picture"> Imágenes</a></li>
+            <li><a href="/medias/3/{{proyecto.id}}/1" class="glyphicon glyphicon-volume-up"> Audios</a></li>
+            <li><a href="/medias/4/{{proyecto.id}}/1" class="glyphicon glyphicon-file"> Documentos</a></li>
+            <li><a href="/analisis/{{proyecto.id}}/1" class="glyphicon glyphicon-book"> Análisis</a></li>
           </ul>
         </div>
       </div>
@@ -211,10 +211,10 @@
     <tbody>
       <tr>  
         <td class="glyphicon glyphicon-book"></td>
-        <td>{{a.name_media}}</td>
-        <td>{{a.uploaded_by}}</td>
-        <td>{{a.date_media}}</td>
-        <td><a href="/verMedia/{{proyecto.id}}/{{a.id}}" class="glyphicon glyphicon-eye-open"></a></td>
+        <td>{{a.name_analisis}}</td>
+        <td>{{a.created_by}}</td>
+        <td>{{a.date_analisis}}</td>
+        <td><a href="#" class="glyphicon glyphicon-eye-open"></a></td>
       </tr>
     </tbody>
     {% endfor %}                 

@@ -143,10 +143,6 @@ def create_ssp_view(request):
 				newStateOne = StateOne.objects.create(ssp_stateOne=newSSP)
 				newSSP.save()
 				newStateOne.save()
-				
-
-
-
 				return redirect('vista_principal')
 
 	ctx = {'form': form}

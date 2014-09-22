@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
 from myapp.modulos.principal.models import userSoftSystemProject
-from myapp.modulos.estado_1.forms import mediaForm, comentaryForm, etiquetaForm, nombreAnalisisForm, documentoForm
+from myapp.modulos.estado_1.forms import mediaForm, comentaryForm, etiquetaForm, nombreAnalisisForm, documentoForm, resumenAnalisisForm
 from myapp.modulos.estado_1.models import Media, StateOne, Comentario, Etiqueta, Analisis, DocumentoAnalisis
 from myapp.modulos.estado_1.functions import video_id
 # Create your views here.
@@ -91,8 +91,6 @@ def media_view(request, id_type, id_ssp, page):
 		ctx = {'proyecto':project, 'media' : list_documentos, 'tipo' : tipo_media, 'title' : title, 'form' : form}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 	
-	
-
 @login_required(login_url='/login/')
 def media_agregar_view(request, id_ssp):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
@@ -144,7 +142,6 @@ def media_ver_view(request, id_ssp, id_media):
 		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'form' : formAdd}
 		return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
 
-
 @login_required(login_url='/login/')
 def eliminar_media_view(request, id_ssp, id_media):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
@@ -170,7 +167,6 @@ def eliminar_media_view(request, id_ssp, id_media):
 	estado.save()
 	media.delete()
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
 
 @login_required(login_url='/login/')
 def comentar_media_view(request, id_media):
@@ -290,7 +286,10 @@ def analisis_desarrollo_view(request, id_ssp, id_analisis):
 	etiquetas = estado.returnTags()
 	form = mediaForm()
 	formDocumento = documentoForm()
-	ctx={'form' : form, 'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'formDocumento' : formDocumento, 'etiquetasAnalisis' : etiquetasAnalisis, 'etiquetas' : etiquetas}
+	resumenForm = resumenAnalisisForm(initial={
+					'description_analisis' : analisis.description_analisis,
+		})
+	ctx={'form' : form, 'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'formDocumento' : formDocumento, 'etiquetasAnalisis' : etiquetasAnalisis, 'etiquetas' : etiquetas, 'resumenForm' : resumenForm}
 	return render(request, 'estado_uno/estado_uno_desarrollo_analisis.html', ctx)
 
 @login_required(login_url='/login/')
@@ -338,3 +337,41 @@ def etiquetar_analisis_view(request, id_analisis):
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 	else:
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def resumen_analisis_view(request, id_analisis):
+	if request.method == "POST":
+		form = resumenAnalisisForm(request.POST)
+		if form.is_valid():
+			resumen = form.cleaned_data['description_analisis']
+			analisis = Analisis.objects.get(id=id_analisis)
+			analisis.description_analisis = resumen
+			analisis.save()
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+@login_required(login_url='/login/')
+def analisis_ver_view(request, id_ssp, id_analisis):
+	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	analisis = Analisis.objects.get(id=id_analisis)
+	documentosAnalisis = analisis.returnDocuments()
+	etiquetasAnalisis = analisis.returnTags()
+	comentarios = analisis.returnComments()
+	formComentary = comentaryForm()
+	form = mediaForm()
+	ctx = {'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'etiquetasAnalisis' : etiquetasAnalisis, 'comentarios' : comentarios, 'formComentary' : formComentary, 'form' : form}
+	return render(request, 'estado_uno/estado_uno_ver_analisis.html', ctx)
+
+@login_required(login_url='/login/')
+def comentar_analisis_view(request, id_analisis):
+	analisis = Analisis.objects.get(id=id_analisis)
+	user = User.objects.get(username__exact=request.user.get_username())
+	form = comentaryForm()
+	if request.method == "POST":
+		form = comentaryForm(request.POST)
+		if form.is_valid():
+			comentario = form.cleaned_data['comentary']
+			newComment = Comentario.objects.create(autor_comentary=user, content_comentary=comentario)
+			newComment.save()
+			analisis.comments_analisis.append(newComment.id)
+			analisis.save()
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

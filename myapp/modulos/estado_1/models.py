@@ -1,22 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
-from djangotoolbox.fields import ListField
-from myapp.modulos.principal.forms import StringListField
-from myapp.modulos.principal.models import userSoftSystemProject
+from myapp.modulos.principal.models import userSoftSystemProject, ListaField
 
 
 # Create your models here.
-class Comentarios(ListField):
-    def formfield(self, **kwargs):
-        return models.Field.formfield(self, StringListField, **kwargs)
 
-class Medias(ListField):
-    def formfield(self, **kwargs):
-        return models.Field.formfield(self, StringListField, **kwargs)
-
-class Etiquetas(ListField):
-    def formfield(self, **kwargs):
-        return models.Field.formfield(self, StringListField, **kwargs)
 
 class Comentario(models.Model):
 	autor_comentary = models.ForeignKey(User)
@@ -27,8 +15,8 @@ class Media(models.Model):
 	name_media = models.CharField(max_length=200, blank=False, null=False)
 	description_media = models.TextField(max_length=500, blank=False, null=False)
 	url_media = models.URLField(blank=False, null=False)
-	comments_media = Comentarios()
-	tags_media = Etiquetas()
+	comments_media = ListaField()
+	tags_media = ListaField()
 	uploaded_by = models.CharField(max_length=200, blank=False, null=False)
 	date_media = models.DateTimeField(auto_now_add=True, blank=False)
 	type_media = models.CharField(max_length=200, blank=False, null=False)
@@ -69,12 +57,12 @@ class Etiqueta(models.Model):
 
 class StateOne(models.Model):
 	ssp_stateOne = models.OneToOneField(userSoftSystemProject)
-	ssp_videos = Medias()
-	ssp_imagenes = Medias()
-	ssp_audios = Medias()
-	ssp_documentos = Medias()
-	ssp_analisis = Medias()
-	tags_state = Etiquetas()
+	ssp_videos = ListaField()
+	ssp_imagenes = ListaField()
+	ssp_audios = ListaField()
+	ssp_documentos = ListaField()
+	ssp_analisis = ListaField()
+	tags_state = ListaField()
 
 	def returnTags(self):
 		tagsID = self.tags_state
@@ -127,9 +115,9 @@ class StateOne(models.Model):
 class Analisis(models.Model):
 	name_analisis = models.CharField(max_length=200, blank=False, null=False)
 	description_analisis = models.TextField(max_length=500, blank=True, null=True)
-	links_analisis = Medias()
-	comments_analisis = Comentarios()
-	tags_analisis = Etiquetas()
+	links_analisis = ListaField()
+	comments_analisis = ListaField()
+	tags_analisis = ListaField()
 	created_by = models.CharField(max_length=200, blank=False, null=False)
 	date_analisis = models.DateTimeField(auto_now_add=True, blank=False)
 

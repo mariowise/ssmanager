@@ -24,7 +24,7 @@
             <div class="modal-body">
               <form method="POST" action="/agregar/{{proyecto.id}}/">
                 {% csrf_token %}
-                {{form|as_bootstrap}} 
+                {{formArchivo|as_bootstrap}} 
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -12,22 +12,23 @@ from myapp.modulos.estado_1.functions import video_id
 @login_required(login_url='/login/')
 def general_uno_view(request, id_ssp):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
+	destinatarios = project.returnAllusers(request.user.id)
 	stateOne = StateOne.objects.get(ssp_stateOne=project)
 	videos = stateOne.returnVideos()[:5]
 	imagenes = stateOne.returnImagenes()[:5]
 	audios = stateOne.returnAudios()[:5]
 	documentos = stateOne.returnDocumentos()[:5]
 	analisis = stateOne.returnAnalisis()[:5]
-	form = mediaForm()
-	ctx = {'proyecto':project, 'videos' : videos, 'imagenes' : imagenes, 'audios' : audios, 'documentos' : documentos, 'analisis' : analisis, 'form' : form}
+
+	ctx = {'proyecto':project, 'videos' : videos, 'imagenes' : imagenes, 'audios' : audios, 'documentos' : documentos, 'analisis' : analisis, 'destinatarios' : destinatarios}
 	return render (request, 'estado_uno/estado_uno_general.html', ctx)
 
 @login_required(login_url='/login/')
 def media_view(request, id_type, id_ssp, page):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
+	destinatarios = project.returnAllusers()
 	stateOne = StateOne.objects.get(ssp_stateOne=project)
 	tipo_media = id_type
-	form = mediaForm()
 	title = ""
 
 	if tipo_media == '1':
@@ -43,7 +44,7 @@ def media_view(request, id_type, id_ssp, page):
 			list_videos = paginator.page(paginator.num_pages)
 
 		title = "Videos"
-		ctx = {'proyecto':project, 'media' : list_videos, 'tipo' : tipo_media, 'title' : title, 'form' : form}
+		ctx = {'proyecto':project, 'media' : list_videos, 'tipo' : tipo_media, 'title' : title, 'destinatarios' : destinatarios}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 
 	if tipo_media == '2':
@@ -58,8 +59,7 @@ def media_view(request, id_type, id_ssp, page):
 		except (EmptyPage, InvalidPage):
 			list_imagenes = paginator.page(paginator.num_pages)
 		title = "Imagenes"
-		ctx = {'proyecto':project, 'media' : list_imagenes, 'tipo' : tipo_media, 'title' : title, 'form' : form}
-		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
+		ctx = {'proyecto':project, 'media' : list_imagenes, 'tipo' : tipo_media, 'title' : title}
 
 	if tipo_media == '3':
 		audios = stateOne.returnAudios()
@@ -73,7 +73,7 @@ def media_view(request, id_type, id_ssp, page):
 		except (EmptyPage, InvalidPage):
 			list_audios = paginator.page(paginator.num_pages)
 		title = "Audios"
-		ctx = {'proyecto':project, 'media' : list_audios, 'tipo' : tipo_media, 'title' : title, 'form' : form}
+		ctx = {'proyecto':project, 'media' : list_audios, 'tipo' : tipo_media, 'title' : title}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 
 	if tipo_media == '4':
@@ -88,7 +88,7 @@ def media_view(request, id_type, id_ssp, page):
 		except (EmptyPage, InvalidPage):
 			list_documentos = paginator.page(paginator.num_pages)
 		title = "Documentos"
-		ctx = {'proyecto':project, 'media' : list_documentos, 'tipo' : tipo_media, 'title' : title, 'form' : form}
+		ctx = {'proyecto':project, 'media' : list_documentos, 'tipo' : tipo_media, 'title' : title}
 		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
 	
 @login_required(login_url='/login/')
@@ -124,6 +124,7 @@ def media_agregar_view(request, id_ssp):
 @login_required(login_url='/login/')
 def media_ver_view(request, id_ssp, id_media):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
+	destinatarios = project.returnAllusers()
 	estado = StateOne.objects.get(ssp_stateOne=project)
 	etiquetas = estado.returnTags()
 
@@ -133,13 +134,12 @@ def media_ver_view(request, id_ssp, id_media):
 
 	formComentary = comentaryForm()
 	formaTag = etiquetaForm()
-	formAdd = mediaForm()
 	if media.type_media == '1':
 		embed = video_id(media.url_media)
-		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'embed' : embed, 'form' : formAdd}
+		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'embed' : embed, 'destinatarios' : destinatarios}
 		return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
 	else :
-		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'form' : formAdd}
+		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'destinatarios' : destinatarios}
 		return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
 
 @login_required(login_url='/login/')
@@ -224,8 +224,8 @@ def eliminar_etiqueta_media_view(request, id_media,id_tag):
 @login_required(login_url='/login/')
 def analisis_view(request, id_ssp, page):
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	destinatarios = proyecto.returnAllusers()
 	stateOne = StateOne.objects.get(ssp_stateOne=proyecto)
-	form = mediaForm()
 	newAnalisisForm = nombreAnalisisForm()
 	analisis = stateOne.returnAnalisis()
 	paginator = Paginator(analisis, 5)
@@ -238,7 +238,7 @@ def analisis_view(request, id_ssp, page):
 	except (EmptyPage, InvalidPage):
 		list_analisis = paginator.page(paginator.num_pages)
 	title = "Analisis"
-	ctx = {'proyecto':proyecto, 'media' : list_analisis, 'title' : title, 'form' : form, 'newAnalisisForm' : newAnalisisForm}
+	ctx = {'proyecto':proyecto, 'media' : list_analisis, 'title' : title, 'newAnalisisForm' : newAnalisisForm, 'destinatarios': destinatarios}
 	return render (request, 'estado_uno/estado_uno_analisis.html', ctx)
 	
 @login_required(login_url='/login/')
@@ -279,17 +279,17 @@ def analisis_eliminar_view(request, id_ssp, id_analisis):
 @login_required(login_url='/login/')
 def analisis_desarrollo_view(request, id_ssp, id_analisis):
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	destinatarios = proyecto.returnAllusers()
 	analisis = Analisis.objects.get(id=id_analisis)
 	documentosAnalisis = analisis.returnDocuments()
 	etiquetasAnalisis = analisis.returnTags()
 	estado = StateOne.objects.get(ssp_stateOne=proyecto)
 	etiquetas = estado.returnTags()
-	form = mediaForm()
 	formDocumento = documentoForm()
 	resumenForm = resumenAnalisisForm(initial={
 					'description_analisis' : analisis.description_analisis,
 		})
-	ctx={'form' : form, 'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'formDocumento' : formDocumento, 'etiquetasAnalisis' : etiquetasAnalisis, 'etiquetas' : etiquetas, 'resumenForm' : resumenForm}
+	ctx={'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'formDocumento' : formDocumento, 'etiquetasAnalisis' : etiquetasAnalisis, 'etiquetas' : etiquetas, 'resumenForm' : resumenForm, 'destinatarios' : destinatarios}
 	return render(request, 'estado_uno/estado_uno_desarrollo_analisis.html', ctx)
 
 @login_required(login_url='/login/')
@@ -352,13 +352,13 @@ def resumen_analisis_view(request, id_analisis):
 @login_required(login_url='/login/')
 def analisis_ver_view(request, id_ssp, id_analisis):
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	destinatarios = proyecto.returnAllusers()
 	analisis = Analisis.objects.get(id=id_analisis)
 	documentosAnalisis = analisis.returnDocuments()
 	etiquetasAnalisis = analisis.returnTags()
 	comentarios = analisis.returnComments()
 	formComentary = comentaryForm()
-	form = mediaForm()
-	ctx = {'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'etiquetasAnalisis' : etiquetasAnalisis, 'comentarios' : comentarios, 'formComentary' : formComentary, 'form' : form}
+	ctx = {'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'etiquetasAnalisis' : etiquetasAnalisis, 'comentarios' : comentarios, 'formComentary' : formComentary, 'destinatarios' : destinatarios}
 	return render(request, 'estado_uno/estado_uno_ver_analisis.html', ctx)
 
 @login_required(login_url='/login/')

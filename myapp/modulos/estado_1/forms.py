@@ -14,6 +14,7 @@ class mediaForm(forms.Form):
 	media_type = forms.ChoiceField(label="Categoria", choices=TYPE_MEDIA)
 
 
+
 class comentaryForm(forms.Form):
 	comentary = forms.CharField(label="Comentario", widget=forms.Textarea, required=True)
 
@@ -25,7 +26,7 @@ class nombreAnalisisForm(forms.Form):
 	name_analisis = forms.CharField(label="Nombre del Analisis", widget=forms.TextInput(), required=True)
 
 class resumenAnalisisForm(forms.Form):
-	description_analisis = forms.CharField(label="Resumen del Analisis", widget=forms.Textarea, required=False)
+	description_analisis = forms.CharField(label="Resumen", widget=forms.Textarea, required=False)
 
 class documentoForm(forms.Form):
 	name_documento = forms.CharField(label="Nombre del Documento", widget=forms.TextInput(), required=True)

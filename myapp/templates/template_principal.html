@@ -8,7 +8,6 @@
 	<script type="text/javascript" src="/media/js/bootstrap.js"></script>
 	<link rel="stylesheet/less" href="/media/less/style.less">
 	<script type="text/javascript" src="/media/js/less-1.4.1.min.js"></script>
-  
 </head>
 <body>
 
@@ -19,7 +18,7 @@
       			<a class="navbar-brand" href="{%block brand-ref%}{% url 'vista_welcome' %}{%endblock%}">{%block brand-name%}SSM{%endblock%}</a>
     		</div>       
         <!-- Collect the nav links, forms, and other content for toggling -->
-    		<div class="collapse navbar-collapse float-right" id="bs-example-navbar-collapse-1">
+    		<div class="collapse navbar-collapse float-right" id="bs-example-navbar-collapse-2">
            <!-- Mostrar imagen -->
             <div class="navbar-header  nav-img">
               {% if user.get_profile.photo_user %}
@@ -33,7 +32,7 @@
             </div> <!-- Fin Mostrar imagen -->
       			<ul class="nav navbar-nav nav-principal">
         			<li><a href="{% url 'vista_newProject' %}" class="glyphicon glyphicon-plus"></a></li>
-        			<li><a href="#" class="glyphicon glyphicon-inbox"></a></li>
+        			<li ><a id="inbox" href="/mensajes/1" class="glyphicon glyphicon-inbox"><span class="badge">{{user.get_profile.mensajes_user_noleidos|length}}</span></a></li>
         			<li><a href="{% url 'vista_settings' %}" class ="glyphicon glyphicon-cog"></a></li>
               <li><a href="{% url 'vista_logout' %}" class="glyphicon glyphicon-log-out"></a></li>     
       			</ul>

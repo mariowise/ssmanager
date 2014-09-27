@@ -78,3 +78,9 @@ indexes:
   properties:
   - name: __key__
     direction: desc
+
+- kind: principal_usersoftsystemproject
+  properties:
+  - name: name_ssp
+  - name: __key__
+    direction: desc

@@ -12,7 +12,7 @@ from myapp.modulos.estado_1.functions import video_id
 @login_required(login_url='/login/')
 def general_uno_view(request, id_ssp):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = project.returnAllusers(request.user.id)
+	destinatarios = project.returnAllusers(request.user.get_username())
 	stateOne = StateOne.objects.get(ssp_stateOne=project)
 	videos = stateOne.returnVideos()[:5]
 	imagenes = stateOne.returnImagenes()[:5]
@@ -26,7 +26,7 @@ def general_uno_view(request, id_ssp):
 @login_required(login_url='/login/')
 def media_view(request, id_type, id_ssp, page):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = project.returnAllusers()
+	destinatarios = project.returnAllusers(request.user.get_username())
 	stateOne = StateOne.objects.get(ssp_stateOne=project)
 	tipo_media = id_type
 	title = ""
@@ -60,6 +60,8 @@ def media_view(request, id_type, id_ssp, page):
 			list_imagenes = paginator.page(paginator.num_pages)
 		title = "Imagenes"
 		ctx = {'proyecto':project, 'media' : list_imagenes, 'tipo' : tipo_media, 'title' : title}
+		return render (request, 'estado_uno/estado_uno_medias.html', ctx)
+		
 
 	if tipo_media == '3':
 		audios = stateOne.returnAudios()
@@ -103,7 +105,6 @@ def media_agregar_view(request, id_ssp):
 			media_url = form.cleaned_data['media_url']
 			media_type = form.cleaned_data['media_type']
 			upload_by = request.user.get_username()
-
 			newMedia = Media.objects.create(name_media=media_name, description_media=media_description, url_media=media_url, uploaded_by =upload_by, type_media=media_type)
 			newMedia.save()
 			stateOne = StateOne.objects.get(ssp_stateOne=project)
@@ -119,12 +120,13 @@ def media_agregar_view(request, id_ssp):
 
 			stateOne.save()
 
-	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='/login/')
 def media_ver_view(request, id_ssp, id_media):
 	project = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = project.returnAllusers()
+	destinatarios = project.returnAllusers(request.user.get_username())
 	estado = StateOne.objects.get(ssp_stateOne=project)
 	etiquetas = estado.returnTags()
 
@@ -136,6 +138,8 @@ def media_ver_view(request, id_ssp, id_media):
 	formaTag = etiquetaForm()
 	if media.type_media == '1':
 		embed = video_id(media.url_media)
+		if embed is None:
+			embed = "NO"
 		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'embed' : embed, 'destinatarios' : destinatarios}
 		return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
 	else :
@@ -224,7 +228,7 @@ def eliminar_etiqueta_media_view(request, id_media,id_tag):
 @login_required(login_url='/login/')
 def analisis_view(request, id_ssp, page):
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = proyecto.returnAllusers()
+	destinatarios = proyecto.returnAllusers(request.user.get_username())
 	stateOne = StateOne.objects.get(ssp_stateOne=proyecto)
 	newAnalisisForm = nombreAnalisisForm()
 	analisis = stateOne.returnAnalisis()
@@ -264,6 +268,7 @@ def analisis_eliminar_view(request, id_ssp, id_analisis):
 	analisis = Analisis.objects.get(id=id_analisis)
 	comentariosAnalisis = analisis.returnComments()
 	documentosAnalisis = analisis.returnDocuments()
+	
 	for c in comentariosAnalisis:
 		c.delete()
 
@@ -279,7 +284,7 @@ def analisis_eliminar_view(request, id_ssp, id_analisis):
 @login_required(login_url='/login/')
 def analisis_desarrollo_view(request, id_ssp, id_analisis):
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = proyecto.returnAllusers()
+	destinatarios = proyecto.returnAllusers(request.user.get_username())
 	analisis = Analisis.objects.get(id=id_analisis)
 	documentosAnalisis = analisis.returnDocuments()
 	etiquetasAnalisis = analisis.returnTags()
@@ -352,7 +357,7 @@ def resumen_analisis_view(request, id_analisis):
 @login_required(login_url='/login/')
 def analisis_ver_view(request, id_ssp, id_analisis):
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = proyecto.returnAllusers()
+	destinatarios = proyecto.returnAllusers(request.user.get_username())
 	analisis = Analisis.objects.get(id=id_analisis)
 	documentosAnalisis = analisis.returnDocuments()
 	etiquetasAnalisis = analisis.returnTags()

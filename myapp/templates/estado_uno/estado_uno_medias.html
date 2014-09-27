@@ -30,9 +30,6 @@
 					{% if title == "Documentos"%}	
 					<td class="glyphicon glyphicon-file"class="glyphicon glyphicon-file"></td>
 					{%endif%}
-					{% if title == "Analisis"%}	
-					<td class="glyphicon glyphicon-book"class="glyphicon glyphicon-book"></td>
-					{%endif%}
 					<td>{{m.name_media}}</td>
 					<td>{{m.uploaded_by}}</td>
 					<td>{{m.date_media}}</td>
@@ -55,10 +52,7 @@
 			{%endif%}
 		</ul>
 		{%endif%}
-		{%if tipo == '5'%}
-			<a href="/newAnalisis/{{proyecto.id}}"><button type="button" class="btn btn-primary"> <strong>Crear un Análisis</strong> </button></a>
-		{%endif%}
+		
 	</div>
 </div>
-
 {% endblock state-content %}

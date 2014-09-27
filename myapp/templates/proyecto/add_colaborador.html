@@ -39,10 +39,12 @@
         </div>
 </div>
 <div class="row userThum">
+
         {%if usuarios%}
         <h2>Colaboradores en {{proyecto.name_ssp}}</h2>
         {%endif%}
         {% for u in  usuarios %}
+        
         <div class="col-md-3">
                 <div class="thumbnail">
                         <a href="/profile/{{proyecto.id}}/{{u.id}}"><img src="/files/serve/{{u.get_profile.photo_user}}"></a>

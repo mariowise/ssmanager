@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 def contrib_view(request, id_ssp):
 	form = ProjectAddContrib()
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+	destinatarios = proyecto.returnAllusers(request.user.get_username())
 	ctx = {}
 	usersObj = []
 	status = ""
@@ -23,14 +24,14 @@ def contrib_view(request, id_ssp):
 				form = ProjectAddContrib()
 				status = "0"
 				usersObj = proyecto.contribUsers()	
-				ctx = {'proyecto':proyecto, 'form' : form, 'status': status, 'usuarios' : usersObj}
+				ctx = {'proyecto':proyecto, 'form' : form, 'status': status, 'usuarios' : usersObj , 'destinatarios' : destinatarios}
 				return render(request, 'proyecto/add_colaborador.html', ctx)
 
 			if user.get_username() in proyecto.contribs_ssp or proyecto.manager.get_username() == nameContrib:
 				form = ProjectAddContrib()
 				status = "2"
 				usersObj = proyecto.contribUsers()	
-				ctx = {'proyecto':proyecto, 'form' : form, 'status': status, 'usuarios' : usersObj}
+				ctx = {'proyecto':proyecto, 'form' : form, 'status': status, 'usuarios' : usersObj, 'destinatarios' : destinatarios}
 				return render(request, 'proyecto/add_colaborador.html', ctx)
 			else:
 				contribP = userProfile.objects.get(user=user)
@@ -41,11 +42,11 @@ def contrib_view(request, id_ssp):
 				usersObj = proyecto.contribUsers()	
 				form = ProjectAddContrib()
 				status = "1"
-				ctx = {'proyecto':proyecto, 'form' : form, 'status': status, 'usuarios' : usersObj}
+				ctx = {'proyecto':proyecto, 'form' : form, 'status': status, 'usuarios' : usersObj, 'destinatarios' : destinatarios}
 				return render(request, 'proyecto/add_colaborador.html', ctx)
 
 	usersObj = proyecto.contribUsers()	
-	ctx = {'proyecto':proyecto, 'form' : form, 'usuarios' : usersObj}
+	ctx = {'proyecto':proyecto, 'form' : form, 'usuarios' : usersObj, 'destinatarios' : destinatarios}
 	return render(request, 'proyecto/add_colaborador.html', ctx)
 
 @login_required(login_url='/login/')

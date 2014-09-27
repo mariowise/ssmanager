@@ -15,7 +15,7 @@ class userProfile(models.Model):
 	def url(self, filename):
 		url = "MultimediaData/Users/Profile_img/%s/%s"%(self.user.username, filename)
 		return url
-
+		
 	user = models.OneToOneField(User)
 	email_public_user = models.EmailField(blank=True, null=True)
 	url_user = models.URLField(max_length=200, blank=True, null=True)
@@ -27,7 +27,8 @@ class userProfile(models.Model):
 	cEmail_user = models.NullBooleanField()
 	photo_user = models.ImageField(upload_to=url)
 	project_colab_user = ListaField()#Guardar ID's de los proyectos en los que colaboro
-	mensajes_user = ListaField()
+	mensajes_user_leidos = ListaField()
+	mensajes_user_noleidos = ListaField()
 
 	def __unicode__(self):
 		return self.user.username	
@@ -41,23 +42,20 @@ class userProfile(models.Model):
 		return proyectosContrib
 
 	def returnMensajesLeidos(self):
-		allMessagesID = self.mensajes_user
+		allMessagesID = self.mensajes_user_leidos
 		messages = []
-		for m in allMessagesID:
+		for m in reversed(allMessagesID):
 			M =  Mensaje.objects.get(id=m)
-			if M.activo_mensaje is False:
-				messages.append(M)
+			messages.append(M)
 		return messages
 
 	def returnMensajesNoLeidos(self):
-		allMessagesID = self.mensajes_user
+		allMessagesID = self.mensajes_user_noleidos
 		messages = []
-		for m in allMessagesID:
+		for m in reversed(allMessagesID):
 			M =  Mensaje.objects.get(id=m)
-			if M.activo_mensaje is True:
-				messages.append(M)
+			messages.append(M)
 		return messages
-
 
 class userSoftSystemProject(models.Model):
 
@@ -72,18 +70,18 @@ class userSoftSystemProject(models.Model):
 	def __unicode__(self):
 		return self.name_ssp
 
-	def returnAllusers(self, id):
-		manager = self.manager
-		Names = self.contribs_ssp
-		if id in Names:
-			del Names[Names.index(id)]
+	def returnAllusers(self, username):
 
+		manager = self.manager
+		Names = list(self.contribs_ssp)
+		if username in Names:
+			del Names[Names.index(username)]
 
 		Users = []
 		for N in Names:
 			U = User.objects.get(username__exact=N)
 			Users.append(U)
-		if not manager.id == id:
+		if not manager.get_username() == username:
 			Users.append(manager)
 		return Users
 
@@ -93,5 +91,4 @@ class userSoftSystemProject(models.Model):
 		for cN in contribNames:
 			cU = User.objects.get(username__exact=cN)
 			contribUsers.append(cU)
-
 		return contribUsers

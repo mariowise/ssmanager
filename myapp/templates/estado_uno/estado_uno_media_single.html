@@ -10,7 +10,11 @@
 
 		<div class="media text-center">
 			{%if media.type_media == '1'%}
+			{%if embed == "NO"%}
+			<a href="JavaScript:newPopup('{{media.url_media}}');">Abrir Archivo {{media.name_media}}</a>
+			{%else%}
 			<iframe width="560" height="315" src="//www.youtube.com/embed/{{embed}}" frameborder="0" allowfullscreen></iframe>
+			{%endif%}
 			{%endif%}
 			{%if media.type_media == '2'%}
 			<img width="560" height="315" src="{{media.url_media}}"></img>
@@ -18,8 +22,6 @@
 			{%if media.type_media == '3' or media.type_media == '4'%}
 			<a href="JavaScript:newPopup('{{media.url_media}}');">Abrir Archivo {{media.name_media}}</a>
 			{%endif%}
-
-
 		</div>	
 	</div>
 </div>
@@ -72,7 +74,7 @@
 			{%csrf_token%}
 			<div class="span4">
 				<p>
-					<select multiple="" name="e9" id="e9" style="width:300px" class="populate select2-offscreen" tabindex="-1">
+					<select multiple="" name="e9" id="e91" style="width:300px" class="populate select2-offscreen" tabindex="-1">
 						{%if etiquetas%}
 						{% for e in etiquetas %}
 						<option value="{{e.id}}">{{e.name_tag}}</option>

@@ -5,7 +5,7 @@ from myapp.modulos.principal.models import userProfile, userSoftSystemProject
 from django.contrib.auth.models import User
 from myapp.modulos.estado_1.models import StateOne
 from myapp.modulos.estado_2.models import StateTwo
-
+from myapp.modulos.estado_3.models import StateThree
 	# Create your views here.
 @login_required(login_url='/login/')
 def principal_view(request):
@@ -139,12 +139,15 @@ def create_ssp_view(request):
 					ctx = {'status' : status, 'form' : form}
 					return render(request,'principal/user_new_ssp.html', ctx)
 					
-				newSSP = userSoftSystemProject.objects.create(manager=user, name_ssp = name_ssp, description_ssp = description_ssp, privacy_ssp = privacy_ssp)
-				newStateOne = StateOne.objects.create(ssp_stateOne=newSSP)
+				newSSP = userSoftSystemProject.objects.create(manager = user, name_ssp = name_ssp, description_ssp = description_ssp, privacy_ssp = privacy_ssp)
+				newStateOne = StateOne.objects.create(ssp_stateOne = newSSP)
 				newStateTwo = StateTwo.objects.create(ssp_stateTwo = newSSP)
+				newStateThree = StateThree.objects.create(ssp_stateThree = newSSP)
 				newSSP.save()
 				newStateOne.save()
 				newStateTwo.save()
+				newStateThree.save()
+
 				return redirect('vista_principal')
 
 	ctx = {'form': form}

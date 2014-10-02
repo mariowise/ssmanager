@@ -33,6 +33,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: comunicacion_notificacion
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: django_site
   properties:
   - name: domain

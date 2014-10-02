@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from djangotoolbox.fields import ListField
 from myapp.modulos.principal.forms import StringListField
-from myapp.modulos.comunicacion.models import Mensaje
+from myapp.modulos.comunicacion.models import Mensaje, Notificacion
 # Create your models here.
 
 
@@ -65,10 +65,22 @@ class userSoftSystemProject(models.Model):
 	date_spp = models.DateTimeField(auto_now_add=True, blank=False)
 	privacy_ssp = models.CharField(max_length=50)
 	contribs_ssp = ListaField()
+	notificaciones_ssp = ListaField()
 	
 
 	def __unicode__(self):
 		return self.name_ssp
+
+	def returnNotificaciones(self):
+		try:
+			notificacionesID = self.notificaciones_ssp
+			notificaciones = []
+			for n in notificacionesID:
+				N = Notificacion.objects.get(id=n)
+				notificaciones.append(N)
+			return notificaciones
+		except:
+			return None
 
 	def returnAllusers(self, username):
 

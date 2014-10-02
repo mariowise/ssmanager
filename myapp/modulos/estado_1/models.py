@@ -26,20 +26,26 @@ class Media(models.Model):
 		return self.name_media	
 
 	def returnComments(self):
-		ComentariosID = self.comments_media
-		comentariosMedia = []
-		for c in ComentariosID:
-			cV = Comentario.objects.get(id=c)
-			comentariosMedia.append(cV)
-		return comentariosMedia
+		try:
+			ComentariosID = self.comments_media
+			comentariosMedia = []
+			for c in ComentariosID:
+				cV = Comentario.objects.get(id=c)
+				comentariosMedia.append(cV)
+			return comentariosMedia
+		except:
+			return None
 
 	def returnTags(self):
-		tagsID = self.tags_media
-		tagMedia = []
-		for t in tagsID:
-			tV = Etiqueta.objects.get(id=t)
-			tagMedia.append(tV)
-		return tagMedia
+		try:
+			tagsID = self.tags_media
+			tagMedia = []
+			for t in tagsID:
+				tV = Etiqueta.objects.get(id=t)
+				tagMedia.append(tV)
+			return tagMedia
+		except:
+			return None
 
 class DocumentoAnalisis(models.Model):
 	name_documento = models.CharField(max_length=200, blank=False, null=False)
@@ -65,52 +71,127 @@ class StateOne(models.Model):
 	tags_state = ListaField()
 
 	def returnTags(self):
-		tagsID = self.tags_state
-		tags = []
-		for t in tagsID:
-			tV = Etiqueta.objects.get(id=t)
-			tags.append(tV)
-		return tags
+		try:
+			tagsID = self.tags_state
+			tags = []
+			for t in tagsID:
+				tV = Etiqueta.objects.get(id=t)
+				tags.append(tV)
+			return tags
+		except:
+			return None
 
 	def returnVideos(self):
-		videosID = self.ssp_videos
-		videos = []
-		for v in reversed(videosID):
-			V = Media.objects.get(id=v)
-			videos.append(V)
-		return videos
+		try:
+			videosID = self.ssp_videos
+			videos = []
+			for v in reversed(videosID):
+				V = Media.objects.get(id=v)
+				videos.append(V)
+			return videos
+		except:
+			return None
+
+	def returnVideosbyTag(self, id_tag):
+		try:
+			videosID = self.ssp_videos
+			videos = []
+			tags = list(id_tag)
+			for v in reversed(videosID):
+				V = Media.objects.get(id=v)
+				for t in V.tags_media:
+					if t in tags and V not in videos:
+						videos.append(V)
+			return videos
+		except:
+			return None
+
 
 	def returnImagenes(self):
-		imagenesID = self.ssp_imagenes
-		imagenes = []
-		for i in reversed(imagenesID):
-			I = Media.objects.get(id=i)
-			imagenes.append(I)
-		return imagenes
+		try:
+			imagenesID = self.ssp_imagenes
+			imagenes = []
+			for i in reversed(imagenesID):
+				I = Media.objects.get(id=i)
+				imagenes.append(I)
+			return imagenes
+		except:
+			return None
+
+	def returnImagenesbyTag(self, id_tag):
+		try:
+			imagenesID = self.ssp_imagenes
+			imagenes = []
+			tags = list(id_tag)
+			for v in reversed(imagenesID):
+				V = Media.objects.get(id=v)
+				for t in V.tags_media:
+					if t in tags and V not in imagenes:
+						imagenes.append(V)
+			return imagenes
+		except:
+			return None
 
 	def returnAudios(self):
-		audiosID = self.ssp_audios
-		audios = []
-		for a in reversed(audiosID):
-			A = Media.objects.get(id=a)
-			audios.append(A)
-		return audios
+		try:
+			audiosID = self.ssp_audios
+			audios = []
+			for a in reversed(audiosID):
+				A = Media.objects.get(id=a)
+				audios.append(A)
+			return audios
+		except:
+			return None
+
+	def returnAudiosbyTag(self, id_tag):
+		try:
+			audiosID = self.ssp_audios
+			audios = []
+			tags = list(id_tag)
+			for v in reversed(audiosID):
+				V = Media.objects.get(id=v)
+				for t in V.tags_media:
+					if t in tags and V not in audios:
+						audios.append(V)
+			return audios
+		except:
+			return None
 
 	def returnDocumentos(self):
-		documentosID = self.ssp_documentos
-		documentos = []
-		for d in reversed(documentosID):
-			D = Media.objects.get(id=d)
-			documentos.append(D)
-		return documentos
+		try:
+			documentosID = self.ssp_documentos
+			documentos = []
+			for d in reversed(documentosID):
+				D = Media.objects.get(id=d)
+				documentos.append(D)
+			return documentos
+		except:
+			return None
+
+	def returnDocumentosbyTag(self, id_tag):
+		try:
+			documentosID = self.ssp_documentos
+			documentos = []
+			tags = list(id_tag)
+			for v in reversed(documentosID):
+				V = Media.objects.get(id=v)
+				for t in V.tags_media:
+					if t in tags and V not in documentos:
+						documentos.append(V)
+			return documentos
+		except:
+			return None
 
 	def returnAnalisis(self):
-		analisisID = self.ssp_analisis
-		analisis = []
-		for a in reversed(analisisID):
-			A = Analisis.objects.get(id=a)
-			analisis.append(A)
-		return analisis
+		try:
+			analisisID = self.ssp_analisis
+			analisis = []
+			for a in reversed(analisisID):
+				A = Analisis.objects.get(id=a)
+				analisis.append(A)
+			return analisis
+		except:
+			return None
 
 class Analisis(models.Model):
 	name_analisis = models.CharField(max_length=200, blank=False, null=False)
@@ -125,25 +206,34 @@ class Analisis(models.Model):
 		return self.name_analisis	
 
 	def returnDocuments(self):
-		documentsID = self.links_analisis
-		documentsAnalisis = []
-		for c in documentsID:
-			cV = DocumentoAnalisis.objects.get(id=c)
-			documentsAnalisis.append(cV)
-		return documentsAnalisis
+		try:
+			documentsID = self.links_analisis
+			documentsAnalisis = []
+			for c in documentsID:
+				cV = DocumentoAnalisis.objects.get(id=c)
+				documentsAnalisis.append(cV)
+			return documentsAnalisis
+		except:
+			return None
 
 	def returnComments(self):
-		ComentariosID = self.comments_analisis
-		comentariosAnalisis = []
-		for c in ComentariosID:
-			cV = Comentario.objects.get(id=c)
-			comentariosAnalisis.append(cV)
-		return comentariosAnalisis
+		try:
+			ComentariosID = self.comments_analisis
+			comentariosAnalisis = []
+			for c in ComentariosID:
+				cV = Comentario.objects.get(id=c)
+				comentariosAnalisis.append(cV)
+			return comentariosAnalisis
+		except:
+			return None
 
 	def returnTags(self):
-		tagsID = self.tags_analisis
-		tagAnalisis = []
-		for t in tagsID:
-			tV = Etiqueta.objects.get(id=t)
-			tagAnalisis.append(tV)
-		return tagAnalisis
+		try:
+			tagsID = self.tags_analisis
+			tagAnalisis = []
+			for t in tagsID:
+				tV = Etiqueta.objects.get(id=t)
+				tagAnalisis.append(tV)
+			return tagAnalisis
+		except:
+			return None

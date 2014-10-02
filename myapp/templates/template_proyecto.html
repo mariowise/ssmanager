@@ -26,6 +26,42 @@
   <script>
   $(document).ready(function() { $("#e1").select2(); });
   </script>
+  <script>
+  $(document).ready(function() { $("#e12").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e13").select2(); });
+  </script>
+  <script type="text/javascript">
+    var check;
+    
+    function checkForMessages(){
+      $.ajax({
+        type:"GET",
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        url:"/wsNotificaciones/{{proyecto.id}}",
+        success:function(response){
+          $( " " ).replaceAll( ".Noti" );
+          
+          var i = response.length-1;
+
+          $('#cNoti').replaceWith(i+1)
+          if((i+1)==0){
+            $('#Notificaciones').append("<li class="+"Noti"+">No hay Notificaciones</li>");
+          }
+          else{
+          var j = 0;
+          for(i; i>= j; i--){
+            $('#Notificaciones').append("<li class="+"Noti"+"><div class="+"contenedor-comentario noti"+"><img src="+"/files/serve/"+response[i].fields.imagen_notificacion+""+"/><p><strong>"+response[i].fields.creador_notificacion+"</strong></p><p>"+response[i].fields.accion_notificacion+"</p></div></li>");
+          }
+          }
+        
+        }
+      });
+    }
+    check = setInterval(checkForMessages, 10000);
+  </script>
   <script type="text/javascript">
 // Popup window code
 function newPopup(url) {
@@ -45,24 +81,31 @@ function newPopup(url) {
 			<div class="collapse navbar-collapse float-right" id="bs-example-navbar-collapse-2">
 				<!-- Mostrar imagen -->
 				<ul class="nav navbar-nav nav-principal">
-					<li><a href="#" class="glyphicon glyphicon-facetime-video" title="Video Conferencia"></a></li>
+					<li><a href="JavaScript:newPopup('https://hangoutsapi.talkgadget.google.com/hangouts/_?gid=567553087244');" class="glyphicon glyphicon-facetime-video" title="Video Conferencia"></a></li>
 					<li><a href="#" class="glyphicon glyphicon-comment" title="Chat"></a></li>
          <li><a href="#" class="glyphicon glyphicon-envelope" title="Mensaje" data-toggle="modal" data-target="#addMensaje"></a></li>
          <li><a href="/addContrib/{{proyecto.id}}" class ="glyphicon glyphicon-user" title="Colaboradores"></a></li>          
-         <li><a href="#" class ="glyphicon glyphicon-bell" title="Notificaciones"></a></li>
+         <li class="dropdown">
+          <a title="Notificaciones" class="dropdown-toggle dropdown-menu-right glyphicon glyphicon-bell" data-toggle="dropdown" href="#"><span id="cNoti"class="badge"></span>
+         </a>
+         <ul class="dropdown-menu" role="menu" id="Notificaciones">
+          <li><a href="#">Ver Todas</a></li>
+          <li class="divider"></li>
+        </ul>
+      </li>
          <li class="dropdown">
           <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
-           Estados <span class="caret"></span>
+            Estados<span class="caret"></span>
          </a>
          <ul class="dropdown-menu" role="menu">
           <li><a href="/project/{{proyecto.id}}">Estado Uno</a></li>
           <li><a href="/project-state-two/{{proyecto.id}}">Estado Dos</a></li>
-          <li><a href="#">Estado Tres</a></li>
+          <li><a href="/project-state-three/{{proyecto.id}}">Estado Tres</a></li>
         </ul>
       </li>
       <li class="dropdown">
         <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
-         General <span class="caret"></span>
+          General<span class="caret"></span>
        </a>
        <ul class="dropdown-menu" role="menu">
          <li><a href="{% url 'vista_principal' %}">Inicio</a></li>

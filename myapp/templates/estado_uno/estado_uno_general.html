@@ -25,11 +25,11 @@
               <form method="POST" action="/agregar/{{proyecto.id}}/">
                 {% csrf_token %}
                 {{formArchivo|as_bootstrap}} 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary"> Agregar </button>
-            </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary"> Agregar </button>
+              </div>
             </form>
           </div>
         </div>

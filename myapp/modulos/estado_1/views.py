@@ -8,6 +8,7 @@ from myapp.modulos.principal.models import userSoftSystemProject
 from myapp.modulos.estado_1.forms import mediaForm, comentaryForm, etiquetaForm, nombreAnalisisForm, documentoForm, resumenAnalisisForm
 from myapp.modulos.estado_1.models import Media, StateOne, Comentario, Etiqueta, Analisis, DocumentoAnalisis
 from myapp.modulos.estado_1.functions import video_id
+from myapp.modulos.comunicacion.functions import notificar
 # Create your views here.
 @login_required(login_url='/login/')
 def general_uno_view(request, id_ssp):
@@ -119,6 +120,8 @@ def media_agregar_view(request, id_ssp):
 				stateOne.ssp_documentos.append(newMedia.id)
 
 			stateOne.save()
+
+			notificar(id_ssp, request.user.id, '/verMedia/%s/%s'%(id_ssp,newMedia.id), 'Agrego un nuevo archivo')
 
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

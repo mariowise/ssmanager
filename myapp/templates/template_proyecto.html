@@ -45,15 +45,19 @@
           $( " " ).replaceAll( ".Noti" );
           
           var i = response.length-1;
-
-          $('#cNoti').replaceWith(i+1)
+          if((i+1)!=0){
+            $('#cNoti').replaceWith(i+1);
+          }
+          else{
+            $('#cNoti').replaceWith("0");
+          }
           if((i+1)==0){
-            $('#Notificaciones').append("<li class="+"Noti"+">No hay Notificaciones</li>");
+            $('#Notificaciones').append("<li class="+"Noti"+">  No hay Notificaciones</li>");
           }
           else{
           var j = 0;
           for(i; i>= j; i--){
-            $('#Notificaciones').append("<li class="+"Noti"+"><div class="+"contenedor-comentario noti"+"><img src="+"/files/serve/"+response[i].fields.imagen_notificacion+""+"/><p><strong>"+response[i].fields.creador_notificacion+"</strong></p><p>"+response[i].fields.accion_notificacion+"</p></div></li>");
+            $('#Notificaciones').append("<li class="+"Noti"+"><a href="+"'/verNotificacion/"+response[i].pk+"'"+"><div class="+"contenedor-comentario noti"+"><img src="+"/files/serve/"+response[i].fields.imagen_notificacion+""+"/><p><strong>"+response[i].fields.creador_notificacion+"</strong></p><p>"+response[i].fields.accion_notificacion+"</p></div></a></li>");
           }
           }
         
@@ -86,7 +90,7 @@ function newPopup(url) {
          <li><a href="#" class="glyphicon glyphicon-envelope" title="Mensaje" data-toggle="modal" data-target="#addMensaje"></a></li>
          <li><a href="/addContrib/{{proyecto.id}}" class ="glyphicon glyphicon-user" title="Colaboradores"></a></li>          
          <li class="dropdown">
-          <a title="Notificaciones" class="dropdown-toggle dropdown-menu-right glyphicon glyphicon-bell" data-toggle="dropdown" href="#"><span id="cNoti"class="badge"></span>
+          <a title="Notificaciones" class="dropdown-toggle dropdown-menu-right glyphicon glyphicon-bell" data-toggle="dropdown" href="#"><span class="badge"><p id="cNoti"></p></span>
          </a>
          <ul class="dropdown-menu" role="menu" id="Notificaciones">
           <li><a href="#">Ver Todas</a></li>

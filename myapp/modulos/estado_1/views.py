@@ -121,9 +121,9 @@ def media_agregar_view(request, id_ssp):
 
 			stateOne.save()
 
-			notificar(id_ssp, request.user.id, '/verMedia/%s/%s'%(id_ssp,newMedia.id), 'Agrego un nuevo archivo')
+			notificar(id_ssp, request.user.id, '/verMedia/%s/%s'%(id_ssp,newMedia.id), 'Agrego un nuevo archivo', newMedia.id, 'Media')
 
-			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return redirect('/verMedia/%s/%s'%(id_ssp,newMedia.id))
 		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='/login/')
@@ -176,7 +176,7 @@ def eliminar_media_view(request, id_ssp, id_media):
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='/login/')
-def comentar_media_view(request, id_media):
+def comentar_media_view(request, id_media, id_ssp):
 	media = Media.objects.get(id=id_media)
 	user = User.objects.get(username__exact=request.user.get_username())
 	form = comentaryForm()
@@ -188,6 +188,8 @@ def comentar_media_view(request, id_media):
 			newComment.save()
 			media.comments_media.append(newComment.id)
 			media.save()
+			notificar(id_ssp, request.user.id, '/verMedia/%s/%s'%(id_ssp,id_media), 'Ha comentado un archivo', id_media, 'Media')
+
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='/login/')
@@ -261,6 +263,8 @@ def analisis_crear_view(request, id_ssp):
 			stateOne = StateOne.objects.get(ssp_stateOne=proyecto)
 			stateOne.ssp_analisis.append(newAnalisis.id)
 			stateOne.save()
+
+			notificar(id_ssp, request.user.id, '/verAnalisis/%s/%s'%(id_ssp,newAnalisis.id), 'Agrego un nuevo Analisis', newAnalisis.id, 'Analisis')
 
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -370,7 +374,7 @@ def analisis_ver_view(request, id_ssp, id_analisis):
 	return render(request, 'estado_uno/estado_uno_ver_analisis.html', ctx)
 
 @login_required(login_url='/login/')
-def comentar_analisis_view(request, id_analisis):
+def comentar_analisis_view(request, id_analisis, id_ssp):
 	analisis = Analisis.objects.get(id=id_analisis)
 	user = User.objects.get(username__exact=request.user.get_username())
 	form = comentaryForm()
@@ -382,4 +386,5 @@ def comentar_analisis_view(request, id_analisis):
 			newComment.save()
 			analisis.comments_analisis.append(newComment.id)
 			analisis.save()
+			notificar(id_ssp, request.user.id, '/verAnalisis/%s/%s'%(id_ssp,id_analisis), 'Ha comentado un analisis', id_analisis, "Analisis")
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

@@ -1,10 +1,10 @@
 {%extends 'template_proyecto.html'%}
 {% load bootstrap_tags %}
 {% block title %}SSM: {{proyecto.name_ssp}}{% endblock title %}
-{% block brand-name %}{{proyecto.name_ssp}}{% endblock brand-name %}
+{% block brand-name %}<a href="/project/{{proyecto.id}}"><strong>{{proyecto.name_ssp}}</strong></a>{% endblock brand-name %}
 {% block content %}
 <div class="row">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-4 col-md-offset-4 text-center">
                 <div class="container-img-newssp text-center">
                         <img src="/media/img/logos/LogoFinal.png">
                 </div>
@@ -31,8 +31,13 @@
                 {%if proyecto.manager.get_username == user.get_username%}
                 <form action="." method="POST">
                         {% csrf_token %}
-                        {{form|as_bootstrap}}
-                        <button type="submit" name="create_ssp" class="btn btn-default">Agregar Colaborador</button>
+
+                        <p><select name="e14" id="e14" style="width: 300px;">
+                                {% for u in usuariosSSM %}
+                                <option value="{{u.get_username}}">{{u.get_username}}</option>
+                                {% endfor %}
+                        </select></p>
+                        <button style="width: 300px;" type="submit" name="create_ssp" class="btn btn-primary"><strong>Agregar Colaborador</strong></button>
                         
                 </form> 
                 {%endif%}

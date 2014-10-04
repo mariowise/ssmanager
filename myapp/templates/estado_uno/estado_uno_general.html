@@ -1,7 +1,7 @@
 {%extends 'template_proyecto.html'%}
 {%load bootstrap_tags%}
 {% block title %}SSM: {{proyecto.name_ssp}}{% endblock title %}
-{% block brand-name %}{{proyecto.name_ssp}}{% endblock brand-name %}
+{% block brand-name %}<a href="/project/{{proyecto.id}}"><strong>{{proyecto.name_ssp}}</strong></a>{% endblock brand-name %}
 {% block content %}
 <div class="container text-center">
   <h3><strong>PERCEPCIÓN DE LA SITUACIÓN-PROBLEMA DE MANERA NO ESTRUCTURADA</strong></h3>

@@ -132,7 +132,7 @@
 			<h2><strong>Aun no hay comentarios</strong></h2>
 			{%endif%}
 		</div>
-		<form id="box-comment" method="POST" action="/comentarMedia/{{media.id}}/">
+		<form id="box-comment" method="POST" action="/comentarMedia/{{media.id}}/{{proyecto.id}}/">
 			{% csrf_token %}
 			{{formComentary|as_bootstrap}}
 			<button type="submit" class="btn btn-primary">Comentar</button>

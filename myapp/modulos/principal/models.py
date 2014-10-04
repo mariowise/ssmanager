@@ -75,7 +75,7 @@ class userSoftSystemProject(models.Model):
 		try:
 			notificacionesID = self.notificaciones_ssp
 			notificaciones = []
-			for n in notificacionesID:
+			for n in reversed(notificacionesID):
 				N = Notificacion.objects.get(id=n)
 				notificaciones.append(N)
 			return notificaciones

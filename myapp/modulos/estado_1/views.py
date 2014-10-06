@@ -128,26 +128,29 @@ def media_agregar_view(request, id_ssp):
 
 @login_required(login_url='/login/')
 def media_ver_view(request, id_ssp, id_media):
-	project = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = project.returnAllusers(request.user.get_username())
-	estado = StateOne.objects.get(ssp_stateOne=project)
-	etiquetas = estado.returnTags()
+	try:
+		project = userSoftSystemProject.objects.get(id=id_ssp)
+		destinatarios = project.returnAllusers(request.user.get_username())
+		estado = StateOne.objects.get(ssp_stateOne=project)
+		etiquetas = estado.returnTags()
 
-	media = Media.objects.get(id=id_media)
-	comentarios = media.returnComments()
-	etiquetasMedia = media.returnTags()
+		media = Media.objects.get(id=id_media)
+		comentarios = media.returnComments()
+		etiquetasMedia = media.returnTags()
 
-	formComentary = comentaryForm()
-	formaTag = etiquetaForm()
-	if media.type_media == '1':
-		embed = video_id(media.url_media)
-		if embed is None:
-			embed = "NO"
-		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'embed' : embed, 'destinatarios' : destinatarios}
-		return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
-	else :
-		ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'destinatarios' : destinatarios}
-		return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
+		formComentary = comentaryForm()
+		formaTag = etiquetaForm()
+		if media.type_media == '1':
+			embed = video_id(media.url_media)
+			if embed is None:
+				embed = "NO"
+			ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'embed' : embed, 'destinatarios' : destinatarios}
+			return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
+		else :
+			ctx={'proyecto' : project, 'media' : media, 'comentarios':comentarios, 'formComentary' : formComentary, 'etiquetas':etiquetas, 'etiquetasMedia' : etiquetasMedia, 'formaTag':formaTag, 'destinatarios' : destinatarios}
+			return render(request, 'estado_uno/estado_uno_media_single.html', ctx)
+	except:
+		return render(request, 'comunicacion/error.html')
 
 @login_required(login_url='/login/')
 def eliminar_media_view(request, id_ssp, id_media):
@@ -363,15 +366,19 @@ def resumen_analisis_view(request, id_analisis):
 
 @login_required(login_url='/login/')
 def analisis_ver_view(request, id_ssp, id_analisis):
-	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
-	destinatarios = proyecto.returnAllusers(request.user.get_username())
-	analisis = Analisis.objects.get(id=id_analisis)
-	documentosAnalisis = analisis.returnDocuments()
-	etiquetasAnalisis = analisis.returnTags()
-	comentarios = analisis.returnComments()
-	formComentary = comentaryForm()
-	ctx = {'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'etiquetasAnalisis' : etiquetasAnalisis, 'comentarios' : comentarios, 'formComentary' : formComentary, 'destinatarios' : destinatarios}
-	return render(request, 'estado_uno/estado_uno_ver_analisis.html', ctx)
+	try:
+		proyecto = userSoftSystemProject.objects.get(id=id_ssp)
+		destinatarios = proyecto.returnAllusers(request.user.get_username())
+		analisis = Analisis.objects.get(id=id_analisis)
+		documentosAnalisis = analisis.returnDocuments()
+		etiquetasAnalisis = analisis.returnTags()
+		comentarios = analisis.returnComments()
+		formComentary = comentaryForm()
+		ctx = {'proyecto' : proyecto, 'analisis' : analisis, 'documentosAnalisis' : documentosAnalisis, 'etiquetasAnalisis' : etiquetasAnalisis, 'comentarios' : comentarios, 'formComentary' : formComentary, 'destinatarios' : destinatarios}
+		return render(request, 'estado_uno/estado_uno_ver_analisis.html', ctx)
+	except:
+		return render(request, 'comunicacion/error.html')
+		
 
 @login_required(login_url='/login/')
 def comentar_analisis_view(request, id_analisis, id_ssp):

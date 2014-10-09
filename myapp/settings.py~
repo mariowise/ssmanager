@@ -7,7 +7,7 @@ from djangoappengine.settings_base import *
 import os
 
 ADMINS = (
-    #('Aldo Navarrete', 'arden.papifunk@gmail.com'),
+    ('Aldo Navarrete', 'arden.papifunk@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -88,6 +88,15 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "myapp.modulos.context_proccesors.form_mensaje_proccesor",)
 
 MIDDLEWARE_CLASSES = (
     # This loads the index definitions, so it has to come first
@@ -105,6 +114,8 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'myapp.urls'
 
 AUTH_PROFILE_MODULE = 'principal.userProfile'
+
+
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -129,9 +140,17 @@ INSTALLED_APPS = (
     'djangotoolbox',
     'autoload',
     'dbindexer',
+    'gaeblob_storage',
     'myapp.modulos.presentacion',
     'myapp.modulos.principal',
+    'myapp.modulos.proyecto',
+    'myapp.modulos.estado_1',
+    'myapp.modulos.estado_2',
+    'myapp.modulos.estado_3',
+    'myapp.modulos.comunicacion',
     'django_forms_bootstrap',
+
+   
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
 )
@@ -164,3 +183,10 @@ LOGGING = {
         },
     }
 }
+
+DEFAULT_FILE_STORAGE = 'gaeblob_storage.backends.BlobPropertyStorage'
+LOGIN_URL = '/login/'
+
+
+
+

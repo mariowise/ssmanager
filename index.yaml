@@ -69,6 +69,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: principal_credentialsmodel
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: principal_post
   properties:
   - name: __key__

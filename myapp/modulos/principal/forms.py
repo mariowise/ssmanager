@@ -1,9 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-PRIVACY = (
-    	('1', 'Privado'),
-    	('2', 'Publico'),
-    	)
+
 
 
 class UserSettings(forms.Form):
@@ -46,7 +43,6 @@ class StringListField(forms.CharField):
 class UserNewProject(forms.Form):
 	name_ssp = forms.CharField(label="Nombre Soft System Project", widget=forms.TextInput(), required=True)
 	description_ssp = forms.CharField(label="Descripcion Soft System Project", widget=forms.Textarea, required=True)
-	privacy_ssp = forms.ChoiceField(label="Privacidad", choices=PRIVACY)
 
 class ProjectAddContrib(forms.Form):
 	contrib_username = forms.CharField(label="Nombre de Usuario Colaborador", widget=forms.TextInput(), required=True)

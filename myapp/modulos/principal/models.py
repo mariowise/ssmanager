@@ -5,10 +5,25 @@ from myapp.modulos.principal.forms import StringListField
 from myapp.modulos.comunicacion.models import Mensaje, Notificacion
 # Create your models here.
 
+from django.contrib import admin
+from oauth2client.django_orm import CredentialsField
 
 class ListaField(ListField):
     def formfield(self, **kwargs):
         return models.Field.formfield(self, StringListField, **kwargs)
+
+class CredentialsModel(models.Model):
+  id_user = models.ForeignKey(User, unique=True)
+  credential = CredentialsField()
+
+
+class CredentialsAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(CredentialsModel, CredentialsAdmin)
+
+
 
 class userProfile(models.Model):
 
@@ -63,10 +78,9 @@ class userSoftSystemProject(models.Model):
 	name_ssp = models.CharField(max_length=50, blank=False, null=False)
 	description_ssp = models.TextField(max_length=500, blank=False, null=False)
 	date_spp = models.DateTimeField(auto_now_add=True, blank=False)
-	privacy_ssp = models.CharField(max_length=50)
 	contribs_ssp = ListaField()
 	notificaciones_ssp = ListaField()
-	
+	id_folder_ssp = models.CharField(max_length=50, blank=True, null=True)
 
 	def __unicode__(self):
 		return self.name_ssp

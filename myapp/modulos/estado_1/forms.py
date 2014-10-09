@@ -7,6 +7,14 @@ TYPE_MEDIA = (
     	('4', 'Documento'),
     	)
 
+TYPE_DOCUMENTO = (
+    	('application/vnd.google-apps.document', 'Documento'),
+    	('application/vnd.google-apps.spreadsheet', 'Hoja de Calculo'),
+    	('application/vnd.google-apps.drawing', 'Dibujo'),
+    	('application/vnd.google-apps.form', 'Formulario'),
+    	('application/vnd.google-apps.presentation', 'Presentacion'),
+    	)
+
 class mediaForm(forms.Form):
 	media_name = forms.CharField(label="Nombre Archivo",widget=forms.TextInput(), required=True)
 	media_description = forms.CharField(label="Descripcion Archivo", widget=forms.Textarea, required=True)
@@ -30,4 +38,4 @@ class resumenAnalisisForm(forms.Form):
 
 class documentoForm(forms.Form):
 	name_documento = forms.CharField(label="Nombre del Documento", widget=forms.TextInput(), required=True)
-	url_documento = forms.URLField(label="Link para Compartir", required=True)
+	type_documento = forms.ChoiceField(label="Tipo de Documento", choices=TYPE_DOCUMENTO)

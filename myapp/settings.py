@@ -150,6 +150,9 @@ INSTALLED_APPS = (
     'myapp.modulos.comunicacion',
     'django_forms_bootstrap',
 
+
+
+
    
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
@@ -186,7 +189,7 @@ LOGGING = {
 
 DEFAULT_FILE_STORAGE = 'gaeblob_storage.backends.BlobPropertyStorage'
 LOGIN_URL = '/login/'
-
+SECRET_KEY = 'hbP6_4UJIKe-m74yLd8tQDfT'
 
 
 

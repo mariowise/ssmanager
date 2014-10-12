@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>{%block title%}{%endblock%}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="icon" type="image/ico" href="/media/favicon/favicon.ico"/>
   <link rel="shortcut icon" href="/media/favicon/favicon.ico">
   <script type="text/javascript" src="/media/js/jquery.js"></script>
@@ -92,6 +93,13 @@ function newPopup(url) {
   popupWindow = window.open(
     url,'popUpWindow','height=700,width=800,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
 }
+</script>
+<script>
+  $(document).ready(function(){
+    $("#sugerencia").click(function(){
+      $("#id_description_DR").append("{{sugerencia}}");
+    });
+  });
 </script>
 </head>
 <body>

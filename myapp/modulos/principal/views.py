@@ -1,17 +1,32 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 
 from myapp.modulos.principal.forms import UserSettings, UserPasswordChange, UserNotifications, UserNewProject
 from myapp.modulos.principal.models import userProfile, userSoftSystemProject
 from myapp.modulos.estado_1.models import StateOne
 from myapp.modulos.estado_2.models import StateTwo
 from myapp.modulos.estado_3.models import StateThree
-
 from myapp.modulos.principal.models import CredentialsModel
+from myapp import settings
+
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client import xsrfutil
 from oauth2client.django_orm import Storage
 from apiclient.discovery import build
 import httplib2
+
+
+import os
+
+
+
+CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
+FLOW = flow_from_clientsecrets(
+    CLIENT_SECRETS,
+    scope='https://www.googleapis.com/auth/drive',
+    redirect_uri='http://localhost:8000/oauth2callback/')
 	# Create your views here.
 @login_required(login_url='/login/')
 def principal_view(request):
@@ -133,42 +148,49 @@ def create_ssp_view(request):
 		if 'create_ssp' in request.POST:
 			form = UserNewProject(request.POST)
 			if form.is_valid():
-				name_ssp = form.cleaned_data['name_ssp']
-				description_ssp = form.cleaned_data['description_ssp']
-				user = User.objects.get(username__exact=request.user.get_username())
-				projectsUser = userSoftSystemProject.objects.filter(manager=user, name_ssp=name_ssp)
-
-				if projectsUser:
-					status = "0"
-					form = UserNewProject()
-					ctx = {'status' : status, 'form' : form}
-					return render(request,'principal/user_new_ssp.html', ctx)
-					
-				newSSP = userSoftSystemProject.objects.create(manager = user, name_ssp = name_ssp, description_ssp = description_ssp)
-				newStateOne = StateOne.objects.create(ssp_stateOne = newSSP)
-				newStateTwo = StateTwo.objects.create(ssp_stateTwo = newSSP)
-				newStateThree = StateThree.objects.create(ssp_stateThree = newSSP)
-				newSSP.save()
-				newStateOne.save()
-				newStateTwo.save()
-				newStateThree.save()
-
 				storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
 				credential = storage.get()
-				http = httplib2.Http()
-				http = credential.authorize(http)
-				drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
+				if credential is None or credential.invalid:
+					FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,request.user)
+					authorize_url = FLOW.step1_get_authorize_url()
+					return HttpResponseRedirect(authorize_url)
+				else:
+					name_ssp = form.cleaned_data['name_ssp']
+					description_ssp = form.cleaned_data['description_ssp']
+					user = User.objects.get(username__exact=request.user.get_username())
+					projectsUser = userSoftSystemProject.objects.filter(manager=user, name_ssp=name_ssp)
 
-				body = {
-		          'title': 'Soft System Manager - %s'%(newSSP.name_ssp),
-		          'mimeType': "application/vnd.google-apps.folder"
-		        }
+					if projectsUser:
+						status = "0"
+						form = UserNewProject()
+						ctx = {'status' : status, 'form' : form}
+						return render(request,'principal/user_new_ssp.html', ctx)
+						
+					newSSP = userSoftSystemProject.objects.create(manager = user, name_ssp = name_ssp, description_ssp = description_ssp)
+					newStateOne = StateOne.objects.create(ssp_stateOne = newSSP)
+					newStateTwo = StateTwo.objects.create(ssp_stateTwo = newSSP)
+					newStateThree = StateThree.objects.create(ssp_stateThree = newSSP)
+					newSSP.save()
+					newStateOne.save()
+					newStateTwo.save()
+					newStateThree.save()
 
-				folder = drive_service.files().insert(body = body).execute()
+					storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
+					credential = storage.get()
+					http = httplib2.Http()
+					http = credential.authorize(http)
+					drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
 
-				newSSP.id_folder_ssp = folder.get('id')
-				newSSP.save()
-				return redirect('vista_principal')
+					body = {
+			          'title': 'Soft System Manager - %s'%(newSSP.name_ssp),
+			          'mimeType': "application/vnd.google-apps.folder"
+			        }
 
+					folder = drive_service.files().insert(body = body).execute()
+
+					newSSP.id_folder_ssp = folder.get('id')
+					newSSP.save()
+					return redirect('vista_principal')
+				
 	ctx = {'form': form}
 	return render(request,'principal/user_new_ssp.html', ctx)

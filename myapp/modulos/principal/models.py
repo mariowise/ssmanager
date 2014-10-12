@@ -8,9 +8,12 @@ from myapp.modulos.comunicacion.models import Mensaje, Notificacion
 from django.contrib import admin
 from oauth2client.django_orm import CredentialsField
 
+
 class ListaField(ListField):
     def formfield(self, **kwargs):
         return models.Field.formfield(self, StringListField, **kwargs)
+
+
 
 class CredentialsModel(models.Model):
   id_user = models.ForeignKey(User, unique=True)
@@ -51,7 +54,7 @@ class userProfile(models.Model):
 	def contribProjects(self):
 		proyectosId = self.project_colab_user
 		proyectosContrib = []
-		for ID in proyectosId:
+		for ID in reversed(proyectosId):
 			pC = userSoftSystemProject.objects.get(id=ID)
 			proyectosContrib.append(pC)
 		return proyectosContrib

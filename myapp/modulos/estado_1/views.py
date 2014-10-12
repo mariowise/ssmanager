@@ -10,13 +10,17 @@ from myapp.modulos.estado_1.forms import mediaForm, comentaryForm, etiquetaForm,
 from myapp.modulos.estado_1.models import Media, StateOne, Comentario, Etiqueta, Analisis, DocumentoAnalisis
 from myapp.modulos.estado_1.functions import video_id
 from myapp.modulos.comunicacion.functions import notificar
-
 from myapp.modulos.principal.models import CredentialsModel
+from myapp import settings
+
+from oauth2client import xsrfutil
+from oauth2client.client import flow_from_clientsecrets
 from oauth2client.django_orm import Storage
 from apiclient.discovery import build
-from oauth2client.client import flow_from_clientsecrets
 import httplib2
 import os
+
+
 
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 FLOW = flow_from_clientsecrets(
@@ -363,34 +367,47 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 	if request.method == "POST":
 		form = documentoForm(request.POST)
 		if form.is_valid():
-			name_documento = form.cleaned_data['name_documento']
-			type_documento = form.cleaned_data['type_documento']
-
 			storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
 			credential = storage.get()
-			http = httplib2.Http()
-			http = credential.authorize(http)
-			drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
+			if credential is None or credential.invalid:
+				FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,request.user)
+				authorize_url = FLOW.step1_get_authorize_url()
+				return HttpResponseRedirect(authorize_url)
+			else:
+				name_documento = form.cleaned_data['name_documento']
+				type_documento = form.cleaned_data['type_documento']
 
-			body = {
-			  'title': '%s'%(name_documento),
-			  'description': 'Documento nuevo de SSM',
-			  'mimeType': '%s'%(type_documento),
-			  'parents' : [{'id' : proyecto.id_folder_ssp}]
-			}
+				storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
+				credential = storage.get()
+				http = httplib2.Http()
+				http = credential.authorize(http)
+				drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
+				if request.user == proyecto.manager:
+					body = {
+					  'title': '%s'%(name_documento),
+					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
+					  'mimeType': '%s'%(type_documento),
+					  'parents' : [{'id' : proyecto.id_folder_ssp}]
+					}
+				else:
+					body = {
+					  'title': '%s'%(name_documento),
+					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
+					  'mimeType': '%s'%(type_documento),
+					}
 
+				file = drive_service.files().insert(body=body).execute()
 
-			file = drive_service.files().insert(body=body).execute()
+				url_documento = file.get('alternateLink')
+				
+				newDocumento = DocumentoAnalisis.objects.create(name_documento=name_documento, url_documento=url_documento, shared_documento=request.user.get_username())
+				newDocumento.save()
 
-			url_documento = file.get('alternateLink')
+				analisis = Analisis.objects.get(id=id_analisis)
+				analisis.links_analisis.append(newDocumento.id)
+				analisis.save()
+				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 			
-			newDocumento = DocumentoAnalisis.objects.create(name_documento=name_documento, url_documento=url_documento, shared_documento=request.user.get_username())
-			newDocumento.save()
-
-			analisis = Analisis.objects.get(id=id_analisis)
-			analisis.links_analisis.append(newDocumento.id)
-			analisis.save()
-			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 @login_required(login_url='/login/')
 def analisis_eliminarDocumento_view(request, id_ssp,id_analisis, id_documento):
@@ -478,18 +495,4 @@ def comentar_analisis_view(request, id_analisis, id_ssp):
 	else:
 		return render(request, 'comunicacion/error.html')
 
-@login_required(login_url='/login/')
-def prueba_view(request):
-	storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
-	credential = storage.get()
-	http = httplib2.Http()
-	http = credential.authorize(http)
-	drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
-	  
-	body = {
-		  'title': 'Nuevo Archivo',
-		  'description': 'A test document',
-		  'mimeType': 'application/vnd.google-apps.document'
-		}
-	file = drive_service.files().insert(body=body).execute(http=http)
-	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+

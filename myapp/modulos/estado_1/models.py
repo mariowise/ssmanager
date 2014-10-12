@@ -209,7 +209,7 @@ class Analisis(models.Model):
 		try:
 			documentsID = self.links_analisis
 			documentsAnalisis = []
-			for c in documentsID:
+			for c in reversed(documentsID):
 				cV = DocumentoAnalisis.objects.get(id=c)
 				documentsAnalisis.append(cV)
 			return documentsAnalisis

@@ -1,23 +1,25 @@
 from django.shortcuts import redirect, render 
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.http import HttpResponseBadRequest
+from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
 from myapp.modulos.principal.models import userProfile
 from myapp.modulos.presentacion.forms import RegisterForm, LoginForm, RecoverPasswordForm
 from myapp.modulos.presentacion.functions import randomPassword, enviarCorreoRecover
-#Importar cosas de Google
-
-import os
-import logging
-import httplib2
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
-from django.http import HttpResponseRedirect
 from myapp.modulos.principal.models import CredentialsModel
 from myapp import settings
+
 from oauth2client import xsrfutil
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.django_orm import Storage
+
+import os
+
+
+
+
 
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 FLOW = flow_from_clientsecrets(
@@ -75,14 +77,14 @@ def login_view(request):
 				user = authenticate(username=username, password=password)
 				if user is not None and user.is_active:
 					login(request, user)
-					storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
-					credential = storage.get()
-					if credential is None or credential.invalid == True:
-						FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,request.user)
-						authorize_url = FLOW.step1_get_authorize_url()
-						return HttpResponseRedirect(authorize_url)
-					else:
-						return redirect('vista_principal')
+					#storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
+					#credential = storage.get()
+					#if credential is None or credential.invalid:
+					FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,request.user)
+					authorize_url = FLOW.step1_get_authorize_url()
+					return HttpResponseRedirect(authorize_url)
+					#else:
+						#return redirect('vista_principal')
 				else:
 					status = "Usuario y/o Password incorrecto"
 		form = LoginForm()
@@ -92,9 +94,6 @@ def login_view(request):
 	return render(request,'presentacion/login.html')
 
 def logout_view(request):
-	storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
-	credential = None
-	storage.put(credential)
 	logout(request)
 	return redirect('/')
 
@@ -125,6 +124,8 @@ def auth_return(request):
                                  request.user):
     return  HttpResponseBadRequest()
   credential = FLOW.step2_exchange(request.REQUEST)
+  storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
+  storage.delete()
   storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
   storage.put(credential)
   return HttpResponseRedirect("/principal")

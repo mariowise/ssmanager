@@ -21,7 +21,7 @@ urlpatterns = patterns('myapp.modulos.estado_1.views',
 	url(r'^resumenAnalisis/(?P<id_analisis>.*)/$', 'resumen_analisis_view'),
 	url(r'^verAnalisis/(?P<id_ssp>.*)/(?P<id_analisis>.*)/$', 'analisis_ver_view'),
 	url(r'^comentarAnalisis/(?P<id_analisis>.*)/(?P<id_ssp>.*)/$', 'comentar_analisis_view'),
-	url(r'^prueba/$', 'prueba_view'),
+
 
 
 	)

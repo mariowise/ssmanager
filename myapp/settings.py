@@ -107,6 +107,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'myapp.modulos.middleware.AutoLogout',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -190,6 +191,6 @@ LOGGING = {
 DEFAULT_FILE_STORAGE = 'gaeblob_storage.backends.BlobPropertyStorage'
 LOGIN_URL = '/login/'
 SECRET_KEY = 'hbP6_4UJIKe-m74yLd8tQDfT'
-
-
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+AUTO_LOGOUT_DELAY = 15
 

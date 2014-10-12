@@ -39,3 +39,6 @@ class resumenAnalisisForm(forms.Form):
 class documentoForm(forms.Form):
 	name_documento = forms.CharField(label="Nombre del Documento", widget=forms.TextInput(), required=True)
 	type_documento = forms.ChoiceField(label="Tipo de Documento", choices=TYPE_DOCUMENTO)
+
+class DRPForm(forms.Form):
+	name_documento = forms.CharField(label="Nombre del Rich Picture", widget=forms.TextInput(), required=True)

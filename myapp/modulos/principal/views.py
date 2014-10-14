@@ -165,6 +165,15 @@ def create_ssp_view(request):
 						form = UserNewProject()
 						ctx = {'status' : status, 'form' : form}
 						return render(request,'principal/user_new_ssp.html', ctx)
+
+					try:
+						storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
+						credential = storage.get()
+						http = httplib2.Http()
+						http = credential.authorize(http)
+						drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
+					except:
+						return redirect('vista_logout')
 						
 					newSSP = userSoftSystemProject.objects.create(manager = user, name_ssp = name_ssp, description_ssp = description_ssp)
 					newStateOne = StateOne.objects.create(ssp_stateOne = newSSP)
@@ -174,12 +183,6 @@ def create_ssp_view(request):
 					newStateOne.save()
 					newStateTwo.save()
 					newStateThree.save()
-
-					storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
-					credential = storage.get()
-					http = httplib2.Http()
-					http = credential.authorize(http)
-					drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
 
 					body = {
 			          'title': 'Soft System Manager - %s'%(newSSP.name_ssp),

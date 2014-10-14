@@ -21,14 +21,11 @@
     		<div class="collapse navbar-collapse float-right" id="bs-example-navbar-collapse-2">
            <!-- Mostrar imagen -->
             <div class="navbar-header  nav-img">
-              {% if user.get_profile.photo_user %}
+              
               
                 <img class="navbar-brand" src="/files/serve/{{user.get_profile.photo_user}}">
                 <p class="navbar-brand">{{user.get_username}}</p>
-              {% else %}
-                <img class="navbar-brand" src="/media/img/principal_html/img1.png">
-                <p class="navbar-brand">{{user.get_username}}</p>
-              {% endif %}       
+                    
             </div> <!-- Fin Mostrar imagen -->
       			<ul class="nav navbar-nav nav-principal">
         			<li><a href="{% url 'vista_newProject' %}" class="glyphicon glyphicon-plus"></a></li>

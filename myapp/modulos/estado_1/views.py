@@ -228,6 +228,8 @@ def comentar_media_view(request, id_media, id_ssp):
 				notificar(id_ssp, request.user.id, '/verMedia/%s/%s'%(id_ssp,id_media), 'Ha comentado un archivo', id_media, 'Media')
 
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 	else:
 		return render(request, 'comunicacion/error.html')
 
@@ -262,6 +264,8 @@ def crear_etiqueta_view(request, id_ssp):
 				stateOne.save()
 
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 	else:
 		return render(request, 'comunicacion/error.html')
 
@@ -316,6 +320,8 @@ def analisis_crear_view(request, id_ssp):
 				notificar(id_ssp, request.user.id, '/verAnalisis/%s/%s'%(id_ssp,newAnalisis.id), 'Agrego un nuevo Analisis', newAnalisis.id, 'Analisis')
 
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 	else:
 		return render(request, 'comunicacion/error.html')
 
@@ -377,11 +383,15 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 				name_documento = form.cleaned_data['name_documento']
 				type_documento = form.cleaned_data['type_documento']
 
-				storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
-				credential = storage.get()
-				http = httplib2.Http()
-				http = credential.authorize(http)
-				drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
+				try:
+					storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
+					credential = storage.get()
+					http = httplib2.Http()
+					http = credential.authorize(http)
+					drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
+				except:
+					return redirect('vista_logout')
+
 				if request.user == proyecto.manager:
 					body = {
 					  'title': '%s'%(name_documento),
@@ -389,14 +399,24 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 					  'mimeType': '%s'%(type_documento),
 					  'parents' : [{'id' : proyecto.id_folder_ssp}]
 					}
+					try:
+						file = drive_service.files().insert(body=body).execute()
+					except:
+						body = {
+						  'title': '%s'%(name_documento),
+						  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
+						  'mimeType': '%s'%(type_documento),
+						}
+						file = drive_service.files().insert(body=body).execute()
 				else:
 					body = {
 					  'title': '%s'%(name_documento),
 					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
 					  'mimeType': '%s'%(type_documento),
 					}
+					file = drive_service.files().insert(body=body).execute()
 
-				file = drive_service.files().insert(body=body).execute()
+				
 
 				url_documento = file.get('alternateLink')
 				
@@ -407,6 +427,8 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 				analisis.links_analisis.append(newDocumento.id)
 				analisis.save()
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+		return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 			
 
 @login_required(login_url='/login/')
@@ -492,6 +514,8 @@ def comentar_analisis_view(request, id_analisis, id_ssp):
 				analisis.save()
 				notificar(id_ssp, request.user.id, '/verAnalisis/%s/%s'%(id_ssp,id_analisis), 'Ha comentado un analisis', id_analisis, "Analisis")
 				return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 	else:
 		return render(request, 'comunicacion/error.html')
 

@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 
 
 class UserSettings(forms.Form):
-	photo_user = forms.ImageField(label="Foto de perfil")
-	email_public_user = forms.EmailField(label="Correo Electronico Publico", widget=forms.TextInput())
-	url_user = forms.URLField(label="URL", widget=forms.TextInput())
-	company_user = forms.CharField(label="Empresa", widget=forms.TextInput())
-	position_user = forms.CharField(label="Ubicacion", widget=forms.TextInput())
+	photo_user = forms.ImageField(label="Foto de perfil", required=False)
+	email_public_user = forms.EmailField(label="Correo Electronico Publico", widget=forms.TextInput(), required=False)
+	url_user = forms.URLField(label="URL", widget=forms.TextInput(), required=False)
+	company_user = forms.CharField(label="Empresa", widget=forms.TextInput(), required=False)
+	position_user = forms.CharField(label="Ubicacion", widget=forms.TextInput(), required=False)
 
 
 

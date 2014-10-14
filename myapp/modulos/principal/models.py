@@ -7,7 +7,7 @@ from myapp.modulos.comunicacion.models import Mensaje, Notificacion
 
 from django.contrib import admin
 from oauth2client.django_orm import CredentialsField
-
+from myapp import settings
 
 class ListaField(ListField):
     def formfield(self, **kwargs):
@@ -43,7 +43,7 @@ class userProfile(models.Model):
 	mEmail_user = models.NullBooleanField()
 	cWeb_user = models.NullBooleanField()
 	cEmail_user = models.NullBooleanField()
-	photo_user = models.ImageField(upload_to=url)
+	photo_user = models.ImageField(upload_to=url, default='MultimediaData/Users/Profile_img/prueba/img1.png')
 	project_colab_user = ListaField()#Guardar ID's de los proyectos en los que colaboro
 	mensajes_user_leidos = ListaField()
 	mensajes_user_noleidos = ListaField()

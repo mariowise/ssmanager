@@ -407,14 +407,18 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 						  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
 						  'mimeType': '%s'%(type_documento),
 						}
-						file = drive_service.files().insert(body=body).execute()
+						try:
+							file = drive_service.files().insert(body=body).execute()
+						except:
+							return render(request, 'comunicacion/error.html')
 				else:
+
 					userP = userProfile.objects.get(user=request.user)
 					ID_final = ''
 					for ID in userP.id_folder_user:
 						if ID in proyecto.ids_folder_ssp:
 							ID_final = ID
-
+					
 					body = {
 					  'title': '%s'%(name_documento),
 					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
@@ -427,13 +431,13 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 						body = {
 						  'title': '%s'%(name_documento),
 						  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
-						  'mimeType': '%s'%(type_documento)
+						  'mimeType': '%s'%(type_documento),
 						}
-						file = drive_service.files().insert(body=body).execute()
-					
-
-				
-
+						try:
+							file = drive_service.files().insert(body=body).execute()
+						except:
+							return render(request, 'comunicacion/error.html')
+							
 				url_documento = file.get('alternateLink')
 				
 				newDocumento = DocumentoAnalisis.objects.create(name_documento=name_documento, url_documento=url_documento, shared_documento=request.user.get_username())

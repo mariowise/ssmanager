@@ -99,7 +99,6 @@ def desvincularColaborador_view(request, id_ssp, id_user):
 def invitacion_view(request, id_ssp, id_user, id_mensaje):
 	proyecto = userSoftSystemProject.objects.get(id=id_ssp)
 	user = User.objects.get(id=id_user)
-	pUser = userProfile.objects.get(user=user)
 	mensaje = Mensaje.objects.get(id=id_mensaje)
 
 	try:
@@ -114,22 +113,19 @@ def invitacion_view(request, id_ssp, id_user, id_mensaje):
 	contribP = userProfile.objects.get(user=user)
 	if proyecto.id not in contribP.project_colab_user:
 		contribP.project_colab_user.append(proyecto.id)
-		contribP.save()
 		proyecto.contribs_ssp.append(user.get_username())
+
+		body = {
+	      'title': 'Soft System Manager - %s'%(proyecto.name_ssp),
+	      'mimeType': "application/vnd.google-apps.folder"
+	    }
+
+		folder = drive_service.files().insert(body = body).execute()
+		folderID = folder.get('id')
+		proyecto.ids_folder_ssp.append(folderID)
+		contribP.id_folder_user.append(folderID)
 		proyecto.save()
-
-	body = {
-      'title': 'Soft System Manager - %s'%(proyecto.name_ssp),
-      'mimeType': "application/vnd.google-apps.folder"
-    }
-
-	folder = drive_service.files().insert(body = body).execute()
-	folderID = folder.get('id')
-	proyecto.ids_folder_ssp.append(folderID)
-	pUser.id_folder_user.append(folderID)
-	proyecto.save()
-	user.save()
-	pUser.save()
+		contribP.save()
 
 	#ACA VA EL CODIGO PARA CREAR LAS CARPETAS CORRESPONDIENTES EN DRIVE
 

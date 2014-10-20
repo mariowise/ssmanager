@@ -45,6 +45,7 @@ class userProfile(models.Model):
 	cEmail_user = models.NullBooleanField()
 	photo_user = models.ImageField(upload_to=url, default='MultimediaData/Users/Profile_img/prueba/img1.png')
 	project_colab_user = ListaField()#Guardar ID's de los proyectos en los que colaboro
+	id_folder_user = ListaField()#Guardar las ID's de las carpetas en drive que colabora
 	mensajes_user_leidos = ListaField()
 	mensajes_user_noleidos = ListaField()
 
@@ -83,7 +84,8 @@ class userSoftSystemProject(models.Model):
 	date_spp = models.DateTimeField(auto_now_add=True, blank=False)
 	contribs_ssp = ListaField()
 	notificaciones_ssp = ListaField()
-	id_folder_ssp = models.CharField(max_length=50, blank=True, null=True)
+	id_folder_ssp = models.CharField(max_length=50, blank=True, null=True)#ID de la carpeta del manager
+	ids_folder_ssp = ListaField()
 
 	def __unicode__(self):
 		return self.name_ssp

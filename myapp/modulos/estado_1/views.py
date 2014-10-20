@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 
-from myapp.modulos.principal.models import userSoftSystemProject
+from myapp.modulos.principal.models import userSoftSystemProject, userProfile
 from myapp.modulos.principal.functions import members_only
 from myapp.modulos.estado_1.forms import mediaForm, comentaryForm, etiquetaForm, nombreAnalisisForm, documentoForm, resumenAnalisisForm
 from myapp.modulos.estado_1.models import Media, StateOne, Comentario, Etiqueta, Analisis, DocumentoAnalisis
@@ -409,12 +409,28 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 						}
 						file = drive_service.files().insert(body=body).execute()
 				else:
+					userP = userProfile.objects.get(user=request.user)
+					ID_final = ''
+					for ID in userP.id_folder_user:
+						if ID in proyecto.ids_folder_ssp:
+							ID_final = ID
+
 					body = {
 					  'title': '%s'%(name_documento),
 					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
 					  'mimeType': '%s'%(type_documento),
+					  'parents' : [{'id' : ID_final}]
 					}
-					file = drive_service.files().insert(body=body).execute()
+					try:
+						file = drive_service.files().insert(body=body).execute()
+					except:
+						body = {
+						  'title': '%s'%(name_documento),
+						  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
+						  'mimeType': '%s'%(type_documento)
+						}
+						file = drive_service.files().insert(body=body).execute()
+					
 
 				
 

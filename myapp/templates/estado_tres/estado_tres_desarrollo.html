@@ -1,0 +1,242 @@
+{%extends 'estado_tres/estado_tres_general.html'%}
+{%load bootstrap_tags%}
+{% block state-content %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Desarrollo de {{definicionRaiz.name_dr}}</strong></h3>
+	</div>
+	<div class="panel-body">
+		<div class="media text-justify">
+			<p>En esta sección será llevada a cabo la confección de la definición de fondo de los sistemas relevantes correspondiente al estado tres de la metodología de sistemas blandos, es decir, de la <strong>ELABORACIÓN DE DEFINICIONES BÁSICAS DE SISTEMAS RELEVANTES</strong></p><br>
+			<p>Procure, como primer paso, seleccionar el Rich Picture asociado a la creación de la definición raíz.</p><br> 
+			<p>A continuación el equipo de investigación debe considerar seis elementos que permitirán la formulación de la definición raíz, estos elementos dan origen a la sigla CATWOE que se describe a continuación:</p><br>
+			<p><strong>Clientes:</strong></p>
+			<p>Son todos aquellos que sean benificiarios o victimas de la transformación que esta siendo considerada.</p><br>
+			<p><strong>Actores:</strong></p>
+			<p>Son todos aquellos responsables de transformar las entradas en salidas.</p><br>
+			<p><strong>Transformación:</strong></p>
+			<p>Proceso de transformación, la conversión de una entrada en una salida.</p><br>
+			<p><strong>Weltanschauung:</strong></p>
+			<p>Es el enfoque que hace esta transformación significativa en un contexto (razón teórica).</p><br>
+			<p><strong>Dueños (Owner):</strong></p>
+			<p>Corresponde a aquellos agentes que podrían detener la transformación.</p><br>
+			<p><strong>Entorno:</strong></p>
+			<p>Corresponde a aquellos elementos que se encuentran fuera del sistema que se consideran como dados.</p><br>
+			
+			<p>Acto seguido el equipo debe determinar una definición raíz en base a lo obtenido en el uso de la sigla CATWOE. Una definición raiz debería expresarse de la siguiente forma:</p><br>
+
+			<p><strong>"Un sistema de actividad humano que hace X por medio de Y en orden de alcanzar Z"</strong></p><br>
+
+			<p>Finalmente complemente su trabajo con un resumen final.</p>		
+		</div>
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Seleccionar Rich Picture</strong></h3>
+	</div>
+	<div class="panel-body">
+		<p>A continuación se presentan todos los Rich Pictures generados en el Estado 2. Seleccione aquel que será utilizado en la confección de su Definición Raíz</p>
+		<table class="table table-hover">
+			{%if richPictures%}
+			<theader>
+				<tr>
+					<td></td>
+					<td><strong>Nombre</strong></td>
+					<td><strong>Usuario</strong></td>
+					<td><strong>Fecha</strong></td>
+				</tr>	
+			</theader>	
+			{% for rp in richPictures %}
+			<tbody>
+				<tr>
+					<td class="glyphicon glyphicon-book"class="glyphicon glyphicon-wrench"></td>
+
+					<td>{{rp.name_rp}}</td>
+					<td>{{rp.created_by}}</td>
+					<td>{{rp.date_rp}}</td>
+					<td><a href="/verRichPicture/{{proyecto.id}}/{{rp.id}}" class="glyphicon glyphicon-eye-open"></a></td>
+				</tr>
+			</tbody>
+			{% endfor %}
+			{%else%}
+			<p><strong>No existen Rich Pictures</strong></p>
+			{%endif%}		
+		</table><br><br>
+	</div>
+	{%if richPictures%}
+	<div class="panel-footer">
+		{% if richPictureFinal %}
+		<p>Rich Picture actual: <strong>{{richPictureFinal.name_rp}}</strong></p>
+		{%endif%}
+		<form method="POST" action="/adjuntarRichPicture/{{definicionRaiz.id}}/">
+			{% csrf_token %}
+			<label for="e12"><strong>Adjuntar Rich Picture</strong></label>
+			<p><select name="e12" id="e12" style="width: 300px;">
+				{% for rp in richPictures %}
+				<option value="{{rp.id}}">{{rp.name_rp}}</option>
+				{% endfor %}
+			</select></p>
+			<button type="submit" class="btn btn-primary"><strong>Seleccionar</strong></button>
+		</form>
+	</div>
+	{%endif%}
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Desarrollo CATWOE de {{definicionRaiz.name_dr}}</strong></h3>
+	</div>
+	<div class="panel-body formCatwoe">
+		<form action="/newCatwoe/{{definicionRaiz.id}}/" method="POST">
+			{% csrf_token %}
+			{{formCATWOE.clientes_dr.label_tag}}<br>
+			<p>{{formCATWOE.clientes_dr}}</p><br>
+			{{formCATWOE.actores_dr.label_tag}}<br>
+			<p>{{formCATWOE.actores_dr}}</p><br>
+			<div class="row">
+				<div class="col-md-5 tcatwoe">
+					{{formCATWOE.trans_input_dr.label_tag}}<br>
+					<p>{{formCATWOE.trans_input_dr}}</p><br>
+				</div>
+				<div class="col-md-2 tcatwoeIMG">
+					<img src="/media/img/estado_tres_html/flecha2.png">
+				</div>
+				<div class="col-md-5 tcatwoe">
+					{{formCATWOE.trans_output_dr.label_tag}}<br>
+					<p>{{formCATWOE.trans_output_dr}}</p><br>
+				</div>
+			</div>
+			{{formCATWOE.cosmo_dr.label_tag}}<br>
+			<p>{{formCATWOE.cosmo_dr}}</p><br>	
+			{{formCATWOE.propietario_dr.label_tag}}<br>
+			<p>{{formCATWOE.propietario_dr}}</p><br>
+			{{formCATWOE.entorno_dr.label_tag}}<br>
+			<p>{{formCATWOE.entorno_dr}}</p><br>
+			<button onclick="return confirm('¿Deseas guardar los cambios?')" type="submit" class="btn btn-primary"><strong>Guardar CATWOE</strong></button>
+		</form>
+	</div>	
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Seleccionar Definición Raíz</strong></h3>
+	</div>
+	<div class="panel-body">
+		<p>A continuación se presentan todas las Definiciones Raíces que han sido creadas para el desarrollo CATWOE anterior. Seleccione aquella que será utilizada para definir el Sistema de Actividad Humano</p>
+		<table class="table table-hover">
+			{%if definicionesRaiz%}
+			<theader>
+				<tr>
+					<td></td>
+					<td><strong>Nombre</strong></td>
+					<td><strong>Usuario</strong></td>
+					<td><strong>Fecha</strong></td>
+				</tr>	
+			</theader>	
+			{% for dr in definicionesRaiz %}
+			<tbody>
+				<tr>
+					<td class="glyphicon glyphicon-list-alt"></td>
+
+					<td>{{dr.name_DR}}</td>
+					<td>{{dr.created_by}}</td>
+					<td>{{dr.date_DR}}</td>
+					<td><button data-toggle="modal" data-target="#{{dr.id}}" class="btn btn-default glyphicon glyphicon-eye-open">  </button></td>
+					<div class="modal fade" id="{{dr.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+									<h4 class="modal-title" id="myModalLabel">{{dr.name_DR}}</h4>
+								</div>
+								<div class="modal-body">
+									<p>{{dr.description_DR}}</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>	
+								</div>
+							</div>
+						</div>
+					</div>
+					<td><a onclick="return confirm('¿Deseas eliminar {{dr.name_DR}}?')" href="/eliminarDF/{{proyecto.id}}/{{definicionRaiz.id}}/{{dr.id}}" class="glyphicon glyphicon-remove"></a></td>
+				</tr>
+			</tbody>
+			{% endfor %}
+			{%else%}
+			<p><strong>No existen Definiciones Raíces</strong></p>
+			{%endif%}		
+		</table><br><br>
+	</div>
+	<div class="panel-footer">
+		{%if definicionesRaiz%}
+		{% if definicionRaizFinal %}
+		<p>Definición Raíz actual: <strong>{{definicionRaizFinal.name_DR}}</strong></p>
+		{%endif%}
+		<form method="POST" action="/adjuntarDefinicionRaiz/{{definicionRaiz.id}}/">
+			{% csrf_token %}
+			<label for="e13"><strong>Adjuntar Definición Raíz</strong></label>
+			<p><select name="e13" id="e13" style="width: 300px;">
+				{% for dr in definicionesRaiz %}
+				<option value="{{dr.id}}">{{dr.name_DR}}</option>
+				{% endfor %}
+			</select></p>
+			<button type="submit" class="btn btn-primary"><strong>Seleccionar</strong></button>
+		
+		{%endif%}
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addDR"><strong> Crear Definición Raíz </strong></button></form>
+		<div class="modal fade" id="addDR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="myModalLabel">Definición Raíz</h4>
+					</div>
+					<div class="modal-body">
+						<form method="POST" action="/addDefinicionRaiz/{{definicionRaiz.id}}/">
+							{% csrf_token %}
+							{{formNDR|as_bootstrap}}
+							<p><h7><strong>NOTA:</strong>Un sistema de actividad humano que hace X por medio de Y en orden de alcanzar Z. {%if sugerencia%}<a id="sugerencia" href="#">Sugerencia</a>{%endif%}</h7></p> 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary"> Crear </button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>Resumen de {{definicionRaiz.name_dr}}</strong></h3>
+	</div>
+	<div class="panel-body">
+
+		<div class="media text-justify">
+			<p>Considere que un resumen es una representación abreviada, objetiva y precisa del contenido del análisis, sin interpretación crítica y sin mención expresa del autor del resumen.</p><br>
+		</div>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addResumenDR"><strong> Crear Resumen </strong></button>
+		<div class="modal fade" id="addResumenDR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="myModalLabel">Resumen de {{definicionRaiz.name_dr}}</h4>
+					</div>
+					<div class="modal-body">
+						<form method="POST" action="/resumenDefinicionRaiz/{{definicionRaiz.id}}/">
+							{% csrf_token %}
+							{{resumenForm|as_bootstrap}} 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary"> Crear </button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>	
+	</div>	
+</div>
+</div>
+{%endblock state-content%}

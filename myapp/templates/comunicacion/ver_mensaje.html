@@ -1,0 +1,38 @@
+{% extends 'template_principal.html' %}
+{% block title %} SSM: Mensajes {% endblock %}
+{%block brand-name%}Mis SSP{%endblock%}
+{%block brand-ref%}{% url  'vista_principal'%}{%endblock%}
+{%block content%}
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<div class="panel panel-default mensajes">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>{{mensaje.asunto_mensaje}}</strong></h3>
+			</div>
+			<div class="panel-footer">
+				<p><strong>Soft System Proyect: </strong><a href="/project/{{proyecto_mensaje.id}}">{{proyecto_mensaje.name_ssp}}</a></p>
+				<p><strong>De: </strong>{{remitente.get_username}}</p>
+				<p><strong>Para: </strong>
+					{% for r in receptores %}
+						{{r.get_username}}
+					{% endfor %}
+				</p>
+				<p><strong>Fecha: </strong>{{mensaje.date_mensaje}}</p>
+
+			</div>
+			<div class="panel-body text-justify">
+				<p>{{mensaje.contenido_mensaje}}</p>
+				{%if mensaje.url_asoc_mensaje%}
+				{%if mensaje.asunto_mensaje == 'Invitacion'%}
+				<p><a href="{{mensaje.url_asoc_mensaje}}/{{mensaje.id}}"><strong>Aceptar Invitación</strong></a></p>
+				{%else%}
+				<p><a href="{{mensaje.url_asoc_mensaje}}"><strong>Ver en su Contexto</strong></a></p>
+				{%endif%}
+				{%endif%}
+			</div>
+
+		</div>
+		<a href="/mensajes/1"><button type="button" class="btn btn-primary"><strong>Volver a Mensajes</strong></button></a>
+	</div>
+</div>
+{%endblock%}

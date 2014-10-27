@@ -26,7 +26,7 @@ CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 FLOW = flow_from_clientsecrets(
     CLIENT_SECRETS,
     scope='https://www.googleapis.com/auth/drive',
-    redirect_uri='http://localhost:8000/oauth2callback/')
+    redirect_uri=settings.REDIRECT_URI)
 	# Create your views here.
 @login_required(login_url='/login/')
 def principal_view(request):
@@ -185,8 +185,9 @@ def create_ssp_view(request):
 					newStateThree.save()
 
 					body = {
-			          'title': 'Soft System Manager - %s'%(newSSP.name_ssp),
-			          'mimeType': "application/vnd.google-apps.folder"
+			          'title': '%s'%(newSSP.name_ssp),
+			          'mimeType': "application/vnd.google-apps.folder",
+			          'parents' : [{'id' : user.get_profile().id_drive_folder}]
 			        }
 
 					folder = drive_service.files().insert(body = body).execute()

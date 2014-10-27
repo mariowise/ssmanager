@@ -48,6 +48,7 @@ class userProfile(models.Model):
 	id_folder_user = ListaField()#Guardar las ID's de las carpetas en drive que colabora
 	mensajes_user_leidos = ListaField()
 	mensajes_user_noleidos = ListaField()
+	id_drive_folder = models.CharField(max_length=200, blank=True, null=True)
 
 	def __unicode__(self):
 		return self.user.username	

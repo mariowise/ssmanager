@@ -116,8 +116,9 @@ def invitacion_view(request, id_ssp, id_user, id_mensaje):
 		proyecto.contribs_ssp.append(user.get_username())
 
 		body = {
-	      'title': 'Soft System Manager - %s'%(proyecto.name_ssp),
-	      'mimeType': "application/vnd.google-apps.folder"
+	      'title': '%s'%(proyecto.name_ssp),
+	      'mimeType': "application/vnd.google-apps.folder",
+	      'parents' : [{'id' : contribP.id_drive_folder}]
 	    }
 
 		folder = drive_service.files().insert(body = body).execute()

@@ -14,7 +14,8 @@ from myapp import settings
 from oauth2client import xsrfutil
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.django_orm import Storage
-
+from apiclient.discovery import build
+import httplib2
 import os
 
 
@@ -25,7 +26,7 @@ CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 FLOW = flow_from_clientsecrets(
     CLIENT_SECRETS,
     scope='https://www.googleapis.com/auth/drive',
-    redirect_uri='http://localhost:8000/oauth2callback/')
+    redirect_uri=settings.REDIRECT_URI)
 # Create your views here.
 def welcome_view(request):
 	return render(request, 'presentacion/welcome.html')
@@ -55,7 +56,6 @@ def signup_view(request):
 			newUserProfile = userProfile.objects.create(user=newUser)
 			newUser.save()
 			newUserProfile.save()
-
 			return redirect('/login')
 		else:
 			ctx = {'form':form}
@@ -77,14 +77,9 @@ def login_view(request):
 				user = authenticate(username=username, password=password)
 				if user is not None and user.is_active:
 					login(request, user)
-					#storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
-					#credential = storage.get()
-					#if credential is None or credential.invalid:
 					FLOW.params['state'] = xsrfutil.generate_token(settings.SECRET_KEY,request.user)
 					authorize_url = FLOW.step1_get_authorize_url()
 					return HttpResponseRedirect(authorize_url)
-					#else:
-						#return redirect('vista_principal')
 				else:
 					status = "Usuario y/o Password incorrecto"
 		form = LoginForm()
@@ -120,6 +115,7 @@ def recover_view(request):
 
 @login_required(login_url='/login/')
 def auth_return(request):
+
   if not xsrfutil.validate_token(settings.SECRET_KEY, request.REQUEST['state'],
                                  request.user):
     return  HttpResponseBadRequest()
@@ -128,5 +124,25 @@ def auth_return(request):
   storage.delete()
   storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
   storage.put(credential)
+
+  userP = userProfile.objects.get(user=request.user)
+  if userP.id_drive_folder is None:
+  	try:
+		storage = Storage(CredentialsModel, 'id_user', request.user, 'credential')
+		credential = storage.get()
+		http = httplib2.Http()
+		http = credential.authorize(http)
+		drive_service = build('drive', 'v2', http=http, developerKey="hbP6_4UJIKe-m74yLd8tQDfT")
+
+		body = {
+          'title': 'Soft System Manager',
+          'mimeType': "application/vnd.google-apps.folder"
+        }
+		folder = drive_service.files().insert(body = body).execute()
+		userP.id_drive_folder = folder.get('id')
+		userP.save()
+	except:
+		return redirect('vista_logout')
+
   return HttpResponseRedirect("/principal")
 

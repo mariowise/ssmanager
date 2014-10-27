@@ -26,7 +26,7 @@ CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 FLOW = flow_from_clientsecrets(
     CLIENT_SECRETS,
     scope='https://www.googleapis.com/auth/drive',
-    redirect_uri='http://localhost:8000/oauth2callback/')
+    redirect_uri=settings.REDIRECT_URI)
 # Create your views here.
 @login_required(login_url='/login/')
 def general_uno_view(request, id_ssp):

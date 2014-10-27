@@ -193,4 +193,4 @@ LOGIN_URL = '/login/'
 SECRET_KEY = 'hbP6_4UJIKe-m74yLd8tQDfT'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 AUTO_LOGOUT_DELAY = 15
-
+REDIRECT_URI = 'http://localhost:8000/oauth2callback/'

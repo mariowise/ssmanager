@@ -191,7 +191,7 @@ def richPicture_newDocumento_view(request, id_ssp,id_rp):
 					  'title': '%s'%(name_documento),
 					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
 					  'mimeType': 'application/vnd.google-apps.drawing',
-					  'parents' : [{'id' : proyecto.id_folder_ssp}]
+					  'parents' : [{'id' : proyecto.id_folder_ssp}],
 					}
 					try:
 						file = drive_service.files().insert(body=body).execute()
@@ -217,7 +217,7 @@ def richPicture_newDocumento_view(request, id_ssp,id_rp):
 					  'title': '%s'%(name_documento),
 					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
 					  'mimeType': 'application/vnd.google-apps.drawing',
-					  'parents' : [{'id' : ID_final}]
+					  'parents' : [{'id' : ID_final}],
 					}
 					try:
 						file = drive_service.files().insert(body=body).execute()

@@ -397,7 +397,7 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 					  'title': '%s'%(name_documento),
 					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
 					  'mimeType': '%s'%(type_documento),
-					  'parents' : [{'id' : proyecto.id_folder_ssp}]
+					  'parents' : [{'id' : proyecto.id_folder_ssp}],
 					}
 					try:
 						file = drive_service.files().insert(body=body).execute()
@@ -423,7 +423,7 @@ def analisis_newDocumento_view(request, id_ssp,id_analisis):
 					  'title': '%s'%(name_documento),
 					  'description': 'Documento nuevo de %s'%(proyecto.name_ssp),
 					  'mimeType': '%s'%(type_documento),
-					  'parents' : [{'id' : ID_final}]
+					  'parents' : [{'id' : ID_final}],
 					}
 					try:
 						file = drive_service.files().insert(body=body).execute()

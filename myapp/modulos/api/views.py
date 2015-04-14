@@ -34,8 +34,11 @@ def user_softsystem_project_show(request, ssp_id):
 def user_softsystem_project_edit(request, ssp_id):
 	item = userSoftSystemProject.objects.get(id=ssp_id)
 	data = json.loads(request.POST.get('project'))
-		
-	return HttpResponse()
+
+	item.description_ssp = data["description_ssp"]
+	item.save()
+
+	return respond_with([item])
 	
 
 def user_softsystem_project_destroy(request, ssp_id):

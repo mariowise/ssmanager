@@ -21,5 +21,6 @@ urlpatterns = patterns('',
     url(r'^', include('myapp.modulos.estado_3.urls')),
     url(r'^', include('myapp.modulos.proyecto.urls')),
     url(r'^', include('myapp.modulos.comunicacion.urls')),
+    url(r'^api/', include('myapp.modulos.api.urls')),
 	url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root':settings.MEDIA_ROOT}),
 )

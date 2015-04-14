@@ -149,6 +149,7 @@ INSTALLED_APPS = (
     'myapp.modulos.estado_2',
     'myapp.modulos.estado_3',
     'myapp.modulos.comunicacion',
+    'myapp.modulos.api',
     'django_forms_bootstrap',
 
 

@@ -17,10 +17,7 @@ from oauth2client.django_orm import Storage
 from apiclient.discovery import build
 import httplib2
 
-
 import os
-
-
 
 CLIENT_SECRETS = os.path.join(os.path.dirname(__file__), 'client_secrets.json')
 FLOW = flow_from_clientsecrets(
@@ -198,3 +195,5 @@ def create_ssp_view(request):
 				
 	ctx = {'form': form}
 	return render(request,'principal/user_new_ssp.html', ctx)
+
+	

@@ -10,40 +10,47 @@ from django.views.decorators.csrf import csrf_exempt
 
 from myapp.modulos.api.utils import *
 
-
 import os
 import json
 
 from myapp.modulos.principal.models import userProfile, userSoftSystemProject
 
-# Profile
-def profiles_view(request):
-	objects = userProfile.objects.all()
-	return respond_with(objects)
 
 # Projects
 def user_softsystem_project_index(request):
+	# Index
 	objects = userSoftSystemProject.objects.all()
 	return respond_with(objects)
 
 def user_softsystem_project_show(request, ssp_id):
-	item = userSoftSystemProject.objects.get(id=ssp_id)
-	return respond_with([item])
+	# Show
+	if request.method == "GET":
+		try:
+			item = userSoftSystemProject.objects.get(id=ssp_id)
+		except userSoftSystemProject.DoesNotExist:
+			return HttpResponse("[]", mimetype='application/json')
+		return respond_with([item])
+
+	# Update
+	elif request.method == "POST":
+		try:
+			item = userSoftSystemProject.objects.get(id=ssp_id)
+			data = json.loads(request.POST.get())
+		except userSoftSystemProject.DoesNotExist:
+			return HttpResponse("[]", mimetype='application/json')
+		return respond_with([item])
 
 @csrf_exempt
 def user_softsystem_project_edit(request, ssp_id):
 	item = userSoftSystemProject.objects.get(id=ssp_id)
 	data = json.loads(request.POST.get('project'))
 
+	# Asignación de atributos
 	item.description_ssp = data["description_ssp"]
 	item.save()
 
 	return respond_with([item])
-	
 
 def user_softsystem_project_destroy(request, ssp_id):
 	return 
-
-
-
 

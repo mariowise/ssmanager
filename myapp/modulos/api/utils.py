@@ -11,4 +11,10 @@ import json
 # Si se entrega solo un objeto del ODM, lanza un ERROR 500
 def respond_with(objects):
 	data = serializers.serialize("json", objects)
-	return HttpResponse(data, mimetype='application/json')
+	response = HttpResponse(data, mimetype='application/json')
+	response["Access-Control-Allow-Origin"] = "*"
+	response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS, PUT, DELETE"
+	response["Access-Control-Max-Age"] = "1000"
+	response["Access-Control-Allow-Headers"] = "*"
+	# response["Access-Control-Allow-Credentials"] = "false"
+	return response

@@ -152,12 +152,9 @@ INSTALLED_APPS = (
     'myapp.modulos.api',
     'django_forms_bootstrap',
 
-
-
-
-   
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
+    'rest_framework',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -195,3 +192,11 @@ SECRET_KEY = 'hbP6_4UJIKe-m74yLd8tQDfT'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 AUTO_LOGOUT_DELAY = 15
 REDIRECT_URI = 'http://softsystemanager.appspot.com/oauth2callback/'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

@@ -13,7 +13,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # Activate django-dbindexer for the default database
-DATABASES['default'] = {'ENGINE': 'dbindexer', 'TARGET': DATABASES['default']}
+DATABASES['default'] = { 'ENGINE': 'dbindexer', 'TARGET': DATABASES['default'] }
 
 AUTOLOAD_SITECONF = 'indexes'
 
@@ -151,10 +151,10 @@ INSTALLED_APPS = (
     'myapp.modulos.comunicacion',
     'myapp.modulos.api',
     'django_forms_bootstrap',
+    'rest_framework',
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
-    'rest_framework',
 )
 
 # A sample logging configuration. The only tangible logging

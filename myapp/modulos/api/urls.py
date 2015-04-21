@@ -1,33 +1,57 @@
-# from django.conf.urls import patterns, url
-
-# urlpatterns = patterns('myapp.modulos.api.views', 
-
-# 	# Projects
-# 	url(r'^user_softsystem_project/$', 'user_softsystem_project_index', name='user_softsystem_project_index'),
-# 	url(r'^user_softsystem_project/([a-zA-Z0-9]+)/$', 'user_softsystem_project_show', name='user_softsystem_project_show'),
-# 	url(r'^user_softsystem_project/([a-zA-Z0-9]+)/edit/$', 'user_softsystem_project_edit', name='user_softsystem_project_edit'),
-# 	url(r'^user_softsystem_project/([a-zA-Z0-9]+)/destroy/$', 'user_softsystem_project_destroy', name='user_softsystem_project_destroy'),
-
-# )
 
 from django.conf.urls import url, include
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
+from myapp.modulos.api.models.users import UserViewSet
+from myapp.modulos.api.models.projects import ProjectViewSet
+from myapp.modulos.api.models.profiles import ProfileViewSet
 
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name')
+from myapp.modulos.api.models.state_one import StateOneViewSet
+from myapp.modulos.api.models.media import MediaViewSet
+from myapp.modulos.api.models.documents import DocumentViewSet
+from myapp.modulos.api.models.tags import TagViewSet
+from myapp.modulos.api.models.analisys import AnalisysViewSet
 
-# ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+from myapp.modulos.api.models.comments import CommentViewSet
+from myapp.modulos.api.models.messages import MessageViewSet
+from myapp.modulos.api.models.notifications import NotificationViewSet
+
+from myapp.modulos.api.models.state_two import StateTwoViewSet
+from myapp.modulos.api.models.richpictures import RichpictureViewSet
+
+from myapp.modulos.api.models.state_three import StateThreeViewSet
+from myapp.modulos.api.models.root_definition_catwoe import RootDefinitionCatwoeViewSet
+from myapp.modulos.api.models.root_definition import RootDefinitionViewSet
+
+from rest_framework import routers
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
+
+# Azules
 router.register(r'users', UserViewSet)
+router.register(r'projects', ProjectViewSet)
+router.register(r'profiles', ProfileViewSet)
+# router.register(r'credentials', CredentialViewSet)
+
+# Amarillos
+router.register(r'state_one', StateOneViewSet)
+router.register(r'media', MediaViewSet)
+router.register(r'documents', DocumentViewSet)
+router.register(r'tags', TagViewSet)
+router.register(r'analisys', AnalisysViewSet)
+
+# Verde
+router.register(r'comments', CommentViewSet)
+router.register(r'messages', MessageViewSet)
+router.register(r'notifications', NotificationViewSet)
+
+# Purpura
+router.register(r'state_two', StateTwoViewSet)
+router.register(r'richpictures', RichpictureViewSet)
+
+# Blanco
+router.register(r'state_three', StateThreeViewSet)
+router.register(r'root_definition_catwoe', RootDefinitionCatwoeViewSet)
+router.register(r'root_definition', RootDefinitionViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

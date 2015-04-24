@@ -151,7 +151,10 @@ INSTALLED_APPS = (
     'myapp.modulos.comunicacion',
     'myapp.modulos.api',
     'django_forms_bootstrap',
+    # API Rest
+    'jwt',
     'rest_framework',
+    'rest_framework_jwt',
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
@@ -196,7 +199,21 @@ REDIRECT_URI = 'http://softsystemanager.appspot.com/oauth2callback/'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+        
+    #     # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    #     # 'rest_framework.authentication.SessionAuthentication',
+    #     # 'rest_framework.authentication.TokenAuthentication',
+    #     # 'rest_framework.authentication.BasicAuthentication',
+    # ]
+
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
 }

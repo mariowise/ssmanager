@@ -22,6 +22,6 @@ urlpatterns = patterns('',
     url(r'^', include('myapp.modulos.proyecto.urls')),
     url(r'^', include('myapp.modulos.comunicacion.urls')),
     url(r'^api/v1/', include('myapp.modulos.api.v1.urls')),
-    url(r'^api/v1/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    # url(r'^api/v1/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root':settings.MEDIA_ROOT}),
 )

@@ -102,6 +102,7 @@ MIDDLEWARE_CLASSES = (
     # This loads the index definitions, so it has to come first
     'autoload.middleware.AutoloadMiddleware',
 
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -155,6 +156,7 @@ INSTALLED_APPS = (
     'jwt',
     'rest_framework',
     'rest_framework_jwt',
+    'corsheaders',
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
@@ -195,6 +197,10 @@ SECRET_KEY = 'hbP6_4UJIKe-m74yLd8tQDfT'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 AUTO_LOGOUT_DELAY = 15
 REDIRECT_URI = 'http://softsystemanager.appspot.com/oauth2callback/'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
+CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,

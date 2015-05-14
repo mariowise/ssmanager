@@ -1,0 +1,5 @@
+/platforms/**
+/plugins/**
+/www/**
+/app/bower_components
+/node_modules

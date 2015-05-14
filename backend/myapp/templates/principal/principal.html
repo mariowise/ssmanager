@@ -1,0 +1,80 @@
+{% extends 'template_principal.html' %}
+{% block title %} SSM: Inicio {% endblock %}
+{%block content%}
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<div class="panel panel-info mensajes">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Mis Soft System Projects</strong></h3>
+			</div>
+			<div class="panel-body">
+				<table class="table table-hover">
+					{%if proyectos%}
+					<theader>
+						<tr>
+							<td></td>
+							<td><strong>Nombre</strong></td>
+							<td><strong>Descripción</strong></td>
+							<td><strong>Manager</strong></td>
+							<td><strong>Fecha</strong></td>
+						</tr> 
+					</theader>  
+					{% for p in proyectos %}
+					<tbody>
+						<tr>  
+							<td class="glyphicon glyphicon-globe"></td>
+							<td>{{p.name_ssp}}</td>
+							<td>{{p.description_ssp}}</td>
+							<td>{{p.manager.get_username}}</td>
+							<td>{{p.date_spp}}</td>
+							<td><a href="/project/{{p.id}}" class="glyphicon glyphicon-eye-open"></a></td>
+						</tr>
+					</tbody>
+					{% endfor %}                 
+					{%else%}
+					<p><strong>Aun no haz creado un Soft System Project</strong></p>
+					{%endif%}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<div class="panel panel-info mensajes">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Colaboración en Soft System Projects</strong></h3>
+			</div>
+			<div class="panel-body">
+				<table class="table table-hover">
+					{%if proyectosColabora%}
+					<theader>
+						<tr>
+							<td></td>
+							<td><strong>Nombre</strong></td>
+							<td><strong>Descripción</strong></td>
+							<td><strong>Manager</strong></td>
+							<td><strong>Fecha</strong></td>
+						</tr> 
+					</theader>  
+					{% for p in proyectosColabora %}
+					<tbody>
+						<tr>  
+							<td class="glyphicon glyphicon-globe"></td>
+							<td>{{p.name_ssp}}</td>
+							<td>{{p.description_ssp}}</td>
+							<td>{{p.manager.get_username}}</td>
+							<td>{{p.date_spp}}</td>
+							<td><a href="/project/{{p.id}}" class="glyphicon glyphicon-eye-open"></a></td>
+						</tr>
+					</tbody>
+					{% endfor %}                 
+					{%else%}
+					<p><strong>Aun no estas colaborando en un Soft System Project</strong></p>
+					{%endif%}
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}

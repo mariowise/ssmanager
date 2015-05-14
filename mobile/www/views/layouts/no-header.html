@@ -1,0 +1,23 @@
+<div id="wrapper">
+	
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-2 text-center">
+				<img class="wide" style="max-width: 180px" src="./img/logo-ssm_white.png" alt="">
+			</div>
+		</div>
+		
+		<div ng-repeat="msg in flash_messages">
+			<div class="alert alert-danger" ng-if="msg.alert != undefined">
+				<a href="#" class="close" data-dismiss="alert">&times;</a>
+				{{msg.alert}}
+			</div>
+			<div class="alert alert-success" ng-if="msg.notice != undefined">
+				<a href="#" class="close" data-dismiss="alert">&times;</a>
+				{{msg.notice}}
+			</div>
+		</div>
+	</div>
+
+	<div ui-view="mainView"></div>
+</div>

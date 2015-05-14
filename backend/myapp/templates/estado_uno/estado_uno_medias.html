@@ -1,0 +1,58 @@
+{%extends 'estado_uno/estado_uno_general.html'%}
+{% block state-content %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>{{title}}</strong></h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			{%if media%}
+			<theader>
+				<tr>
+					<td></td>
+					<td><strong>Nombre</strong></td>
+					<td><strong>Usuario</strong></td>
+					<td><strong>Fecha</strong></td>
+				</tr>	
+			</theader>	
+			{% for m in media %}
+			<tbody>
+				<tr>
+					{% if title == "Videos"%}	
+					<td class="glyphicon glyphicon-facetime-video"class="glyphicon glyphicon-facetime-video"></td>
+					{%endif%}
+					{% if title == "Imagenes"%}	
+					<td class="glyphicon glyphicon-picture"class="glyphicon glyphicon-picture"></td>
+					{%endif%}
+					{% if title == "Audios"%}	
+					<td class="glyphicon glyphicon-volume-up"class="glyphicon glyphicon-volume-up"></td>
+					{%endif%}
+					{% if title == "Documentos"%}	
+					<td class="glyphicon glyphicon-file"class="glyphicon glyphicon-file"></td>
+					{%endif%}
+					<td>{{m.name_media}}</td>
+					<td>{{m.uploaded_by}}</td>
+					<td>{{m.date_media}}</td>
+					<td><a href="/verMedia/{{proyecto.id}}/{{m.id}}" class="glyphicon glyphicon-eye-open"></a></td>
+					<td><a onclick="return confirm('¿Deseas eliminar {{m.name_media}}?')" href="/eliminarMedia/{{proyecto.id}}/{{m.id}}" class="glyphicon glyphicon-remove"></a></td>
+				</tr>
+			</tbody>
+			{% endfor %}
+			{%else%}
+              <p><strong>No existen {{title}}</strong></p>
+            {%endif%}		
+		</table>
+		{%if media%}
+		<ul class="pagination">
+			{%if media.has_previous%}
+			<li><a href="/medias/{{tipo}}/{{proyecto.id}}/{{media.previous_page_number}}">&laquo;</a></li>
+			{%endif%}
+			{%if media.has_next%}
+			<li><a href="/medias/{{tipo}}/{{proyecto.id}}/{{media.next_page_number}}">&raquo;</a></li>
+			{%endif%}
+		</ul>
+		{%endif%}
+		
+	</div>
+</div>
+{% endblock state-content %}

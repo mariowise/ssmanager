@@ -1,0 +1,96 @@
+{% extends 'template_presentacion.html' %}
+{% block title %} SSM: Tour {% endblock %}
+
+{%block content%}
+	<!-- Imagen de inicio -->
+	
+	<div class="row tour-background">
+		<div class="col-md-12 text-center">
+			<h1><strong>SOFT SYSTEM MANAGER</strong></h1>
+		</div>
+	</div>
+	<!-- Fin Imagen de inicio -->
+	<!-- Texto primeros pasos -->
+	<div class="content-1 text-center">
+		<h1><strong>¿CÓMO FUNCIONA SOFT SYSTEM MANAGER?</strong></h1><br>
+		<p class="text-justify">Todo proyecto desarrollado en <strong>Soft System Manager</strong> se compone de tres estados, los cuales se relacionan entre si y permiten que el equipo de trabajo aplique la Metodología de Sistemas Blandos sin necesidad de tener un basto conocimiento de esta. Cada estado posee un propósito que le permitirá al grupo de investigación <strong>detectar una situación que sea considerada problemática</strong>, <strong>expresarla de manera clarificadora</strong> y, finalmente, <strong>generar un Sistema de Actividad Humano</strong> que proponga acciones que solucionen o mejoren la situación estudiada.</p><p class="text-justify"> A continuación se muestra un breve resumen sobre cada estado de un <strong>Soft System Project</strong> y una serie de video-tutoriales que permitirán la creación de su primer proyecto como equipo.</p>
+	</div><!-- Fin Texto primeros pasos -->
+	<!-- Contenedor de descripciones -->
+	<div class="container circle-rows">
+		<div class="row">
+			<div class="col-md-4 text-center">
+				<img src="/media/img/tour_html/descripciones/img2.jpg" alt="Imagen 1" class="img-circle">
+				<h3><strong>Estado 1</strong></h3>
+				<p class="text-justify">En este estado el equipo de investigación recolecta información (videos, imágenes, audios, documentos, etc.) relacionada con la situación que esta siendo estudiada y genera un análisis que refleja la percepción de la situación considerada problemática.</p>
+			</div>
+			<div class="col-md-4 text-center">
+				<img src="/media/img/tour_html/descripciones/img5.jpg" alt="Imagen 2" class="img-circle"class="img-circle">
+				<h3><strong>Estado 2</strong></h3>
+				<p class="text-justify">Con la información recolectada y realizados los análisis correspondientes, el equipo genera un cuadro enriquecido o <i>Rich Picture</i> el cual busca expresar la situación considerada problemática, reconociendo los distintos grupos o sistemas involucrados en el estudio.</p>
+			</div>
+			<div class="col-md-4 text-center">
+				<img src="/media/img/tour_html/descripciones/img4.jpg" alt="Imagen 3" class="img-circle">
+				<h3><strong>Estado 3</strong></h3>
+				<p class="text-justify">Una vez identificados aquellos grupos o sistemas considerados relevantes dentro de la situación expresada, el equipo de trabajo se centrará en identificar distintos elementos que permitirán proponer un Sistema de Actividad Humano que solucione o mejore la situación expresada.</p>
+			</div>
+		</div>
+	</div><!-- Fin Contenedor de descripciones -->
+	
+	<!-- Reproductor de Videos de Tutorial -->
+
+	<style type='text/css'>
+		.contvideogaleria img{width:100px;height:70px;padding:5px;border:1px solid #fff}
+		.contvideogaleria{position:relative;width:100%;float:left;background:#EBE4E4;}
+		.contvideogaleria .contvideogaleriaimg{margin:20px;margin-left:30px;/margin-left:20px;margin-right:5px}
+		.contvideogaleria #videogaleria{float:right;margin-right:20px;margin-top:15px;background:red url(http://4.bp.blogspot.com/_lMNoba63Ric/TUjI3Wap6dI/AAAAAAAAAK4/47HFb1hVltw/s1600/video-galeria-vku.png) no-repeat center ;}
+	</style>
+
+<div class="contvideogaleria">
+	<div id="videogaleria"></div>
+		<div class="contvideogaleriaimg">
+
+			<!-- <a href="http://www.youtube.com/v/Hr0Wv5DJhuk" onclick="return cambiarvideo(this.href)" title="Video 1"><img src="http://img.youtube.com/vi/Hr0Wv5DJhuk/default.jpg" /></a>
+
+			<a href="http://www.youtube.com/v/boDvXJLau1A" onclick="return cambiarvideo(this.href)" title="Video 2"><img src="http://img.youtube.com/vi/boDvXJLau1A/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/sf_-CA9Ecf0" onclick="return cambiarvideo(this.href)" title="Video 3"><img src="http://img.youtube.com/vi/sf_-CA9Ecf0/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/dMH0bHeiRNg" onclick="return cambiarvideo(this.href)" title="Video 4"><img src="http://img.youtube.com/vi/dMH0bHeiRNg/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/M11SvDtPBhA" onclick="return cambiarvideo(this.href)" title="Video 5"><img src="http://img.youtube.com/vi/M11SvDtPBhA/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/uelHwf8o7_U" onclick="return cambiarvideo(this.href)" title="Video 6"><img src="http://img.youtube.com/vi/uelHwf8o7_U/default.jpg" /></a>
+
+			<a href="http://www.youtube.com/v/pRpeEdMmmQ0" onclick="return cambiarvideo(this.href)" title="Video 7"><img src="http://img.youtube.com/vi/pRpeEdMmmQ0/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/_OBlgSz8sSM" onclick="return cambiarvideo(this.href)" title="Video 8"><img src="http://img.youtube.com/vi/_OBlgSz8sSM/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/qrO4YZeyl0I" onclick="return cambiarvideo(this.href)" title="Video 9"><img src="http://img.youtube.com/vi/qrO4YZeyl0I/default.jpg" /></a>
+
+			<a href="http://www.youtube.com/v/kffacxfA7G4" onclick="return cambiarvideo(this.href)" title="Video 10"><img src="http://img.youtube.com/vi/kffacxfA7G4/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/aR0KtjXaHbU" onclick="return cambiarvideo(this.href)" title="TVideo 11"><img src="http://img.youtube.com/vi/aR0KtjXaHbU/default.jpg" /></a>
+
+			<a href="http://www.youtube.com/v/b4TDr9V5Gn0" onclick="return cambiarvideo(this.href)" title="Video 12"><img src="http://img.youtube.com/vi/b4TDr9V5Gn0/default.jpg" /></a>
+
+			<a href="http://www.youtube.com/v/51di9WzCm-Q" onclick="return cambiarvideo(this.href)" title="Video 13"><img src="http://img.youtube.com/vi/51di9WzCm-Q/default.jpg" /></a>
+
+			<a href="http://www.youtube.com/v/6kUjpbdXg1A" onclick="return cambiarvideo(this.href)" title="Video 14"><img src="http://img.youtube.com/vi/6kUjpbdXg1A/default.jpg" /></a>
+
+			<a href="http://www.youtube.com/v/JyJ6-umD3Ao" onclick="return cambiarvideo(this.href)" title="Video 15"><img src="http://img.youtube.com/vi/JyJ6-umD3Ao/default.jpg" /></a> 
+
+			<a href="http://www.youtube.com/v/EOu_9K9pjno" onclick="return cambiarvideo(this.href)" title="Video 16"><img src="http://img.youtube.com/vi/EOu_9K9pjno/default.jpg" /></a> -->
+
+		</div>
+
+		<!-- DE ACÁ PARA ABAJO NO TOCAR EL CÓDIGO -->
+		<a href="http://loseasi.blogspot.com/2011/02/video-galeria-con-css-y-javascript.html" style="position:absolute; top: 15px; right: 15px;" target="_blank"><img style="width:14px; height:14px;border:0" src="http://2.bp.blogspot.com/_lMNoba63Ric/TUoIgRbfNQI/AAAAAAAAALI/SW1xBJs4SEM/s1600/informacion.gif" /></a>
+</div>
+
+	<script type="text/javascript">
+
+		function cambiarvideo( url ){
+		document.getElementById('videogaleria').innerHTML = '<object width="425" height="344"><param name="movie" value="' + url + '?fs=1&amp;hl=es_ES&amp;rel=0&amp;autoplay=1"/><param value="true" name="allowFullScreen"/><param value="always" name="allowscriptaccess"/><param value="transparent" name="wmode"/><embed width="425" height="344" wmode="transparent" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" src="' + url + '?fs=1&amp;hl=es_ES&amp;rel=0&amp;autoplay=1"/></object>';
+			return false;}
+	</script><!-- Fin Reproductor de Videos de Tutorial -->
+{%endblock%}

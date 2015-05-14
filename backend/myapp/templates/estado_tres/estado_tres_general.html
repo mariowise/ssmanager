@@ -1,0 +1,73 @@
+{%extends 'template_proyecto.html'%}
+{% block title %}SSM: {{proyecto.name_ssp}}{% endblock title %}
+{% block brand-name %}<a href="/project/{{proyecto.id}}"><strong>{{proyecto.name_ssp}}</strong></a>{% endblock brand-name %}
+{% block content %}
+<div class="container text-center">
+  <h3><strong>ELABORACIÓN DE DEFINICIONES BÁSICAS DE SISTEMAS RELEVANTES</strong></h3>
+</div>
+<br>
+
+<div class="menu-vertical">
+
+	<div class="row">
+		<!--Menu Cuenta Usuario -->
+    <div class="col-sm-3">
+      <div class="sidebar-nav">
+       <div class="navbar navbar-default" role="navigation">
+         <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <span class="visible-xs navbar-brand">Sidebar menu</span>
+        </div>
+        <div class="navbar-collapse collapse sidebar-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/project-state-three/{{proyecto.id}}" class="glyphicon glyphicon-time"> Recientes</a></li>
+            <li><a href="/definicionesRaices/{{proyecto.id}}/1" class="glyphicon glyphicon-list-alt"> Definiciones Raíces</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-7" >
+    {%block state-content%}
+    <div class="panel panel-default">
+     <div class="panel-heading">
+      <h3 class="panel-title"><strong>Definiciones Raíces Recientes</strong></h3>
+    </div>
+    <div class="panel-body">
+      <table class="table table-hover">
+        {%if definicionesRaices%}
+        <theader>
+          <tr>
+            <td></td>
+            <td><strong>Nombre</strong></td>
+            <td><strong>Usuario</strong></td>
+            <td><strong>Fecha</strong></td>
+          </tr> 
+        </theader>  
+        {% for dr in definicionesRaices %}
+        <tbody>
+          <tr>  
+            <td class="glyphicon glyphicon-wrench"></td>
+            <td>{{dr.name_dr}}</td>
+            <td>{{dr.created_by}}</td>
+            <td>{{dr.date_dr}}</td>
+            <td><a href="/verDefinicionRaiz/{{proyecto.id}}/{{dr.id}}" class="glyphicon glyphicon-eye-open"></a></td>
+          </tr>
+        </tbody>
+        {% endfor %}                 
+        {%else%}
+        <p><strong>No existen Definiciones Raíces</strong></p>
+        {%endif%}
+      </table>
+    </div>
+  </div>
+  {%endblock state-content%}
+</div>
+</div>
+</div>
+{% endblock content %}

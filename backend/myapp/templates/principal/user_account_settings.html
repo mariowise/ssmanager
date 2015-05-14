@@ -1,0 +1,58 @@
+{% extends 'template_principal.html' %}
+{% load bootstrap_tags %}
+{%block brand-ref%}{% url 'vista_principal' %}{%endblock%}
+{%block brand-name%}Mis SSP{%endblock%}
+{% block title %} SSM: Cuenta de Usuario {% endblock %}
+{%block content%}
+<!--Menu Cuenta Usuario -->
+<div class="menu-vertical">
+	<div class="row">
+		<!--Menu Cuenta Usuario -->
+  		<div class="col-sm-3">
+    		<div class="sidebar-nav">
+      			<div class="navbar navbar-default" role="navigation">
+        			<div class="navbar-header">
+          				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-navbar-collapse">
+            				<span class="sr-only">Toggle navigation</span>
+            				<span class="icon-bar"></span>
+           	 				<span class="icon-bar"></span>
+            				<span class="icon-bar"></span>
+         	 			</button>
+          				<span class="visible-xs navbar-brand">Sidebar menu</span>
+        			</div>
+        			<div class="navbar-collapse collapse sidebar-navbar-collapse">
+          				<ul class="nav navbar-nav">
+            				<li><a href="{% url 'vista_settings' %}" class="glyphicon glyphicon-user"> General</a></li>
+            				<li><a href="{% url 'vista_password' %}" class="glyphicon glyphicon-edit"> Cambiar Contraseña</a></li>
+            				<li><a href="{% url 'vista_notification' %}" class="glyphicon glyphicon-bell"> Notificaciones</a></li>
+            				<li><a href="{% url 'vista_projects' %}" class="glyphicon glyphicon-globe"> Soft System Projects</a></li>
+          				</ul>
+        			</div>
+      			</div>
+    		</div>
+  		</div><!--Fin Menu Cuenta Usuario -->
+  		<!-- Contenedor de Informacion -->
+  		<div class="col-sm-7 navbar navbar-default" >
+        <!-- Inicio contenedor Logo -->
+      <div class="container-signup text-center">
+        <img src="/media/img/logos/LogoFinal.png">
+      </div> <!-- Fin contenedor Logo -->
+  			{%block account-content%}
+        {%if status%}
+          {%if status == "1" %}
+            <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <strong>Datos guardados exitosamente</strong> 
+            </div>
+          {%endif%}
+        {%endif%}
+  				 <form action="." method="POST" enctype="multipart/form-data">
+  				{%csrf_token%}
+					{{ form|as_bootstrap}}
+					<button type="submit" class="btn btn-default">Guardar Cambios</button>
+  				</form> 
+  			{%endblock%}
+  		</div><!-- Fin Contenedor de Informacion -->
+	</div> 
+</div>
+{%endblock%}

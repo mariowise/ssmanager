@@ -1,0 +1,15 @@
+{% extends 'template_principal.html' %}
+{% block title %} SSM: Error {% endblock %}
+{%block brand-name%}Mis SSP{%endblock%}
+{%block brand-ref%}{% url  'vista_principal'%}{%endblock%}
+{%block content%}
+<div class="row">
+	<div class="col-md-10 col-md-offset-1 text-center">
+			<h1><strong>LO SENTIMOS, YA NO ESTA DISPONIBLE SU PETICIÓN</strong></h1>
+			<div class="container-signup text-center">
+        		<img src="/media/img/logos/LogoFinal.png">
+      		</div>
+			<a href="{% url 'vista_principal' %}"><button type="button" class="btn btn-primary"><strong>Volver a mis Soft System Projects</strong></button></a>
+	</div>	
+</div>
+{%endblock%}

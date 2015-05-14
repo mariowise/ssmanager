@@ -1,0 +1,191 @@
+<!DOCTYPE <html>
+{%load bootstrap_tags%}
+<html>
+<head>
+	<title>{%block title%}{%endblock%}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="icon" type="image/ico" href="/media/favicon/favicon.ico"/>
+  <link rel="shortcut icon" href="/media/favicon/favicon.ico">
+  <script type="text/javascript" src="/media/js/jquery.js"></script>
+  <script type="text/javascript" src="/media/js/bootstrap.js"></script>
+  <link rel="stylesheet/less" href="/media/less/style.less">
+  <script type="text/javascript" src="/media/js/less-1.4.1.min.js"></script>
+  <link href="/media/css/select2.css" rel="stylesheet"/>
+  <script src="/media/js/select2.js"></script>
+  <script>
+  $(document).ready(function() { $("#e9").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e91").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e92").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e11").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e1").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e12").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e13").select2(); });
+  </script>
+  <script>
+  $(document).ready(function() { $("#e14").select2(); });
+  </script>
+  <script>
+  $(document).ready(function checkForMessages(){
+    $.ajax({
+      type:"GET",
+      contentType:"application/json; charset=utf-8",
+      dataType:"json",
+      url:"/wsNotificaciones/{{proyecto.id}}",
+      success:function(response){
+        $( " " ).replaceAll( ".Noti" );
+        var i = response.length-1;
+        $( "#badge" ).replaceWith("<span id="+"badge"+" class="+"badge"+">"+(i+1)+"</span>");
+        if((i+1)==0){
+          $('#Notificaciones').append("<li class="+"Noti"+">  No hay Notificaciones</li>");
+        }
+        else{
+          var j = 0;
+          for(i; i>= j; i--){
+            $('#Notificaciones').append("<li class="+"Noti"+"><a href="+"'/verNotificacion/"+response[i].pk+"/{{proyecto.id}}'"+"><div class="+"contenedor-comentario noti"+"><img src="+"/files/serve/"+response[i].fields.imagen_notificacion+""+"/><p><strong>"+response[i].fields.creador_notificacion+"</strong></p><p>"+response[i].fields.accion_notificacion+"</p></div></a></li>");
+          }
+        }  
+      }
+    });
+  });
+  </script>
+  <script type="text/javascript">
+  var check;
+  
+  function checkForMessages(){
+    $.ajax({
+      type:"GET",
+      contentType:"application/json; charset=utf-8",
+      dataType:"json",
+      url:"/wsNotificaciones/{{proyecto.id}}",
+      success:function(response){
+        $( " " ).replaceAll( ".Noti" );
+        var i = response.length-1;
+        $( "#badge" ).replaceWith("<span id="+"badge"+" class="+"badge"+">"+(i+1)+"</span>");   
+        if((i+1)==0){
+          $('#Notificaciones').append("<li class="+"Noti"+">  No hay Notificaciones</li>");
+        }
+        else{
+          var j = 0;
+          for(i; i>= j; i--){
+            $('#Notificaciones').append("<li class="+"Noti"+"><a href="+"'/verNotificacion/"+response[i].pk+"/{{proyecto.id}}'"+"><div class="+"contenedor-comentario noti"+"><img src="+"/files/serve/"+response[i].fields.imagen_notificacion+""+"/><p><strong>"+response[i].fields.creador_notificacion+"</strong></p><p>"+response[i].fields.accion_notificacion+"</p></div></a></li>");
+          }
+        }    
+      }
+    });
+  }
+  check = setInterval(checkForMessages, 10000);
+  </script>
+  <script type="text/javascript">
+// Popup window code
+function newPopup(url) {
+  popupWindow = window.open(
+    url,'popUpWindow','height=700,width=800,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+}
+</script>
+<script>
+  $(document).ready(function(){
+    $("#sugerencia").click(function(){
+      $("#id_description_DR").append("{{sugerencia}}");
+    });
+  });
+</script>
+</head>
+<body>
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<p class="navbar-brand">{%block brand-name%}SSM{%endblock%}</p>
+			</div>       
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse float-right" id="bs-example-navbar-collapse-2">
+				<!-- Mostrar imagen -->
+				<ul class="nav navbar-nav nav-principal">
+					<li><a href="JavaScript:newPopup('https://hangoutsapi.talkgadget.google.com/hangouts/_?gid=567553087244');" class="glyphicon glyphicon-facetime-video" title="Video Conferencia"></a></li>
+         <li><a href="#" class="glyphicon glyphicon-envelope" title="Mensaje" data-toggle="modal" data-target="#addMensaje"></a></li>
+         <li><a href="/addContrib/{{proyecto.id}}" class ="glyphicon glyphicon-user" title="Colaboradores"></a></li>          
+         <li class="dropdown">
+          <a title="Notificaciones" class="dropdown-toggle dropdown-menu-right glyphicon glyphicon-bell" data-toggle="dropdown" href="#"><span id="badge"class="badge"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" id="Notificaciones">
+            <li><a href="/notificaciones/{{proyecto.id}}/1">Ver Todas</a></li>
+            <li class="divider"></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
+            Estados<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/project/{{proyecto.id}}">Estado Uno</a></li>
+            <li><a href="/project-state-two/{{proyecto.id}}">Estado Dos</a></li>
+            <li><a href="/project-state-three/{{proyecto.id}}">Estado Tres</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle dropdown-menu-right" data-toggle="dropdown" href="#">
+            General<span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+           <li><a href="{% url 'vista_principal' %}">Inicio</a></li>
+           <li><a href="{% url 'vista_logout' %}">Cerrar Sesión</a></li>
+           <li><a href="{% url 'vista_tour' %}"target="_blank">Ayuda</a></li>
+         </ul>
+       </li>
+       <li><a href="/mensajes/1"><strong>{{user.get_username}}</strong><span class="badge">{{user.get_profile.mensajes_user_noleidos|length}}</span></a></li>	
+     </ul>
+
+   </div><!-- /.navbar-collapse -->
+ </div><!-- /.container-fluid -->
+</nav>
+<div class="modal fade" id="addMensaje" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Nuevo Mensaje</h4>
+      </div>
+      <form action="/enviarMensaje/{{proyecto.id}}/" method="POST">
+        <div class="modal-body">
+          {%csrf_token%}
+          <div class="span4">
+            <p>
+              <label for="e9"><strong>Destinatarios</strong></label><br>
+              <select multiple="" name="e9" id="e9" style="width:100%;" class="populate select2-offscreen" tabindex="-1">
+                {%if destinatarios%}
+                {% for d in destinatarios %}
+                <option value="{{d.id}}">{{d.get_username}}</option>
+                {% endfor %}            
+                {%else%}
+                <option value=""></option>
+                {%endif%}
+              </select>
+            </p>
+          </div>
+          {{formMensaje|as_bootstrap}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{%block content%}
+{%endblock%}
+
+</body>
+</html>

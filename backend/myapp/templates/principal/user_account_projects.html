@@ -1,0 +1,20 @@
+{% extends 'principal/user_account_settings.html' %}
+{% load bootstrap_tags %}
+{%block account-content%}
+	{%if proyectos%}
+		{% for p in proyectos %}
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>{{p.name_ssp}}</strong></h3>
+			</div>
+			<div class="panel-body">
+				<p><strong>Manager:</strong><br>{{p.manager.get_username}}</p>
+				<p><strong>Descripción:</strong><br>{{p.description_ssp}}</p>
+				<a onclick="return confirm('¿Deseas abandonar {{p.name_ssp}}?')" href="/delContrib/{{p.id}}/{{user.id}}"><div class="btn btn-primary sing-up">Abandonar</div></a>
+			</div>
+		</div>
+		{% endfor %}
+	{%else%}
+	<p><strong>No participas en Soft System Projects</strong></p>
+	{%endif%}
+{% endblock%}

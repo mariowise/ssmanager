@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <title>App</title>
+        
+        <!-- [start-remove] -->
+        <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+        <link rel="stylesheet/less" type="text/css" href="css/style.less" />
+        <script src="/bower_components/less/dist/less.min.js"></script>
+        <!-- [end-remove] -->
+
+        <!--[start-uncomment]>
+        <link rel="stylesheet" href="css/style.min.css" />
+        <![end-uncomment]-->
+    </head>
+    <body>
+        <div ui-view></div>
+
+        <div id="loading" class="loading text-center">
+            <div class="notice">
+                <div class="spinner">
+                  <div class="rect1"></div>
+                  <div class="rect2"></div>
+                  <div class="rect3"></div>
+                  <div class="rect4"></div>
+                </div>
+                <br>
+                Cargando
+            </div>
+        </div>
+
+        <div id="success" class="loading text-center">
+            <div class="notice">
+                <h1><span class="glyphicon glyphicon-ok"></span></h1>
+                <br>
+                Listo!
+            </div>
+        </div>
+
+        <div id="error" class="loading text-center">
+            <div class="notice error">
+                <h1><span class="glyphicon glyphicon-remove" style="color: red"></span></h1>
+                <br>
+                ERROR! <br>
+                <span class="error-message"></span>
+            </div>
+        </div>
+
+        <!-- [start-remove] -->
+        
+        <!-- libs -->
+        <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/bower_components/localforage/dist/localforage.min.js"></script>
+        <script src="/bower_components/angular/angular.min.js"></script>
+        <script src="/bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script src="/bower_components/angular-resource/angular-resource.min.js"></script>
+        <script src="/bower_components/angular-localforage/dist/angular-localForage.min.js"></script>
+        <script src="/bower_components/angular-jwt/dist/angular-jwt.min.js"></script>
+        <script src="/bower_components/moment/min/moment.min.js"></script>
+        <script src="/bower_components/async/lib/async.js"></script>
+        <script src="/js/lib/loading.js"></script>
+
+        <!-- app -->
+        <script src="/js/config.js"></script>
+        <script src="/js/app.js"></script>
+        
+        <script src="/js/controllers/application.js"></script>
+        <script src="/js/controllers/login.js"></script>
+        <script src="/js/controllers/index.js"></script>
+        
+        <script src="/js/services/resource-factory.js"></script>
+        <script src="/js/services/session.js"></script>
+        <!-- [end-remove] -->
+
+        <!-- cordova -->
+        <script src="/bower_components/ngCordova/dist/ng-cordova.min.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+
+        <!--[start-uncomment]>
+            <script type="text/javascript" src="cordova.js"></script>
+            <script type="text/javascript" src="js/script.min.js"></script>
+        <![start-uncomment]-->
+        
+    </body>
+</html>

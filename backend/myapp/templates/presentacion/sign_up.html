@@ -1,0 +1,33 @@
+{% extends 'template_presentacion.html' %}
+{% load bootstrap_tags %}
+{% block title %} SSM: Regístrate! {% endblock %}
+{%block content%}
+	
+	
+	<!-- Inicio contenedor Descripcion -->
+	<div class="row ">
+		<div class="col-md-10 col-md-offset-1 text-justify">
+			<!-- Inicio contenedor Logo -->
+			<div class="container-signup text-center">
+				<img src="/media/img/logos/LogoFinal.png"><br><br>
+				<h1><strong>Crea tu cuenta en Soft System Manager</strong></h1>
+			</div> <!-- Fin contenedor Logo -->
+
+			
+		</div><!-- Fin Inicio contenedor Descripcion -->
+		<!-- Inicio contenedor Registro -->
+		<!-- Fin contenedor Registro -->		
+	</div><br><br>
+	<div class="row">
+		<div class="col-md-4 col-md-offset-4">
+			<form action="." method="POST">
+				{%csrf_token%}
+				{{ form|as_bootstrap}}
+				<button type="submit" class="btn btn-primary"><strong>Registrar</strong></button>
+			</form>	
+		</div>
+	</div>
+	
+	
+		
+{%endblock%}

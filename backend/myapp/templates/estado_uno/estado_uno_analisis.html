@@ -1,0 +1,70 @@
+{%extends 'estado_uno/estado_uno_general.html'%}
+{%load bootstrap_tags%}
+{% block state-content %}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title"><strong>{{title}}</strong></h3>
+	</div>
+	<div class="panel-body">
+		<table class="table table-hover">
+			{%if media%}
+			<theader>
+				<tr>
+					<td></td>
+					<td><strong>Nombre</strong></td>
+					<td><strong>Usuario</strong></td>
+					<td><strong>Fecha</strong></td>
+				</tr>	
+			</theader>	
+			{% for m in media %}
+			<tbody>
+				<tr>	
+					<td class="glyphicon glyphicon-book"class="glyphicon glyphicon-book"></td>
+					<td>{{m.name_analisis}}</td>
+					<td>{{m.created_by}}</td>
+					<td>{{m.date_analisis}}</td>
+					<td><a href="/verAnalisis/{{proyecto.id}}/{{m.id}}" class="glyphicon glyphicon-eye-open"></a></td>
+					<td><a href="/desarrolloAnalisis/{{proyecto.id}}/{{m.id}}" class="glyphicon glyphicon-edit"></a></td>
+					<td><a onclick="return confirm('¿Deseas eliminar {{m.name_analisis}}?')" href="/eliminarAnalisis/{{proyecto.id}}/{{m.id}}" class="glyphicon glyphicon-remove"></a></td>
+				</tr>
+			</tbody>
+			{% endfor %}
+			{%else%}
+			<p><strong>No existen {{title}}</strong></p>
+			{%endif%}		
+		</table>
+		{%if media%}
+		<ul class="pagination">
+			{%if media.has_previous%}
+			<li><a href="/medias/{{tipo}}/{{proyecto.id}}/{{media.previous_page_number}}">&laquo;</a></li>
+			{%endif%}
+			{%if media.has_next%}
+			<li><a href="/medias/{{tipo}}/{{proyecto.id}}/{{media.next_page_number}}">&raquo;</a></li>
+			{%endif%}
+		</ul>
+		{%endif%}
+</div>
+</div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAnalisis"><strong> Crear Nuevo Análisis </strong></button>
+		<div class="modal fade" id="addAnalisis" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="myModalLabel">Nuevo Análisis</h4>
+					</div>
+					<div class="modal-body">
+						<form method="POST" action="/newAnalisis/{{proyecto.id}}/">
+							{% csrf_token %}
+							{{newAnalisisForm|as_bootstrap}} 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary"> Crear </button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>	
+	</div>
+{%endblock state-content%}

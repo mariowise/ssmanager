@@ -15,7 +15,7 @@ var CONFIG = {
             isArray: false 
         },
         save: { method: 'POST' },
-        get: { isArray: true }
+        get: { isArray: false }
     },
     pk: 'id',
     debug: false

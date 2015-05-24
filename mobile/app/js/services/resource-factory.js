@@ -307,6 +307,31 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 return this._remote
             }
 
+            /*
+             * Refresca el token para comunicarse con la API
+             */
+            // , refreshToken: function () {
+            //     var d = $q.defer()
+                
+            //     Session.get("current_user")
+            //     .then(function (current_user) {
+                    
+            //         if(current_user != undefined) {
+            //             // Si el token esta localmente expirado
+            //             if(Math.round(Date.now()/1000) > current_user.local_exp) { 
+            //                 $http.post(CONFIG.api('token-refresh/'), $.params({ token: current_user.token, orig_iat: current_user.orig_iat }), function (res) {
+            //                     Session.set_current_user(res)
+            //                     .then(d.resolve)
+            //                 })
+            //             }
+            //             else d.resolve(current_user)
+            //         } else d.resolve(false)
+
+            //     }, d.reject)
+
+            //     return d.promise
+            // }
+
         }
     }
 
@@ -318,7 +343,7 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
+      .toString(10)
       .substring(1);
   }
   return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();

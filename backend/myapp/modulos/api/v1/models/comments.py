@@ -3,7 +3,7 @@ from myapp.modulos.estado_1.models import Comentario
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentario
         fields = (

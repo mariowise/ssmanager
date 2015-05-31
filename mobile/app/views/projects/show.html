@@ -1,0 +1,35 @@
+<header-left route="app.projects"></header-left>
+
+<div class="container">
+	
+	<div class="view-title text-center"><i class="fa fa-folder-open"></i> Detalle proyecto</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="panel-title">
+				Ficha del proyecto
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="panel-detail">
+				<label>Nombre:</label>
+				<div>{{project.name_ssp}}</div>
+
+				<label>Descripción:</label>
+				<div>{{project.description_ssp}}</div>
+
+				<label>Fecha de creación:</label>
+				<div>{{project.date_spp | amDateFormat:'DD/MM/YYYY (hh:mm a)'}}</div>
+
+				<label>Administrador</label>
+				<div>{{manager.first_name}} {{manager.last_name}} <{{manager.email}}></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="btn-group-vertical wide" role="group">
+		<div class="btn btn-default" ui-sref="app.projects-stateone({ id: project.id })"><i class="fa fa-chevron-right"></i>Estado 1</div>
+		<div class="btn btn-default" disabled="disabled">Estado 2</div>
+		<div class="btn btn-default" disabled="disab">Estado 3</div>
+	</div>
+
+</div>

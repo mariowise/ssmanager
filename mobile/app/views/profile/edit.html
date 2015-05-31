@@ -1,0 +1,27 @@
+<header-left route="app.profile-show"></header-left>
+
+<div class="container">
+	
+	<div class="view-title text-center"><i class="fa fa-user"></i> Editar mi perfil</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="panel-title">Información de perfil</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label for="">Nombre:</label>
+				<input type="text" class="form-control" ng-model="profile.first_name">
+			</div>
+			<div class="form-group">
+				<label for="">Apellido:</label>
+				<input type="text" class="form-control" ng-model="profile.last_name">
+			</div>
+			<div class="form-group">
+				<label for="">Correo electrónico:</label>
+				<input type="text" class="form-control" ng-model="profile.email">
+			</div>
+			<button class="btn btn-primary wide btn-lg" ng-click="save()">Guardar</button>
+		</div>
+	</div>
+
+</div>

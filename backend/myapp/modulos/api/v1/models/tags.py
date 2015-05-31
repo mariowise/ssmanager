@@ -3,7 +3,7 @@ from myapp.modulos.estado_1.models import Etiqueta
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class TagSerializer(serializers.HyperlinkedModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Etiqueta
         fields = (

@@ -158,6 +158,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_jwt',
     'corsheaders',
+    'django_filters',
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
@@ -209,7 +210,7 @@ JWT_AUTH = {
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
     'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': timedelta(seconds=120),
+    'JWT_EXPIRATION_DELTA': timedelta(days=120),
     'JWT_AUDIENCE': None,
     'JWT_ISSUER': None,
 
@@ -240,4 +241,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
+
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }

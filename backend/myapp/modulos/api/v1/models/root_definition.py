@@ -3,7 +3,7 @@ from myapp.modulos.estado_3.models import DefinicionRaiz
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class RootDefinitionSerializer(serializers.HyperlinkedModelSerializer):
+class RootDefinitionSerializer(serializers.ModelSerializer):
     class Meta:
         model = DefinicionRaiz
         fields = (

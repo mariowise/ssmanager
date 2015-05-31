@@ -1,0 +1,15 @@
+<header-left remove></header-left>
+
+<div class="container">
+
+	<div class="view-title text-center"><i class="fa fa-folder-open"></i> Mis proyectos
+		<div ng-if="projects.length == 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+	</div>
+	<div class="btn-group-vertical wide" role="group">
+		<div class="btn btn-default text-left" ng-repeat="project in projects" ui-sref="app.projects-show({ id: project.id })">
+			{{project.name_ssp}}
+			<i class="fa fa-chevron-right"></i>
+		</div>
+	</div>
+
+</div>

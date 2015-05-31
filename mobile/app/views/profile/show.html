@@ -1,0 +1,27 @@
+<header-left remove></header-left>
+
+<div class="container">
+	
+	<div class="view-title text-center"><i class="fa fa-user"></i> Mi perfil</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="panel-title">Información de perfil</div>
+			<div class="panel-toolbar">
+				<button class="btn btn-default" ui-sref="app.profile-edit"><i class="fa fa-pencil"></i></button>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="panel-detail">
+				<label for="">Nombre:</label>
+				<div>{{profile.first_name}}</div>
+
+				<label for="">Apellido:</label>
+				<div>{{profile.last_name}}</div>
+
+				<label for="">Correo electrónico:</label>
+				<div>{{profile.email}}</div>
+			</div>
+		</div>
+	</div>
+
+</div>

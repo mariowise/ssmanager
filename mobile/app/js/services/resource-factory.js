@@ -49,7 +49,7 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
 
                 remote.get({ id: key }, function (item) {
                     
-                    if(CONFIG.debug) console.log(item[0][CONFIG.pk])
+                    if(CONFIG.debug) console.log(item[CONFIG.pk])
 
                     self.set(key, item)
                     .then(function (item) {
@@ -120,6 +120,38 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 }
                 
                 remote.save(value, function () {
+
+                    self.set(key, value).then(function (item) { defer.resolve(item) })
+                    if (cb) self.set(key, value, cb)
+
+                }, function (err) {
+                    
+                    value.status = 'pending'
+                    self.set(key, value).then(function (item) { defer.resolve(item) })
+                    if (cb) self.set(key, value, cb)                    
+
+                })
+
+                return defer.promise
+            },
+
+            /*
+             * Efectua un .update sobre ng-resource
+             */
+            update: function (value, cb) {
+                if(CONFIG.debug) console.log("ResourceFactory::update " + name)
+
+                var defer = $q.defer()
+                  , self = this
+                  , remote = this.remote()
+                  , key = value[CONFIG.pk] || value.id
+
+                if(!value[CONFIG.pk] && !value.id) {
+                    value[CONFIG.pk] = guid()
+                    key = value[CONFIG.pk]
+                }
+                
+                remote.update(value, function () {
 
                     self.set(key, value).then(function (item) { defer.resolve(item) })
                     if (cb) self.set(key, value, cb)
@@ -259,24 +291,31 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                     async.series(fns, function (err, results) {
                         if(CONFIG.debug) console.log("ResourceFactory::sync " + name + ", " + results.length + " jobs finished")
                         if(CONFIG.debug) console.log(err)
-
-                        d.resolve()
+                        
+                        if(!err)
+                            d.resolve()
+                        else 
+                            d.reject()
                     })
 
                     return d.promise
                 })
 
+                // Pull resources if exists
                 .then(function () {
-                    // Pull resources
-                    remote.query(function (items) {
-                        items.forEach(function (item) {
-                            if(CONFIG.debug) console.log(item)
-                            self.set(item[CONFIG.pk], item)
-                            .then(function () {
-                                defer.resolve()
-                            })
-                        })
-                    })
+                    if(self.pull) {
+                        if(CONFIG.debug) console.log("ResourceFactory::sync calling pull method on resource " + name)
+                        return self.pull()
+                    }
+                })
+
+                // Finalmente se retorna la lista actual en BD de resources
+                .then(function () {
+                    if(CONFIG.debug) console.log("ResourceFactory::sync sending all() response on " + name)
+                    self.all().then(defer.resolve, defer.reject)
+                }, function () { // Si o si
+                    console.error("ResourceFactory::sync ha fallado para el recurso " + name)
+                    self.all().then(defer.resolve, defer.reject)
                 })
 
                 return defer.promise
@@ -293,6 +332,30 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
             },
 
             /*
+             * Realiza una búsqueda local por toda tabla
+             * retornando el conjunto de elementos que cumplen igualdad
+             */
+            where: function(filter) {
+                var d = $q.defer()
+
+                this.all()
+                .then(function (items) {
+                    var response = []
+                    items.forEach(function (item) {
+                        var flag = true
+                        for(var f in filter) {
+                            if(item[f] != filter[f]) 
+                                flag = false
+                        }
+                        if(flag) response.push(item)
+                    })
+                    d.resolve(response)
+                })
+
+                return d.promise
+            },
+
+            /*
              * Retorna el recurso angular.resource que conecta con
              * el recurso publicado en la API
              */
@@ -301,36 +364,11 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 //     return this.remote
                 this._remote = $resource(
                     CONFIG.api(pluralName.toLowerCase() + '/:id/'), 
-                    { id: '@pk' }, 
+                    { id: '@id' }, 
                     CONFIG.apiMethods
                 )
                 return this._remote
             }
-
-            /*
-             * Refresca el token para comunicarse con la API
-             */
-            // , refreshToken: function () {
-            //     var d = $q.defer()
-                
-            //     Session.get("current_user")
-            //     .then(function (current_user) {
-                    
-            //         if(current_user != undefined) {
-            //             // Si el token esta localmente expirado
-            //             if(Math.round(Date.now()/1000) > current_user.local_exp) { 
-            //                 $http.post(CONFIG.api('token-refresh/'), $.params({ token: current_user.token, orig_iat: current_user.orig_iat }), function (res) {
-            //                     Session.set_current_user(res)
-            //                     .then(d.resolve)
-            //                 })
-            //             }
-            //             else d.resolve(current_user)
-            //         } else d.resolve(false)
-
-            //     }, d.reject)
-
-            //     return d.promise
-            // }
 
         }
     }

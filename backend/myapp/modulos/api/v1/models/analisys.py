@@ -3,7 +3,7 @@ from myapp.modulos.estado_1.models import Analisis
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class AnalisysSerializer(serializers.HyperlinkedModelSerializer):
+class AnalisysSerializer(serializers.ModelSerializer):
     class Meta:
         model = Analisis
         fields = (

@@ -3,7 +3,7 @@ from myapp.modulos.estado_1.models import DocumentoAnalisis
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class DocumentSerializer(serializers.HyperlinkedModelSerializer):
+class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = DocumentoAnalisis
         fields = (

@@ -16,8 +16,25 @@ angular.module('app.controllers.application', [])
 		})
 	}
 
+	$scope.internet = function () {
+		if(CONFIG.api_address == 'http://softsystemanager.appspot.com') {
+			CONFIG.api_address += "a"
+			$('#header .dropdown .modo').html('<i class="fa fa-globe"></i> Modo online')
+		} else {
+			CONFIG.api_address = 'http://softsystemanager.appspot.com'
+			$('#header .dropdown .modo').html('<i class="fa fa-globe"></i> Modo offline')
+		}
+	}
+
 	$('#header .nav.navbar-nav li a').click(function (event) {
 		$('#header .navbar-toggle').click()
+	})
+
+	$('#header .btn.right').click(function () {
+		$('#header .dropdown').toggle(200)
+	})
+	$('#header .dropdown .btn').click(function () {
+		$('#header .dropdown').toggle(200)
 	})
 
 }])

@@ -3,7 +3,7 @@ from myapp.modulos.comunicacion.models import Mensaje
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class MessageSerializer(serializers.HyperlinkedModelSerializer):
+class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mensaje
         fields = (

@@ -3,7 +3,7 @@ from myapp.modulos.estado_1.models import Media
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class MediaSerializer(serializers.HyperlinkedModelSerializer):
+class MediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media
         fields = (
@@ -15,7 +15,6 @@ class MediaSerializer(serializers.HyperlinkedModelSerializer):
             'tags_media',
             'uploaded_by',
             'date_media',
-            'uploaded_by',
             'type_media'
         )
 

@@ -3,7 +3,7 @@ from myapp.modulos.estado_2.models import RichPicture
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class RichpictureSerializer(serializers.HyperlinkedModelSerializer):
+class RichpictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = RichPicture
         fields = (

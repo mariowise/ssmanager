@@ -3,7 +3,7 @@ from myapp.modulos.principal.models import userProfile
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class ProfileSerializer(serializers.HyperlinkedModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = userProfile
         fields = (

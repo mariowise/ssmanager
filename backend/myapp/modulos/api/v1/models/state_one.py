@@ -3,7 +3,7 @@ from myapp.modulos.estado_1.models import StateOne
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class StateOneSerializer(serializers.HyperlinkedModelSerializer):
+class StateOneSerializer(serializers.ModelSerializer):
     class Meta:
         model = StateOne
         fields = (
@@ -20,4 +20,5 @@ class StateOneSerializer(serializers.HyperlinkedModelSerializer):
 # ViewSets define the view behavior.
 class StateOneViewSet(viewsets.ModelViewSet):
     queryset = StateOne.objects.all()
+    filter_fields = ('ssp_stateOne',)
     serializer_class = StateOneSerializer

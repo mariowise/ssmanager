@@ -15,7 +15,7 @@ angular.module('app.controllers.login', [])
 			.then(function (current_user) {
 				console.log(current_user)
 				$.loading.transition()
-				$state.go("app.index")
+				$state.go("app.projects")
 			})
 
 		})

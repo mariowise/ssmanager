@@ -26,40 +26,65 @@ body {
 
 #wrapper {
 
-	& > #header {
+	#header {
 		color: white;
+		background: @ssm-blue;
+		position:fixed;
+		top:0px;
+		width: 100%;
+		z-index: 1;
 
-		a {
-			color: white;
+		.btn-group i.fa {
+			font-size: 160%;
 		}
-		
-		.navbar-brand {
-			padding: 0px;
+		.btn {
+			&:focus,&:hover { color: white }
+		}
+		.btn.center {
+			padding: 5px 0px;
+			img { max-width: 100px; }
+		}
+		.no-shadow {
+			&:active { box-shadow: none; }
+		}
+		.dropdown {
+			padding: 10px 10px;
+			background-color: lighten(@ssm-blue, 5%);
+			display: none;
 
-			img {
-				height: 100%;
+			.btn.btn-default {
+				background-color: transparent;
+				color: white;
+				padding: 10px 0px;
+				&:focus,&:hover { color: white; border-color: white; }
 			}
+			.fa { font-size: 110%; }
 		}
+	}
 
-		nav.navbar {
-			border: 0px;
-			background-color: @ssm-blue;
-			margin-bottom: 0px;
+	#footer {
+		position: fixed;
+		width: 100%;
+		bottom: 0px;
+
+		.btn {
+			border-radius: 0px;
+			font-size: 70%;
+			border-right: 0px;
 		}
-
-		.navbar-toggle {
-			border: 1px solid white;
-
-			.icon-bar {
-				background-color: white;
-			}
+		i.fa {
+			font-size: 200%;
+  			margin: 6px;
 		}
-
 	}
 }
 
 #header-ghost {
 	height: @navbar-height;
+}
+
+#footer-ghost {
+	height: @footer-height;
 }
 
 .nav > li > a:hover, .nav > li > a:focus {

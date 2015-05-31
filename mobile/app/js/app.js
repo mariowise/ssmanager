@@ -3,14 +3,24 @@ angular.module('app', [
 	, 'ngResource'
 	, 'ngCordova'
 	, 'angular-jwt'
+	, 'angularMoment'
 
 	, 'app.services.resource-factory'
 	, 'app.services.session'
 	, 'app.services.user'
+	, 'app.services.project'
+	, 'app.services.stateone'
+	, 'app.services.media'
 
 	, 'app.controllers.application'
 	, 'app.controllers.login'
 	, 'app.controllers.index'
+	, 'app.controllers.projects'
+	, 'app.controllers.profile'
+
+	, 'app.directives.footer'
+	, 'app.directives.header'
+	, 'app.directives.panel'
 
 ])
 
@@ -51,7 +61,67 @@ angular.module('app', [
 		}
 	})
 
-	$urlRouterProvider.otherwise('/app/index')
+	// Projects
+	.state('app.projects', {
+		url: '/projects',
+		views: {
+			'mainView': {
+				templateUrl: 'views/projects/index.html',
+				controller: 'projects#index'
+			}
+		}
+	})
+	.state('app.projects-show', {
+		url: '/projects/:id',
+		views: {
+			'mainView': {
+				templateUrl: 'views/projects/show.html',
+				controller: 'projects#show'
+			}
+		}	
+	})
+		// Estado 1
+		.state('app.projects-stateone', {
+			url: '/projects/:id/stateone/',
+			views: {
+				'mainView': {
+					templateUrl: 'views/projects/stateone/index.html',
+					controller: 'projects#stateone'
+				}
+			}
+		})
+		.state('app.projects-stateone-show', {
+			url: '/projects/:id/stateone/:media_id',
+			views: {
+				'mainView': {
+					templateUrl: 'views/projects/stateone/show.html',
+					controller: 'projects#stateone-show'
+				}
+			}
+		})
+
+	// Profile
+	.state('app.profile-show', {
+		url: '/profile-show',
+		views: {
+			'mainView': {
+				templateUrl: 'views/profile/show.html',
+				controller: 'profile#show'
+			}
+		}
+	})
+	.state('app.profile-edit', {
+		url: '/profile-edit',
+		views: {
+			'mainView': {
+				templateUrl: 'views/profile/edit.html',
+				controller: 'profile#edit'
+			}
+		}
+	})
+	
+
+	$urlRouterProvider.otherwise('/app/projects')
 
 })
 
@@ -59,46 +129,20 @@ angular.module('app', [
 	jwtInterceptorProvider.authPrefix = "JWT " // La wea importante xD
 	jwtInterceptorProvider.tokenGetter = function(config, Session, $q, $http, $state) {
 		if(config.url.indexOf("http://softsystemanager.appspot.com") === 0) {
-			console.log("jwtInterceptor running (" + $state.current.name + ")")
+			// console.log("jwtInterceptor running (" + $state.current.name + ")")
 			var d = $q.defer()
 
-			// Se intenta renovar el token por uno nuevo (enviando el válido actual)
-			// Con ello si se rechaza queire decir que el token ha expirado
-			// En caso de estar expirado, será necesario volver a iniciar sesión
 			Session.get("current_user")
-			// Se intenta renovar el token mediante un $http.post
-			.then(function (current_user) {
-				var defer = $q.defer()
-
-				if(current_user == undefined) 
-					defer.resolve(current_user)
-				else {
-					$http.post(CONFIG.api("token-refresh/"), $.param({ token: current_user.token, orig_iat: current_user.orig_iat }), { headers : { 'Content-Type': 'application/x-www-form-urlencoded' } })
-					.success(defer.resolve)
-					.error(defer.reject)
-				}
-
-				return defer.promise
-			})
-			// Con la respuesta del $http.post se almacena el nuevo token
-			// Incluyendo la información del usuario
-			.then(function (res) {
-				return Session.set_current_user(res)
-			}, function (err) { 
-				console.error("jwtInterceptor failed: I can't refresh the token.")
-				d.reject(err)
-			})
-			// Se retorna el token
 			.then(function (current_user) {
 				if(current_user == undefined)
-					d.resolve(current_user)
-				else 
+					d.resolve(undefined)
+				else
 					d.resolve(current_user.token)
-			})
+			}, function (err) { d.reject(err) })
 
 			return d.promise
 
-		} else return "no-token"
+		}
 	}
 
 	$httpProvider.interceptors.push('jwtInterceptor');
@@ -121,9 +165,19 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function (Session, User, $localForage) {
+.run(function (Session, User, Project, StateOne, Media, $localForage, amMoment) {
+	// Moment.js locale
+	amMoment.changeLocale('es')
+
 	// Testing ground
 	window.Session = Session
 	window.$localForage = $localForage
 	window.User = User
+	window.Project = Project
+	window.StateOne = StateOne
+	window.Media = Media
+
+	setInterval(function () {
+		Session.refresh_token()
+	}, 15 * 1000)
 })

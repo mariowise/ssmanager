@@ -13,9 +13,13 @@ var CONFIG = {
         update: { 
             method: 'PUT', 
             isArray: false 
-        },
-        save: { method: 'POST' },
-        get: { isArray: false }
+        }
+        , save: { 
+        	method: 'POST' 
+        }
+        , get: { 
+        	isArray: false 
+        }
     },
     pk: 'id',
     debug: false

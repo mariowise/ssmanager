@@ -3,7 +3,7 @@ from myapp.modulos.estado_2.models import StateTwo
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class StateTwoSerializer(serializers.HyperlinkedModelSerializer):
+class StateTwoSerializer(serializers.ModelSerializer):
     class Meta:
         model = StateTwo
         fields = (

@@ -3,7 +3,7 @@ from myapp.modulos.principal.models import userSoftSystemProject
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = userSoftSystemProject
         fields = (
@@ -23,4 +23,5 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 # ViewSets define the view behavior.
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = userSoftSystemProject.objects.all()
+    filter_fields = ('manager', 'name_ssp',)
     serializer_class = ProjectSerializer

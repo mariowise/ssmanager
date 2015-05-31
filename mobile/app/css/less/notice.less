@@ -1,0 +1,31 @@
+#notice-bar {
+
+	.notice {
+		.text-center();
+		padding: 7.5px 10px;
+		position: relative;
+		color: white;
+	
+		&.notice-danger {
+			background: @brand-danger;
+		}
+
+		&.notice-warning {
+			background: @brand-warning;
+		}
+
+		&.notice-info {
+			background: @brand-info;
+		}
+
+		&.notice-success {
+			background: @brand-success;
+		}
+
+		.notice-close {
+			position: absolute;
+			right: 13px;
+			top: 10px;
+		}
+	}
+}

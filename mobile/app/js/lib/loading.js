@@ -32,7 +32,7 @@ $.loading = {
 		$('#error').show()
 		setTimeout(function () {
 			$('#error').fadeOut(800)
-		}, 1500)
+		}, 2500)
 	}
 
 }

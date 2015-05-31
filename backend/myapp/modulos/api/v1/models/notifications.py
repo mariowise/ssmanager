@@ -3,7 +3,7 @@ from myapp.modulos.comunicacion.models import Notificacion
 from rest_framework import serializers, viewsets
 
 # Serializers define the API representation.
-class NotificationSerializer(serializers.HyperlinkedModelSerializer):
+class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notificacion
         fields = (

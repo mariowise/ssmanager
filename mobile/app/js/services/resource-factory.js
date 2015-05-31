@@ -166,6 +166,21 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
 
                 return defer.promise
             },
+
+            /*
+             * 
+             */
+            create: function (value, cb) {
+                var defer = $q.defer()
+                  , self = this
+
+                self.remote().save(value, function (neo) {
+                    self.set(neo.id, neo).then(defer.resolve)
+                    if(cb) cb(neo)
+                }, defer.reject)
+
+                return defer.promise
+            },
             
             /*
              * Retorna un arreglo con todas las filas de la tabla

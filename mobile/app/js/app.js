@@ -11,6 +11,7 @@ angular.module('app', [
 	, 'app.services.project'
 	, 'app.services.stateone'
 	, 'app.services.media'
+	, 'app.services.comment'
 
 	, 'app.controllers.application'
 	, 'app.controllers.login'
@@ -165,7 +166,7 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function (Session, User, Project, StateOne, Media, $localForage, amMoment) {
+.run(function (Session, User, Project, StateOne, Media, Comment, $localForage, amMoment) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
@@ -176,6 +177,7 @@ angular.module('app', [
 	window.Project = Project
 	window.StateOne = StateOne
 	window.Media = Media
+	window.Comment = Comment
 
 	setInterval(function () {
 		Session.refresh_token()

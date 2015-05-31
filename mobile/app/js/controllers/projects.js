@@ -61,11 +61,13 @@ angular.module('app.controllers.projects', [])
 	})
 }])
 
-.controller('projects#stateone-show', ['$scope', '$stateParams', 'Project', 'Media', function ($scope, $stateParams, Project, Media) {
+.controller('projects#stateone-show', ['$scope', '$stateParams', 'Project', 'Media', 'Comment', function ($scope, $stateParams, Project, Media, Comment) {
 	console.log("projects#stateone-show running")
 
 	$scope.project = {}
 	$scope.media = {}
+	$scope.comments = []
+	$scope.comentary = {}
 
 	// Se busca el proyecto y luego se busca la media
 	Project.get($stateParams.id)
@@ -73,7 +75,25 @@ angular.module('app.controllers.projects', [])
 		$scope.project = project
 		return Media.get($stateParams.media_id)
 	})
+	// Se descargan los comentarios / Sino se buscan
 	.then(function (media) {
 		$scope.media = media
+		return Comment.pull(media.comments_media)
 	})
+	.then(function (comments) {
+		$scope.comments = comments
+		$scope.done = true
+	})
+
+	$scope.addComment = function () {
+		$.loading.show("loading")
+
+		console.log($scope.comentary)
+		Comment.create($scope.comentary)
+		.then(function () {
+			$.loading.show("success", 1500)
+		}, function (err) {
+			$.loading.error("No ha sido posible guardar el comentario")
+		})
+	}
 }])

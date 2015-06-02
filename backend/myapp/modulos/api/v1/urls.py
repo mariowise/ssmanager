@@ -21,6 +21,8 @@ from myapp.modulos.api.v1.models.state_three import StateThreeViewSet
 from myapp.modulos.api.v1.models.root_definition_catwoe import RootDefinitionCatwoeViewSet
 from myapp.modulos.api.v1.models.root_definition import RootDefinitionViewSet
 
+from myapp.modulos.api.v1.models.file import FileUploadViewSet
+
 from rest_framework import routers
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -52,6 +54,10 @@ router.register(r'richpictures', RichpictureViewSet)
 router.register(r'state_three', StateThreeViewSet)
 router.register(r'root_definition_catwoe', RootDefinitionCatwoeViewSet)
 router.register(r'root_definition', RootDefinitionViewSet)
+
+# Extras
+router.register(r'files', FileUploadViewSet)
+
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

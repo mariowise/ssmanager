@@ -1,6 +1,6 @@
 angular.module('app.services.file', [])
 
-.factory('File', ['$q', '$cordovaCamera', '$cordovaFileTransfer', 'Session', 'ResourceFactory', function ($q, $cordovaCamera, $cordovaFileTransfer, Session, ResourceFactory) {
+.factory('File', ['$q', '$cordovaCamera', '$cordovaFileTransfer', '$http', 'Session', 'ResourceFactory', function ($q, $cordovaCamera, $cordovaFileTransfer, $http, Session, ResourceFactory) {
 	
 	// Recurso local
 	var File = ResourceFactory('File', 'files') // Nombre del recurso, Nombre del recurso en API (URL)
@@ -22,25 +22,28 @@ angular.module('app.services.file', [])
 				saveToPhotoAlbum: false
 			};
 
-			// Se saca la foto
-			$cordovaCamera.getPicture(options)
-			// Se sube la foto
-			.then(function (fileUri) {
-				options = {
-					headers: {
-						"Authorization": "JWT " + current_user.token
-						, "Cookie": document.cookie
-					}
-				}
-				return $cordovaFileTransfer.upload(CONFIG.api("files/"), fileUri, options)
-			}, d.reject)
+			$.loading.show("loading")
 
-			.then(function (res) {
-				console.log(res)
-			}, function (err) {
-				d.reject(err)
-				console.log(err)
-			})
+			$cordovaCamera.getPicture(options)
+			.then(function (fileUri) {
+				
+				var fd = new FormData()
+				fd.append("owner", current_user.id)
+				fd.append("datafile", fileUri)
+				$http.post(CONFIG.api("files/"), fd, {
+					transformRequest: angular.identity
+            		, headers: {'Content-Type': undefined}
+				})
+				.success(function (res) {
+					console.log(res)
+					d.resolve(res)
+				})
+				.error(function (err) {
+					console.log(err)
+					d.reject(err)
+				})
+
+			}, d.reject)
 
 		})
 

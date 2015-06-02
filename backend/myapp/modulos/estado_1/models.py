@@ -20,7 +20,6 @@ class Media(models.Model):
 	uploaded_by = models.CharField(max_length=200, blank=False, null=False)
 	date_media = models.DateTimeField(auto_now_add=True, blank=False)
 	type_media = models.CharField(max_length=200, blank=False, null=False)
-
 	
 	def __unicode__(self):
 		return self.name_media	

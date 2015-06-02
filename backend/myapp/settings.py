@@ -81,7 +81,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '7!7a^$+24qtsu8to)=a=-qi*b&-(*adgq4%u_d#8-_@z65#f8+'
+SECRET_KEY = 'hbP6_4UJIKe-m74yLd8tQDfT'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -103,10 +103,10 @@ MIDDLEWARE_CLASSES = (
     # This loads the index definitions, so it has to come first
     'autoload.middleware.AutoloadMiddleware',
 
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'myapp.modulos.middleware.AutoLogout',
@@ -195,17 +195,16 @@ LOGGING = {
 
 DEFAULT_FILE_STORAGE = 'gaeblob_storage.backends.BlobPropertyStorage'
 LOGIN_URL = '/login/'
-SECRET_KEY = 'hbP6_4UJIKe-m74yLd8tQDfT'
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 AUTO_LOGOUT_DELAY = 15
 REDIRECT_URI = 'http://softsystemanager.appspot.com/oauth2callback/'
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_URLS_REGEX = r'^/api/.*$'
+CORS_URLS_REGEX = r'^/api/v1/.*$'
 CORS_ALLOW_CREDENTIALS = True
 
 JWT_AUTH = {
-    'JWT_SECRET_KEY': 'asdasfqwervknjefonqn',
+    'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_ALGORITHM': 'HS256',
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,

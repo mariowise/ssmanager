@@ -12,6 +12,7 @@ angular.module('app', [
 	, 'app.services.stateone'
 	, 'app.services.media'
 	, 'app.services.comment'
+	, 'app.services.file'
 
 	, 'app.controllers.application'
 	, 'app.controllers.login'

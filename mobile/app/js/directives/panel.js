@@ -9,7 +9,7 @@ angular.module('app.directives.panel', [])
 				var body = $(panel).find(".panel-body")
 				var icon = $(element).children(".fa")
 
-				console.log( $(body).css("display") )
+				// console.log( $(body).css("display") )
 
 				$(icon).removeClass("fa-chevron-down")
 				$(icon).removeClass("fa-chevron-up")
@@ -19,7 +19,7 @@ angular.module('app.directives.panel', [])
 				else
 					$(icon).addClass("fa-chevron-down")
 
-				$(body).toggle(800)
+				$(body).toggle(400)
 			})
 		}
 	}

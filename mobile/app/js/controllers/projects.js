@@ -31,7 +31,7 @@ angular.module('app.controllers.projects', [])
 
 }])
 
-.controller('projects#stateone', ['$scope', '$stateParams', 'Project', 'StateOne', function ($scope, $stateParams, Project, StateOne) {
+.controller('projects#stateone', ['$scope', '$stateParams', 'Project', 'StateOne', 'File', function ($scope, $stateParams, Project, StateOne, File) {
 	console.log("projects#stateone running")
 
 	$scope.project = {}
@@ -59,6 +59,15 @@ angular.module('app.controllers.projects', [])
 			})
 		})
 	})
+
+	$scope.takePhoto = function () {
+		File.takePhoto()
+		.then(function () {
+			$.loading.show("success", 1500)
+		}, function () {
+			$.loading.error("No pude subir la foto")
+		})
+	}
 }])
 
 .controller('projects#stateone-show', ['$scope', '$stateParams', 'Project', 'Media', 'Comment', function ($scope, $stateParams, Project, Media, Comment) {
@@ -81,19 +90,21 @@ angular.module('app.controllers.projects', [])
 		return Comment.pull(media.comments_media)
 	})
 	.then(function (comments) {
+		comments = comments.sort(function (a, b) { return moment(a.date_comentary).unix() < moment(b.date_comentary).unix() })
 		$scope.comments = comments
-		$scope.done = true
+		$scope.done = true		
 	})
 
 	$scope.addComment = function () {
 		$.loading.show("loading")
 
-		console.log($scope.comentary)
-		Comment.create($scope.comentary)
-		.then(function () {
-			$.loading.show("success", 1500)
+		Media.addComment($scope.media, $scope.comentary.content_comentary)
+		.then(function (newComment) {
+			$scope.comments.unshift(newComment)
+			$scope.comentary = {}
+			$.loading.show("success", 1000)
 		}, function (err) {
-			$.loading.error("No ha sido posible guardar el comentario")
+			$.loading.error("No ha sido posible subir el comentario")
 		})
 	}
 }])

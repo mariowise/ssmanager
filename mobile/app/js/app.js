@@ -38,15 +38,11 @@ angular.module('app', [
 		templateUrl: 'views/layouts/no-header.html',
 		controller: 'ApplicationController'
 	})
-	.state('login.index', {
-		url: '/',
-		views: {
-			'mainView': {
-				templateUrl: 'views/login/index.html',
-				controller: 'login#index'
-			}
-		}
-	})
+		.state('login.index', {
+			url: '/',
+			templateUrl: 'views/login/index.html',
+			controller: 'login#index'
+		})
 
 	// Application
 	.state('app', {
@@ -55,79 +51,55 @@ angular.module('app', [
 		templateUrl: 'views/layouts/default.html',
 		controller: 'ApplicationController'
 	})
-	.state('app.index', {
-		url: '/index',
-		views: {
-			'mainView': {
-				templateUrl: 'views/index/index.html',
-				controller: 'index#index'
-			}
-		}
-	})
 
-	// Projects
-	.state('app.projects', {
-		url: '/projects',
-		views: {
-			'mainView': {
-				templateUrl: 'views/projects/index.html',
-				controller: 'projects#index'
-			}
-		}
-	})
-	.state('app.projects-show', {
-		url: '/projects/:id',
-		views: {
-			'mainView': {
+		// Projects
+		.state('app.projects', {
+			url: '/projects',
+			templateUrl: 'views/projects/index.html',
+			controller: 'projects#index'
+		})
+		.state('app.project', {
+			abstract: true,
+			url: '/project/:project_id',
+			template: '<div ui-view></div>',
+			controller: 'ProjectController'
+		})
+			.state('app.project.show', {
+				url: '/',
 				templateUrl: 'views/projects/show.html',
 				controller: 'projects#show'
-			}
-		}	
-	})
-
-	// StateOne
-	.state('app.stateone-show', {
-		url: '/stateone/:project_id',
-		views: {
-			'mainView': {
-				templateUrl: 'views/stateone/show.html',
+			})
+			// StateOne
+			.state('app.project.stateone', {
+				url: '/stateone',
+				templateUrl: 'views/projects/stateone/show.html',
 				controller: 'stateone#show'
-			}
-		}	
-	})
-
-	// Media
-	.state('app.media-show', {
-		url: '/media/:project_id/:media_id',
-		views: {
-			'mainView': {
-				templateUrl: 'views/media/show.html',
+			})
+			// Media
+			.state('app.project.media', {
+				url: '/media/:media_id',
+				templateUrl: 'views/projects/media/show.html',
 				controller: 'media#show'
-			}
-		}	
-	})
+			})
 
 	// Profile
-	.state('app.profile-show', {
-		url: '/profile-show',
-		views: {
-			'mainView': {
-				templateUrl: 'views/profile/show.html',
-				controller: 'profile#show'
-			}
-		}
+	.state('app.profile', {
+		url: '/profile',
+		template: '<div ui-view></div>',
+		controller: 'ProfileController'
 	})
-	.state('app.profile-edit', {
-		url: '/profile-edit',
-		views: {
-			'mainView': {
-				templateUrl: 'views/profile/edit.html',
-				controller: 'profile#edit'
-			}
-		}
+	.state('app.profile.show', {
+		url: '/',
+		templateUrl: 'views/profile/show.html',
+		controller: 'profile#show'
+	})
+	.state('app.profile.edit', {
+		url: '/edit',
+		templateUrl: 'views/profile/edit.html',
+		controller: 'profile#edit'
 	})	
 
-	$urlRouterProvider.otherwise('/app/projects')
+	$urlRouterProvider.otherwise('/app/projects/')
 
 })
 

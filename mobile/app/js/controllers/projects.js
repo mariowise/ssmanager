@@ -1,5 +1,23 @@
 angular.module('app.controllers.projects', [])
 
+.controller('ProjectController', ['$scope', '$stateParams', 'Project', 'User', function ($scope, $stateParams, Project, User) {
+	console.log("ProjectController running")
+
+	$scope.project = {}
+	$scope.loading = true
+
+	// Obtener sin consultar internet
+	Project.get($stateParams.project_id)
+	.then(function (project) {
+		$scope.project = project
+		return User.find(project.manager)
+	})
+	.then(function (manager) {
+		$scope.project.manager = manager
+		$scope.loading = false
+	})
+}])
+
 .controller('projects#index', ['$scope', 'Project', function ($scope, Project) {
 	console.log("projects#index running")
 
@@ -15,19 +33,7 @@ angular.module('app.controllers.projects', [])
 .controller('projects#show', ['$scope', '$stateParams', 'Project', 'User', function ($scope, $stateParams, Project, User) {
 	console.log("projects#show running")
 
-	$scope.project = {}
-	$scope.loading = true
-
-	// Obtener sin consultar internet
-	Project.get($stateParams.id)
-	.then(function (project) {
-		$scope.project = project
-		return User.find(project.manager)
-	})
-	.then(function (manager) {
-		$scope.project.manager = manager
-		$scope.loading = false
-	})
+	
 }])
 
 

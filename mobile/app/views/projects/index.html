@@ -6,7 +6,7 @@
 		<div ng-if="projects.length == 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 	</div>
 	<div class="btn-group-vertical wide" role="group">
-		<div class="btn btn-default text-left" ng-repeat="project in projects" ui-sref="app.projects-show({ id: project.id })">
+		<div class="btn btn-default text-left" ng-repeat="project in projects" ui-sref="app.project.show({ project_id: project.id })">
 			{{project.name_ssp}}
 			<i class="fa fa-chevron-right"></i>
 		</div>

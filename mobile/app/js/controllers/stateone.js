@@ -3,16 +3,10 @@ angular.module('app.controllers.stateone', [])
 .controller('stateone#show', ['$scope', '$stateParams', 'Project', 'StateOne', 'Media', function ($scope, $stateParams, Project, StateOne, Media) {
 	console.log("stateone#show running")
 
-	$scope.project = {}
 	$scope.medias = []
 
-	// Se busca el proyecto y luego se descarga su estado
-	Project.get($stateParams.project_id)
-	.then(function (project) {
-		$scope.project = project
-		return StateOne.pull(project.id)
-	})
 	// Se busca el estado recién descargado
+	StateOne.pull($scope.project.id)
 	.then(function () {
 		return StateOne.where({ ssp_stateOne: $scope.project.id })
 	})

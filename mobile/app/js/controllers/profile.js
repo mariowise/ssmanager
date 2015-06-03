@@ -1,7 +1,7 @@
 angular.module('app.controllers.profile', [])
 
-.controller('profile#show', ['$scope', 'Session', 'User', function ($scope, Session, User) {
-	console.log("profile#show running")
+.controller('ProfileController', ['$scope', 'User', function ($scope, User) {
+	console.log("ProfileController running")
 
 	$scope.profile = {}
 
@@ -10,19 +10,15 @@ angular.module('app.controllers.profile', [])
 	.then(function (profile) {
 		$scope.profile = profile
 	})
+}])
+
+.controller('profile#show', ['$scope', function ($scope) {
+	console.log("profile#show running")
 
 }])
 
 .controller('profile#edit', ['$scope', '$state', 'User', function ($scope, $state, User) {
 	console.log("profile#edit running")
-
-	$scope.profile = {}
-
-	// Se obtiene directamente desde la BD local pues se acaba de bajar en el controller anterior
-	User.current_user_profile("get")
-	.then(function (profile) {
-		$scope.profile = profile
-	})
 
 	$scope.save = function () {
 		$.loading.show("loading")
@@ -30,8 +26,7 @@ angular.module('app.controllers.profile', [])
 		User.update($scope.profile)
 		.then(function (profile) {
 			$.loading.show("success", 1500)
-			$state.go("app.profile-show")
+			$state.go("app.profile.show")
 		})
 	}
-
 }])

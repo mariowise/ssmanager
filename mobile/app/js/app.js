@@ -19,6 +19,8 @@ angular.module('app', [
 	, 'app.controllers.index'
 	, 'app.controllers.projects'
 	, 'app.controllers.profile'
+	, 'app.controllers.stateone'
+	, 'app.controllers.media'
 
 	, 'app.directives.footer'
 	, 'app.directives.header'
@@ -82,25 +84,28 @@ angular.module('app', [
 			}
 		}	
 	})
-		// Estado 1
-		.state('app.projects-stateone', {
-			url: '/projects/:id/stateone/',
-			views: {
-				'mainView': {
-					templateUrl: 'views/projects/stateone/index.html',
-					controller: 'projects#stateone'
-				}
+
+	// StateOne
+	.state('app.stateone-show', {
+		url: '/stateone/:project_id',
+		views: {
+			'mainView': {
+				templateUrl: 'views/stateone/show.html',
+				controller: 'stateone#show'
 			}
-		})
-		.state('app.projects-stateone-show', {
-			url: '/projects/:id/stateone/:media_id',
-			views: {
-				'mainView': {
-					templateUrl: 'views/projects/stateone/show.html',
-					controller: 'projects#stateone-show'
-				}
+		}	
+	})
+
+	// Media
+	.state('app.media-show', {
+		url: '/media/:project_id/:media_id',
+		views: {
+			'mainView': {
+				templateUrl: 'views/media/show.html',
+				controller: 'media#show'
 			}
-		})
+		}	
+	})
 
 	// Profile
 	.state('app.profile-show', {
@@ -120,8 +125,7 @@ angular.module('app', [
 				controller: 'profile#edit'
 			}
 		}
-	})
-	
+	})	
 
 	$urlRouterProvider.otherwise('/app/projects')
 

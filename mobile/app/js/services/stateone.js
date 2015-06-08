@@ -1,6 +1,6 @@
 angular.module('app.services.stateone', [])
 
-.factory('StateOne', ['ResourceFactory', '$q', 'Session', 'Project', 'Media', function (ResourceFactory, $q, Session, Project, Media) {
+.factory('StateOne', ['ResourceFactory', '$q', 'Session', 'Project', 'Media', 'File', function (ResourceFactory, $q, Session, Project, Media, File) {
 	
 	// Recurso local
 	var StateOne = ResourceFactory('StateOne', 'state_one') // Nombre del recurso, Nombre del recurso en API (URL)	
@@ -23,12 +23,7 @@ angular.module('app.services.stateone', [])
 						})
 					})
 					// Todos los tipos de media
-					medias = [].concat(
-						     item.ssp_videos,
-						     item.ssp_imagenes,
-						     item.ssp_audios,
-						     item.ssp_documentos
-					)
+					medias = [].concat(item.ssp_videos,item.ssp_imagenes,item.ssp_audios,item.ssp_documentos)
 					medias.forEach(function (media_id) {
 						fns.push(function (callback) {
 							Media.find(media_id)
@@ -60,6 +55,7 @@ angular.module('app.services.stateone', [])
 
 		return d.promise
 	}
+
 
 	// Se expone el servicio
 	return StateOne

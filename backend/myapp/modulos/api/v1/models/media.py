@@ -11,11 +11,12 @@ class MediaSerializer(serializers.ModelSerializer):
         	'name_media',
             'description_media',
             'url_media',
-            'comments_media',
-            'tags_media',
             'uploaded_by',
             'date_media',
-            'type_media'
+            'type_media',
+            
+            'comments_media',
+            'tags_media'
         )
 
 # ViewSets define the view behavior.

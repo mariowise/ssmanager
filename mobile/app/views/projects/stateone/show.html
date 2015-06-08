@@ -55,4 +55,27 @@
 		</div>
 	</div>
 
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Agregar contenido</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="">Título</label>
+						<input ng-model="newmedia.name_media" type="text" class="form-control" placeholder="Algún título">
+					</div>
+					<div class="form-group">
+						<label for="">Descripción</label>
+						<textarea ng-model="newmedia.description_media" type="text" class="form-control" rows="3" placeholder="¿De que se trata esto?"></textarea>
+					</div>
+					<button type="button" class="btn btn-primary btn-lg wide" ng-click="uploadMedia()"><i class="fa fa-plus"></i> Agregar contenido</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>

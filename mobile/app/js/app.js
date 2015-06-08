@@ -17,10 +17,11 @@ angular.module('app', [
 	, 'app.controllers.application'
 	, 'app.controllers.login'
 	, 'app.controllers.index'
-	, 'app.controllers.projects'
 	, 'app.controllers.profile'
-	, 'app.controllers.stateone'
-	, 'app.controllers.media'
+
+	, 'app.controllers.projects.projects'
+	, 'app.controllers.projects.stateone'
+	, 'app.controllers.projects.media'
 
 	, 'app.directives.footer'
 	, 'app.directives.header'
@@ -99,7 +100,7 @@ angular.module('app', [
 		controller: 'profile#edit'
 	})	
 
-	$urlRouterProvider.otherwise('/app/projects/')
+	$urlRouterProvider.otherwise('/app/projects')
 
 })
 
@@ -143,7 +144,7 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function (Session, User, Project, StateOne, Media, Comment, $localForage, amMoment) {
+.run(function (Session, User, Project, StateOne, Media, Comment, StateOne, $localForage, amMoment) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
@@ -155,6 +156,7 @@ angular.module('app', [
 	window.StateOne = StateOne
 	window.Media = Media
 	window.Comment = Comment
+	window.StateOne = StateOne
 
 	setInterval(function () {
 		Session.refresh_token()

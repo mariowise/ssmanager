@@ -1,4 +1,4 @@
-angular.module('app.controllers.projects', [])
+angular.module('app.controllers.projects.projects', [])
 
 .controller('ProjectController', ['$scope', '$stateParams', 'Project', 'User', function ($scope, $stateParams, Project, User) {
 	console.log("ProjectController running")

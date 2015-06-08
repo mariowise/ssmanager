@@ -51,16 +51,24 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                     
                     if(CONFIG.debug) console.log(item[CONFIG.pk])
 
-                    self.set(key, item)
-                    .then(function (item) {
-                        // Se tiene el item actualizado en localForage
-                        defer.resolve(item)
-                        if(cb) cb(item)
-                    })
-                    .catch(function (err) {
-                        console.error("ERROR: ResourceFactory::find " + name + "#" + key + " no ha sido posible guardar en localForage")
-                        if(CONFIG.debug) console.log(err)
-                    })
+                    if(item != undefined) {
+                        self.set(key, item)
+                        .then(function (item) {
+                            // Se tiene el item actualizado en localForage
+                            defer.resolve(item)
+                            if(cb) cb(item)
+                        })
+                        .catch(function (err) {
+                            console.error("ERROR: ResourceFactory::find " + name + "#" + key + " no ha sido posible guardar en localForage")
+                            if(CONFIG.debug) console.log(err)
+                        })
+                    } else {
+                        self.get(key)
+                        .then(function (item) {
+                            defer.resolve(item)
+                            if(cb) cb(item)
+                        })
+                    }
 
                 }, function (err) {
                     if(CONFIG.debug) console.log("ResourceFactory::find " + name + " miss " + key)
@@ -328,8 +336,8 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 .then(function () {
                     if(CONFIG.debug) console.log("ResourceFactory::sync sending all() response on " + name)
                     self.all().then(defer.resolve, defer.reject)
-                }, function () { // Si o si
-                    console.error("ResourceFactory::sync ha fallado para el recurso " + name)
+                }, function () { // Siempre retorna la lista que hay en BD
+                    if(CONFIG.debug) console.error("ResourceFactory::sync ha fallado para el recurso " + name)
                     self.all().then(defer.resolve, defer.reject)
                 })
 

@@ -1,4 +1,4 @@
-angular.module('app.controllers.media', [])
+angular.module('app.controllers.projects.media', [])
 
 .controller('media#show', ['$scope', '$stateParams', 'Project', 'Media', 'Comment', function ($scope, $stateParams, Project, Media, Comment) {
 	console.log("media#show running")
@@ -6,6 +6,7 @@ angular.module('app.controllers.media', [])
 	$scope.media = {}
 	$scope.comments = []
 	$scope.comentary = {}
+	$scope.loading = true
 
 	// Se descargan los comentarios / Sino se buscan
 	Media.get($stateParams.media_id)

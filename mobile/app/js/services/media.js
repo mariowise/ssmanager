@@ -34,6 +34,20 @@ angular.module('app.services.media', [])
 		return d.promise
 	}
 
+	Media.uploadMedia = function (newmedia) {
+		
+	}
+
 	// Se expone el servicio
 	return Media
 }])
+
+// LOOOOOL
+// if media_type == '1':
+// 	stateOne.ssp_videos.append(newMedia.id)
+// if media_type == '2':
+// 	stateOne.ssp_imagenes.append(newMedia.id)
+// if media_type == '3':
+// 	stateOne.ssp_audios.append(newMedia.id)
+// if media_type == '4':
+// 	stateOne.ssp_documentos.append(newMedia.id)

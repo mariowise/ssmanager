@@ -1,29 +1,32 @@
 angular.module('app.controllers.projects.stateone', [])
 
-.controller('stateone#show', ['$scope', 'StateOne', 'Media', 'File', 'Session', function ($scope, StateOne, Media, File, Session) {
+.controller('stateone#show', ['$scope', '$state', 'StateOne', 'Media', 'File', 'Session', function ($scope, $state, StateOne, Media, File, Session) {
 	console.log("stateone#show running")
 
 	$scope.medias = []
 	$scope.newmedia = {}
 	$scope.state = {}
 
-	// Se busca el estado recién descargado
-	StateOne.pull($scope.project.id)
-	.then(function () {
-		return StateOne.where({ ssp_stateOne: $scope.project.id })
-	})
-	// Se buscan las medias (que ya han sido descargadas)
-	.then(function (state) {
-		state = state[0]
+	function setState (state) {
 		$scope.state = state
-		var medias = [].concat(state.ssp_videos,state.ssp_imagenes,state.ssp_audios,state.ssp_documentos)
-		
-		medias.forEach(function (media_id) {
-			Media.get(media_id)
-			.then(function (media) {
-				$scope.medias.push(media)
+		$scope.medias = state.sortedMedias
+	}
+
+	$scope.$watch('project', function () {
+	if($scope.project.id) {
+		StateOne._pull($scope.project.id)
+		.then(setState, function (err) {
+			StateOne.gather($scope.projec.id)
+			.then(function (state) {
+				if(state.length == 1) {
+					setState(state[0])
+				} else {
+					$.loading.error("No ha sido posible cargar el estado solicitado")
+					$state.go("app.project", { project_id: $scope.project.id })
+				} 
 			})
 		})
+	}
 	})
 
 	$scope.takePhoto = function () {

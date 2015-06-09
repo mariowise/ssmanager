@@ -34,8 +34,23 @@ angular.module('app.services.media', [])
 		return d.promise
 	}
 
-	Media.uploadMedia = function (newmedia) {
-		
+	/*
+	 * Efectúa un find y además descarga el archivo si es que no existe
+	 */
+	Media.fetch = function (key) {
+		var d = $q.defer()
+
+		Media.find(key)
+		.then(function (media) {
+			File.download(media.url_media)
+			.then(function (uri) {
+				media.local_uri = uri
+				Media.set(media.id, media)
+				.then(d.resolve, d.reject)
+			}, d.reject)
+		})
+
+		return d.promise
 	}
 
 	// Se expone el servicio

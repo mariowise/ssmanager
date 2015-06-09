@@ -1,6 +1,6 @@
 angular.module('app.controllers.projects.projects', [])
 
-.controller('ProjectController', ['$scope', '$stateParams', 'Project', 'User', function ($scope, $stateParams, Project, User) {
+.controller('ProjectController', ['$q', '$scope', '$stateParams', 'Project', 'User', function ($q, $scope, $stateParams, Project, User) {
 	console.log("ProjectController running")
 
 	$scope.project = {}
@@ -15,6 +15,9 @@ angular.module('app.controllers.projects.projects', [])
 	.then(function (manager) {
 		$scope.project.manager = manager
 		$scope.loading = false
+	})
+	.finally(function () {
+		$scope.$broadcast('ProjectControllerLoaded')
 	})
 }])
 

@@ -106,7 +106,7 @@ angular.module('app', [
 
 .config(function Config($httpProvider, jwtInterceptorProvider) {
 	jwtInterceptorProvider.authPrefix = "JWT " // La wea importante xD
-	jwtInterceptorProvider.tokenGetter = function(config, Session, $q, $http, $state) {
+	jwtInterceptorProvider.tokenGetter = function(config, Session, $q, $state) {
 		if(config.url.indexOf("http://softsystemanager.appspot.com") === 0) {
 			// console.log("jwtInterceptor running (" + $state.current.name + ")")
 			var d = $q.defer()
@@ -120,7 +120,6 @@ angular.module('app', [
 			}, function (err) { d.reject(err) })
 
 			return d.promise
-
 		}
 	}
 
@@ -144,7 +143,7 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function (Session, User, Project, StateOne, Media, Comment, StateOne, $localForage, amMoment) {
+.run(function (Session, User, Project, StateOne, Media, Comment, StateOne, File, $localForage, amMoment) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
@@ -157,6 +156,7 @@ angular.module('app', [
 	window.Media = Media
 	window.Comment = Comment
 	window.StateOne = StateOne
+	window.File = File
 
 	setInterval(function () {
 		Session.refresh_token()

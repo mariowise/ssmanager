@@ -13,10 +13,12 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
 
         return {
 
+            /*** LOCAL ***************************************************************/
+
             /*
              * Retorna un valor según llave
              */
-            get: function (key, cb) {
+            get: function (key) {
                 if(CONFIG.debug) console.log("ResourceFactory::get " + name + "#" + key)
 
                 var defer = $q.defer()
@@ -25,64 +27,20 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 .then(function (item) {
                     if(CONFIG.debug) console.log(item)
                     defer.resolve(item)
-                    if(cb) cb(item)
                 })
                 .catch(function (err) {
                     console.error("ERROR: ResourceFactory::get " + name + "#" + key)
                     if(CONFIG.debug) console.log(err)
+                    defer.reject(err)
                 })
 
                 return defer.promise
-            },
-
-            /*
-             * Intenta buscar la tupla e internet y actualizar localForage
-             * Si falla al encontrarla en internet, intenta entregar el valor 
-             * que tenga localForage (el cual podría ser undefined)
-             */
-            find: function(key, cb) {
-                if(CONFIG.debug) console.log("ResourceFactory::find " + name + "#" + key)
-
-                var defer = $q.defer()
-                  , self = this
-                  , remote = this.remote()
-
-                remote.get({ id: key }, function (item) {
-                    
-                    if(CONFIG.debug) console.log(item[CONFIG.pk])
-
-                    if(item != undefined) {
-                        self.set(key, item)
-                        .then(function (item) {
-                            // Se tiene el item actualizado en localForage
-                            defer.resolve(item)
-                            if(cb) cb(item)
-                        })
-                        .catch(function (err) {
-                            console.error("ERROR: ResourceFactory::find " + name + "#" + key + " no ha sido posible guardar en localForage")
-                            if(CONFIG.debug) console.log(err)
-                        })
-                    } else {
-                        self.get(key)
-                        .then(function (item) {
-                            defer.resolve(item)
-                            if(cb) cb(item)
-                        })
-                    }
-
-                }, function (err) {
-                    if(CONFIG.debug) console.log("ResourceFactory::find " + name + " miss " + key)
-                    self.get(key).then(function (item) { defer.resolve(item) })
-                    if (cb) self.get(key, cb)
-                })  
-
-                return defer.promise
-            },
+            }
 
             /*
              * Setea un llave-valor en la tabla
              */
-            set: function (key, value, cb) {
+            , set: function (key, value) {
                 if(CONFIG.debug) console.log("ResourceFactory::set " + name + "#" + key + ":" + value)
 
                 var defer = $q.defer()
@@ -99,101 +57,20 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 .then(function (item) {
                     // if(CONFIG.debug) console.log(item)
                     defer.resolve(item)
-                    if (cb) cb(item)
                 })
                 .catch(function (err) {
                     console.error("ERROR: ResourceFactory::set " + name + "#" + key + ":" + value)
                     if(CONFIG.debug) console.log(err)
+                    defer.reject(err)
                 })
 
                 return defer.promise
-            },
+            }
 
-            /*
-             * Intenta actualizar el valor en la nube y si no puede lo guarda como pending
-             * en localForage. Si logra actualizarlo en la nube, igualmente lo guarda
-             * en localForage, pero sin la marca de 'pending'
-             */
-            save: function (value, cb) {
-                if(CONFIG.debug) console.log("ResourceFactory::save " + name)
-
-                var defer = $q.defer()
-                  , self = this
-                  , remote = this.remote()
-                  , key = value[CONFIG.pk] || value.id
-
-                if(!value[CONFIG.pk] && !value.id) {
-                    value[CONFIG.pk] = guid()
-                    key = value[CONFIG.pk]
-                }
-                
-                remote.save(value, function () {
-
-                    self.set(key, value).then(function (item) { defer.resolve(item) })
-                    if (cb) self.set(key, value, cb)
-
-                }, function (err) {
-                    
-                    value.status = 'pending'
-                    self.set(key, value).then(function (item) { defer.resolve(item) })
-                    if (cb) self.set(key, value, cb)                    
-
-                })
-
-                return defer.promise
-            },
-
-            /*
-             * Efectua un .update sobre ng-resource
-             */
-            update: function (value, cb) {
-                if(CONFIG.debug) console.log("ResourceFactory::update " + name)
-
-                var defer = $q.defer()
-                  , self = this
-                  , remote = this.remote()
-                  , key = value[CONFIG.pk] || value.id
-
-                if(!value[CONFIG.pk] && !value.id) {
-                    value[CONFIG.pk] = guid()
-                    key = value[CONFIG.pk]
-                }
-                
-                remote.update(value, function () {
-
-                    self.set(key, value).then(function (item) { defer.resolve(item) })
-                    if (cb) self.set(key, value, cb)
-
-                }, function (err) {
-                    
-                    value.status = 'pending'
-                    self.set(key, value).then(function (item) { defer.resolve(item) })
-                    if (cb) self.set(key, value, cb)                    
-
-                })
-
-                return defer.promise
-            },
-
-            /*
-             * 
-             */
-            create: function (value, cb) {
-                var defer = $q.defer()
-                  , self = this
-
-                self.remote().save(value, function (neo) {
-                    self.set(neo.id, neo).then(defer.resolve)
-                    if(cb) cb(neo)
-                }, defer.reject)
-
-                return defer.promise
-            },
-            
             /*
              * Retorna un arreglo con todas las filas de la tabla
              */
-            all: function (cb) {
+            , all: function () {
                 if(CONFIG.debug) console.log("ResourceFactory::all " + name)
 
                 var defer = $q.defer()
@@ -206,20 +83,20 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 .then(function (item) { // Last item
                     // if(CONFIG.debug) console.log(items)
                     defer.resolve(items)
-                    if(cb) cb(items)
                 })  
                 .catch(function (err) {
                     console.error("ERROR: ResourceFactory::all " + name)
                     if(CONFIG.debug) console.log(err)
+                    defer.reject(err)
                 })
                 
                 return defer.promise
-            },
+            }
 
             /*
              * Elimina un elemento de la tabla
              */
-            delete: function (key, cb) {
+            , delete: function (key) {
                 if(CONFIG.debug) console.log("ResourceFactory::delete " + name + "#" + key)
 
                 var defer = $q.defer()
@@ -227,20 +104,20 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 localForage.removeItem(key)
                 .then(function () {
                     defer.resolve()
-                    if(cb) cb()
                 })
                 .catch(function (err) {
                     console.error("ERROR: ResourceFactory::delete " + name + "#" + key)
                     if(CONFIG.debug) console.log(err)
+                    defer.reject(err)
                 })
 
                 return defer.promise
-            },
+            }
 
             /*
              * Borra toda la tabla
              */
-            drop: function (cb) {
+            , drop: function () {
                 if(CONFIG.debug) console.log("ResourceFactory::drop " + name)
 
                 var defer = $q.defer()
@@ -248,21 +125,19 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 localForage.clear()
                 .then(function () {
                     defer.resolve()
-                    if(cb) cb()
                 }, function (err) {
                     console.error("ERROR: ResourceFactory::drop " + name)
                     if(CONFIG.debug) console.log(err)
-                    defer.reject()
-                    if(cb) cb(err)
+                    defer.reject(err)
                 })
 
                 return defer.promise
-            },
+            }
 
             /*
              * Obtiene el largo de la tabla
              */
-            length: function (cb) {
+            , length: function () {
                 if(CONFIG.debug) console.log("ResourceFactory::length " + name)
 
                 var defer = $q.defer()
@@ -271,22 +146,168 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 .then(function (length) {
                     if(CONFIG.debug) console.log(length)
                     defer.resolve(length)
-                    if(cb) cb(length)
                 })
                 .catch(function (err) {
                     console.error("ERROR: ResourceFactory::length " + name)
                     if(CONFIG.debug) console.log(err)
+                    defer.reject(err)
                 })
 
                 return defer.promise
-            },
+            }
+
+            /*** REMOTE ***************************************************************/
+
+            /*
+             * Intenta buscar la tupla e internet y actualizar local
+             * Si falla al encontrarla en internet, intenta entregar el valor 
+             * que tenga localForage (el cual podría ser undefined)
+             */
+            , find: function(key) {
+                if(CONFIG.debug) console.log("ResourceFactory::find " + name + "#" + key)
+
+                var defer = $q.defer()
+                  , self = this
+
+                // this.remote().get({ id: key }, function (item) {
+                this._find(key)
+                .then(defer.resolve, function (err) {
+                    console.error("ResourceFactory::find could not find " + name + " #" + key)
+                    self.get(key)
+                    .then(defer.resolve, defer.reject)
+                })  
+
+                return defer.promise
+            }
+
+            /*
+             * Realiza un get de ng-resource
+             * esta para trabajar con promesas $q las peticiones get
+             */
+            , _find: function(key) {
+                if(CONFIG.debug) console.log("ResourceFactory::_find " + name + "#" + key)
+
+                var defer = $q.defer()
+                  , self = this                  
+
+                this.remote().get({ id: key }, function (item) {
+                    if(CONFIG.debug) console.log("ResourceFactory::_find found object " + JSON.stringify(item))
+                    self.set(key, item)
+                    .then(defer.resolve, defer.reject)
+                }, defer.reject)
+
+                return defer.promise
+            }
+
+            /* [ DEPRECATED ]
+             * Intenta actualizar el valor en la nube y si no puede lo guarda como pending
+             * en localForage. Si logra actualizarlo en la nube, igualmente lo guarda
+             * en localForage, pero sin la marca de 'pending'
+             */
+            // , save: function (value) {
+            //     if(CONFIG.debug) console.log("ResourceFactory::save " + name)
+
+            //     var defer = $q.defer()
+            //       , self = this
+            //       , key = value[CONFIG.pk] || value.id
+
+            //     if(!value[CONFIG.pk] && !value.id) {
+            //         value[CONFIG.pk] = guid()
+            //         key = value[CONFIG.pk]
+            //     }
+                
+            //     this.remote().save(value, function () {
+            //         if(CONFIG.debug) console.log("ResourceFactory::save saved object " + JSON.stringify(value))
+            //         self.set(key, value)
+            //         .then(defer.resolve, defer.reject)
+            //     }, function (err) {
+            //         console.error("ResourceFactory::save could not save object " + JSON.stringify(value))
+            //         value.status = 'pending'
+            //         self.set(key, value)
+            //         .then(defer.resolve, defer.reject)
+            //     })
+
+            //     return defer.promise
+            // }
+
+            /*
+             * Efectua un .update sobre ng-resource
+             * con el dato recibido luego de actualizar en la nube, lo guarda en local y retorna
+             * si no puede actualizar en la nuve marca .status="pending" para sincronizar luego
+             * y retorna un set local
+             */
+            , update: function (value) {
+                if(CONFIG.debug) console.log("ResourceFactory::update " + name)
+
+                var defer = $q.defer()
+                  , self = this
+                  , key = value[CONFIG.pk] || value.id
+
+                if(!value[CONFIG.pk] && !value.id) {
+                    value[CONFIG.pk] = guid()
+                    key = value[CONFIG.pk]
+                }
+                
+                this.remote().update(value, function () {
+                    if(CONFIG.debug) console.log("ResourceFactory::update updated object " + JSON.stringify(value))
+                    self.set(key, value)
+                    .then(defer.resolve, defer.reject)
+                }, function (err) {
+                    console.error("ResourceFactory::update could not update object " + JSON.stringify(value))
+                    value.status = 'pending'
+                    self.set(key, value)
+                    .then(defer.resolve, defer.reject)
+                })
+
+                return defer.promise
+            }
+
+            /*
+             * Intenta crear un objeto en la nube y si no puede lo crea localmente y lo deja con 
+             * status="pending create" para ser creado con posterioridad
+             */
+            , create: function (value) {
+                var defer = $q.defer()
+                  , self = this
+
+                this._create(value)
+                .then(function (newItem) {
+                    if(CONFIG.debug) console.log("ResourceFactory::create updated object " + JSON.stringify(value))
+                    self.set(newItem.id, newItem)
+                    .then(defer.resolve, defer.reject)
+                }, function (err) {
+                    if(value.id) {
+                        value.status = "pending create"
+                        self.set(value.id, value)
+                    } else defer.reject(err)
+                })
+
+                return defer.promise
+            }
+
+            /*
+             * Intenta crear un objeto en la nube y si no puede rechaza la promesa, si logra crearlo
+             * entonces además lo guarda localmente
+             */
+            , _create: function (value) {
+                var defer = $q.defer()
+                  , self = this
+
+                this.remote().save(value, function (newItem) {
+                    if(CONFIG.debug) console.log("ResourceFactory::create creates " + JSON.stringify(newItem))
+                    self.set(newItem.id, newItem)
+                    .then(defer.resolve, defer.reject)
+                }, defer.reject)
+
+                return defer.promise
+            }            
 
             /*
              * Syncronizar los pendientes
-             * - Considera todas las filas con .state == 'pending' y aplica save
-             * - Luego de aplicar save, elimina el .state y guarda en localForage
+             * - Considera todas las filas con .state == 'pending' y aplica update
+             * - Luego elimina el .state y guarda en localForage
              */
-            sync: function () {
+            , sync: function () {
                 if(CONFIG.debug) console.log("ResourceFactory::sync " + name)
 
                 var defer = $q.defer()
@@ -300,16 +321,16 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                     var d = $q.defer()
 
                     items.forEach(function (item) {
-                        if(item.status == 'pending') // Si la fila esta en 'pending'
-                        fns.push(function (callback) {
-                            remote.save(item, function () {
-                                delete item.status // Elimina el .state
-                                self.set(item[CONFIG.pk], item) // Guarda en localForage
-                                .then(function () {
-                                    callback(null, item)
+                        if(item.status == 'pending' || item.status == 'pending create') // Si la fila esta en 'pending'
+                            fns.push(function (callback) {
+                                remote[(item.status == 'pending') ? "update" : "save"](item, function () {
+                                    delete item.status // Elimina el .state
+                                    self.set(item[CONFIG.pk], item) // Guarda en localForage
+                                    .then(function () {
+                                        callback(null, item)
+                                    })
                                 })
-                            })
-                        })                        
+                            })                        
                     })
                     async.series(fns, function (err, results) {
                         if(CONFIG.debug) console.log("ResourceFactory::sync " + name + ", " + results.length + " jobs finished")
@@ -335,30 +356,33 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 // Finalmente se retorna la lista actual en BD de resources
                 .then(function () {
                     if(CONFIG.debug) console.log("ResourceFactory::sync sending all() response on " + name)
-                    self.all().then(defer.resolve, defer.reject)
+                    self.all()
+                    .then(defer.resolve, defer.reject)
                 }, function () { // Siempre retorna la lista que hay en BD
-                    if(CONFIG.debug) console.error("ResourceFactory::sync ha fallado para el recurso " + name)
-                    self.all().then(defer.resolve, defer.reject)
+                    console.error("ResourceFactory::sync ha fallado para el recurso " + name)
+                    self.all()
+                    .then(defer.resolve, defer.reject)
                 })
 
                 return defer.promise
-            },
+            }
 
             /*
-             *  
+             * [ DEV ONLY ] 
              */
-            show: function() {
-                this.all(function (items) {
-                    if(CONFIG.debug) console.log("ResourceFactory::show " + name)
-                    if(CONFIG.debug) console.log(items)
+            , show: function() {
+                this.all()
+                .then(function (items) {
+                    console.log("ResourceFactory::show " + name)
+                    console.log(items)
                 })
-            },
+            }
 
             /*
              * Realiza una búsqueda local por toda tabla
              * retornando el conjunto de elementos que cumplen igualdad
              */
-            where: function(filter) {
+            , where: function(filter) {
                 var d = $q.defer()
 
                 this.all()
@@ -373,18 +397,16 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                         if(flag) response.push(item)
                     })
                     d.resolve(response)
-                })
+                }, d.reject)
 
                 return d.promise
-            },
+            }
 
             /*
              * Retorna el recurso angular.resource que conecta con
              * el recurso publicado en la API
              */
-            remote: function() {
-                // if(this._remote != undefined)
-                //     return this.remote
+            , remote: function() {
                 this._remote = $resource(
                     CONFIG.api(pluralName.toLowerCase() + '/:id/'), 
                     { id: '@id' }, 
@@ -392,7 +414,6 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 )
                 return this._remote
             }
-
         }
     }
 

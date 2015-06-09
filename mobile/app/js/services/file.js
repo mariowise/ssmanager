@@ -1,6 +1,6 @@
 angular.module('app.services.file', [])
 
-.factory('File', ['$q', '$cordovaCamera', '$cordovaFileTransfer', 'Session', 'ResourceFactory', function ($q, $cordovaCamera, $cordovaFileTransfer, Session, ResourceFactory) {
+.factory('File', ['$q', '$cordovaCamera', '$cordovaFile', '$cordovaFileTransfer', 'Session', 'ResourceFactory', function ($q, $cordovaCamera, $cordovaFile, $cordovaFileTransfer, Session, ResourceFactory) {
 	
 	// Recurso local
 	var File = ResourceFactory('File', 'files') // Nombre del recurso, Nombre del recurso en API (URL)
@@ -33,6 +33,50 @@ angular.module('app.services.file', [])
 			return $cordovaFileTransfer.upload(CONFIG.api("files/"), fileUri, options, true)			
 		})
 		.then(d.resolve, d.reject)
+
+		return d.promise
+	}
+
+	/*
+	 * A partir de una URL si no existe cordova resuelve la misma URL, en caso contrario, 
+	 * revisa si es que se encuentra disponible en el dispositivo el archivo. Si se encuentra, retorna su 
+	 * URI, en caso contrario, comienza la transferencia para descargarlo, resolviendo con su URI fresca.
+	 * Si ocurre algún error con la descarga, rechaza la promsea
+	 */
+	File.download = function (fileUrl) {
+		var d = $q.defer()
+
+		if(typeof cordova != "undefined") {
+			var fileName = fileUrl.substring(fileUrl.lastIndexOf("/")+1, fileUrl.length)
+			var fileUri = cordova.file.documentsDirectory + fileName
+			var options = {}
+
+			$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
+			.then(function () {
+				d.resolve(fileUri)
+			})
+			.catch(function () {
+				$cordovaFileTransfer.download(fileUrl, fileUri, options, true)
+				.then(function () {
+					d.resolve(fileUri)
+				}, d.reject)
+			})
+		} else d.resolve(fileUrl)
+
+		return d.promise
+	}
+
+	File.loadImage = function (fileUrl) {
+		var d = $q.defer()
+
+		File.get(fileUrl)
+		.then(function (file) {
+			if(file) {
+				d.resolve(file)
+			} else {
+
+			}
+		})
 
 		return d.promise
 	}

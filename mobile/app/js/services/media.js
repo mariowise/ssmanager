@@ -1,6 +1,6 @@
 angular.module('app.services.media', [])
 
-.factory('Media', ['ResourceFactory', '$q', 'Session', 'Comment', function (ResourceFactory, $q, Session, Comment) {
+.factory('Media', ['ResourceFactory', '$q', 'Session', 'Comment', 'File', function (ResourceFactory, $q, Session, Comment, File) {
 	
 	// Recurso local
 	var Media = ResourceFactory('Media', 'media') // Nombre del recurso, Nombre del recurso en API (URL)	

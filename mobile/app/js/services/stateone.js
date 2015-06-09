@@ -77,6 +77,7 @@ angular.module('app.services.stateone', [])
 	/*
 	 * Realiza un get al state y construye la columna sortedMedias sin realizar ninguna petición a la nube
 	 * Fue diseñada para los casos en donde se pierde la columna como resultado de algun .find por ejemplo
+	 * Es una pesadilla del mundo asíncrono
 	 */
 	StateOne.gather = function (project_id) {
 		var d = $q.defer()
@@ -89,13 +90,27 @@ angular.module('app.services.stateone', [])
 			res.forEach(function (state) {
 				fns.push(function (callback) {
 					var medias = [].concat(state.ssp_videos,state.ssp_imagenes,state.ssp_audios,state.ssp_documentos)
-					medias.sort(function (a, b) { return moment(a.date_media).unix() < moment(b.date_media).unix() })
-					state.sortedMedias = medias
-					StateOne.set(state.id, state)
-					.then(function (state) { callback(null, state) }, function (err) { callback(err) })
+					  , jobs = []
+
+					medias.forEach(function (media_id) {
+						jobs.push(function (cb) {
+							Media.get(media_id)
+							.then(function (m) { cb(null, m) }, function (err) { cb(err) })
+						})
+					})
+				    async.series(jobs, function (err, results) {
+				    	if(err)
+				    		callback(err) 
+				    	else {
+				    		results.sort(function (a, b) { return moment(a.date_media).unix() < moment(b.date_media).unix() })
+							state.sortedMedias = results
+							StateOne.set(state.id, state)
+							.then(function (state) { callback(null, state) }, function (err) { callback(err) })		
+				    	}
+				    })
 				})
 			})
-			async.series(function (err, results) {
+			async.series(fns, function (err, results) {
 				if(err)
 					d.reject(err)
 				else

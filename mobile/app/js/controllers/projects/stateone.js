@@ -16,7 +16,7 @@ angular.module('app.controllers.projects.stateone', [])
 	if($scope.project.id) {
 		StateOne._pull($scope.project.id)
 		.then(setState, function (err) {
-			StateOne.gather($scope.projec.id)
+			StateOne.gather($scope.project.id)
 			.then(function (state) {
 				if(state.length == 1) {
 					setState(state[0])

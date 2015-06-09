@@ -5,6 +5,9 @@ angular.module('app.services.file', [])
 	// Recurso local
 	var File = ResourceFactory('File', 'files') // Nombre del recurso, Nombre del recurso en API (URL)
 
+	/*
+	 * Configura y toma una foto, retornando la promesa de cuando termine la captura
+	 */
 	File.takePhoto = function () {
 		var options = {
 			quality: 100,
@@ -19,6 +22,9 @@ angular.module('app.services.file', [])
 		return $cordovaCamera.getPicture(options)
 	}
 
+	/*
+	 * Efectúa la operación de subir un fichero a la nube, devuelve la promesa de esta operación
+	 */
 	File.upload = function (fileUri) {
 		var d = $q.defer()
 
@@ -44,21 +50,25 @@ angular.module('app.services.file', [])
 	 * Si ocurre algún error con la descarga, rechaza la promsea
 	 */
 	File.download = function (fileUrl) {
+		if(CONFIG.debug) console.log("File::download running for URL: " + fileUrl)
 		var d = $q.defer()
 
 		if(typeof cordova != "undefined") {
-			var fileName = fileUrl.substring(fileUrl.lastIndexOf("/")+1, fileUrl.length)
-			var fileUri = cordova.file.documentsDirectory + fileName
-			var options = {}
+			var l = fileUrl.split("/")
+			  , fileName = (l[l.length-1] != "") ? l[l.length-1] : l[l.length-2]
+			  , mediaPath = cordova.file.documentsDirectory + "media/"
+			  , fileUri = mediaPath + fileName
 
-			$cordovaFile.checkFile(cordova.file.documentsDirectory, fileName)
+			$cordovaFile.checkFile(mediaPath, fileName)
 			.then(function () {
+				if(CONFIG.debug) console.log("File::download file found! on " + fileUri)
 				d.resolve(fileUri)
 			})
 			.catch(function () {
-				$cordovaFileTransfer.download(fileUrl, fileUri, options, true)
-				.then(function () {
-					d.resolve(fileUri)
+				$cordovaFileTransfer.download(fileUrl, fileUri, {}, true)
+				.then(function (downloadedUri) {
+					if(CONFIG.debug) console.log("File::download file downloaded successfully on " + JSON.stringify(downloadedUri))
+					d.resolve(downloadedUri.nativeURL)
 				}, d.reject)
 			})
 		} else d.resolve(fileUrl)
@@ -66,19 +76,28 @@ angular.module('app.services.file', [])
 		return d.promise
 	}
 
-	File.loadImage = function (fileUrl) {
-		var d = $q.defer()
+	
 
-		File.get(fileUrl)
-		.then(function (file) {
-			if(file) {
-				d.resolve(file)
-			} else {
+	/*
+	 * Vacía la carpeta rPath ubicada dentro del directorio de documentos asignado a la App por
+	 * el sistema operativo
+	 */
+	File.clean = function (rPath) {
+		console.log("File::clean starting to clean documentsDirectory")
+		var defer = $q.defer()
 
-			}
-		})
+		if(typeof cordova != "undefined") {
+			var basePath = cordova.file.documentsDirectory
 
-		return d.promise
+			$cordovaFile.removeRecursively(basePath, rPath)
+			.then(function (res) {
+				console.log("File::clean directory was removed.")
+				return 
+			}, defer.reject)
+
+		} else defer.reject()
+
+		return defer.promise
 	}
 
 	// Se expone el servicio

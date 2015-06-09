@@ -156,7 +156,7 @@ angular.module('app', [
 	window.Media = Media
 	window.Comment = Comment
 	window.StateOne = StateOne
-	window.File = File
+	window._File = File
 
 	setInterval(function () {
 		Session.refresh_token()

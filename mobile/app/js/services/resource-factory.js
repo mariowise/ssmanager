@@ -199,37 +199,6 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 return defer.promise
             }
 
-            /* [ DEPRECATED ]
-             * Intenta actualizar el valor en la nube y si no puede lo guarda como pending
-             * en localForage. Si logra actualizarlo en la nube, igualmente lo guarda
-             * en localForage, pero sin la marca de 'pending'
-             */
-            // , save: function (value) {
-            //     if(CONFIG.debug) console.log("ResourceFactory::save " + name)
-
-            //     var defer = $q.defer()
-            //       , self = this
-            //       , key = value[CONFIG.pk] || value.id
-
-            //     if(!value[CONFIG.pk] && !value.id) {
-            //         value[CONFIG.pk] = guid()
-            //         key = value[CONFIG.pk]
-            //     }
-                
-            //     this.remote().save(value, function () {
-            //         if(CONFIG.debug) console.log("ResourceFactory::save saved object " + JSON.stringify(value))
-            //         self.set(key, value)
-            //         .then(defer.resolve, defer.reject)
-            //     }, function (err) {
-            //         console.error("ResourceFactory::save could not save object " + JSON.stringify(value))
-            //         value.status = 'pending'
-            //         self.set(key, value)
-            //         .then(defer.resolve, defer.reject)
-            //     })
-
-            //     return defer.promise
-            // }
-
             /*
              * Efectua un .update sobre ng-resource
              * con el dato recibido luego de actualizar en la nube, lo guarda en local y retorna
@@ -296,6 +265,24 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 this.remote().save(value, function (newItem) {
                     if(CONFIG.debug) console.log("ResourceFactory::create creates " + JSON.stringify(newItem))
                     self.set(newItem.id, newItem)
+                    .then(defer.resolve, defer.reject)
+                }, defer.reject)
+
+                return defer.promise
+            }
+
+            /*
+             * Intenta eliminar desde la nube para luego eliminar desde local
+             * si no logra eliminar en la nube, entonces rechaza
+             */
+            , _destroy: function (obj) {
+                var defer = $q.defer()
+                  , self = this
+                  , key = obj.id || obj
+
+                this.remote().delete({ id: key }, function (res) {
+                    if(CONFIG.debug) console.log("ResourceFactory::_destroy deleted the element #" + key)
+                    self.delete(key)
                     .then(defer.resolve, defer.reject)
                 }, defer.reject)
 

@@ -60,9 +60,7 @@ angular.module('app.services.stateone', [])
 					if(err)
 						defer.reject(err)
 					else {
-						results.sort(function (a, b) { return moment(a.date_media).unix() < moment(b.date_media).unix() })
-						
-						// Finalmente se guarda el state incluyendo las medias ordenadas
+						results.sort(function (a, b) { return (-moment(a.date_media).unix() + moment(b.date_media).unix()) })
 						stateOne.sortedMedias = results
 						StateOne.set(stateOne.id, stateOne)
 						.then(defer.resolve, defer.reject)
@@ -102,7 +100,7 @@ angular.module('app.services.stateone', [])
 				    	if(err)
 				    		callback(err) 
 				    	else {
-				    		results.sort(function (a, b) { return moment(a.date_media).unix() < moment(b.date_media).unix() })
+				    		results.sort(function (a, b) { return (-moment(a.date_media).unix() + moment(b.date_media).unix()) })
 							state.sortedMedias = results
 							StateOne.set(state.id, state)
 							.then(function (state) { callback(null, state) }, function (err) { callback(err) })		

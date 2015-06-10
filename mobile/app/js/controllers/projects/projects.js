@@ -1,20 +1,19 @@
 angular.module('app.controllers.projects.projects', [])
 
-.controller('ProjectController', ['$q', '$scope', '$stateParams', 'Project', 'User', function ($q, $scope, $stateParams, Project, User) {
+.controller('ProjectController', ['$q', '$scope', '$state', '$stateParams', 'Project', 'User', function ($q, $scope, $state, $stateParams, Project, User) {
 	console.log("ProjectController running")
 
 	$scope.project = {}
-	$scope.loading = true
 
 	// Obtener sin consultar internet
-	Project.get($stateParams.project_id)
+	Project.find($stateParams.project_id)
 	.then(function (project) {
 		$scope.project = project
-		return User.find(project.manager)
 	})
-	.then(function (manager) {
-		$scope.project.manager = manager
-		$scope.loading = false
+	.catch(function (err) {
+		$.loading.error("No ha sido posible cargar el proyecto", function () {
+			$state.go("app.projects")
+		})
 	})
 	.finally(function () {
 		$scope.$broadcast('ProjectControllerLoaded')

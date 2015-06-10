@@ -4,6 +4,7 @@ angular.module('app.services.media', [])
 	
 	// Recurso local
 	var Media = ResourceFactory('Media', 'media') // Nombre del recurso, Nombre del recurso en API (URL)	
+	  , response = {}
 
 	/*
  	 * Agrega un comentario a una media
@@ -54,7 +55,7 @@ angular.module('app.services.media', [])
 	}
 
 	// Se expone el servicio
-	return Media
+	return angular.extend({}, Media, response)
 }])
 
 // LOOOOOL

@@ -13,25 +13,27 @@ angular.module('app.controllers.projects.stateone', [])
 	}
 
 	$scope.$watch('project', function () {
-	if($scope.project.id) {
-		StateOne._pull($scope.project.id)
-		.then(setState, function (err) {
-			StateOne.gather($scope.project.id)
-			.then(function (state) {
-				if(state.length == 1) {
-					setState(state[0])
-				} else {
-					$.loading.error("No ha sido posible cargar el estado solicitado")
-					$state.go("app.project", { project_id: $scope.project.id })
-				} 
+		if($scope.project.id) {
+			StateOne._pull($scope.project.id)
+			.then(setState, function (err) {
+				StateOne.gather($scope.project.id)
+				.then(function (state) {
+					if(state.length == 1) {
+						setState(state[0])
+					} else {
+						$.loading.error("No ha sido posible cargar el estado solicitado")
+						$state.go("app.project", { project_id: $scope.project.id })
+					} 
+				})
 			})
-		})
-	}
+		}
 	})
 
 	$scope.takePhoto = function () {
+		$.loading.show("loading")
 		File.takePhoto()
 		.then(function (fileUri) {
+			$.loading.hide("loading")
 			$('#myModal').modal('show')
 			$scope.newmedia.type_media = "2" // Para imágenes xD Maldito fardo
 			$scope.newmedia.url_media = fileUri
@@ -46,7 +48,8 @@ angular.module('app.controllers.projects.stateone', [])
 			$('#myModal').modal('hide')
 			$.loading.show("loading")
 
-			File.upload($scope.newmedia.url_media)
+			local_uri = $scope.newmedia.url_media
+			File.upload(local_uri)
 			.then(function (file) {
 				file = JSON.parse(file.response)
 				return Media.create({
@@ -58,6 +61,7 @@ angular.module('app.controllers.projects.stateone', [])
 				})
 			})
 			.then(function (media) {
+				media.local_uri = local_uri
 				$scope.state.ssp_imagenes.push(media.id)
 				$scope.medias.unshift(media)
 				return StateOne.update($scope.state)

@@ -26,6 +26,12 @@ angular.module('app.controllers.application', [])
 		}
 	}
 
+	Session.current_user()
+	.then(function (user) {
+		$scope.current_user = user
+		window.current_user = user
+	})
+
 	$('#header .nav.navbar-nav li a').click(function (event) {
 		$('#header .navbar-toggle').click()
 	})

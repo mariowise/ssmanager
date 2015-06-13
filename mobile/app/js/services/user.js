@@ -20,6 +20,8 @@ angular.module('app.services.user', [])
 		return d.promise
 	}
 
+	User.fetchOne = User.find
+
 
 	// Se expone el servicio
 	return User

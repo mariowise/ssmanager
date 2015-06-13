@@ -118,6 +118,30 @@ angular.module('app.services.stateone', [])
 		return d.promise
 	}
 
+	StateOne.fetchOne = function (key) {
+		console.log("StateOne::fetch")
+		var d = $q.defer()
+
+		StateOne.find(key)
+		.then(function (state) {
+			var medias = [].concat(state.ssp_videos,state.ssp_imagenes,state.ssp_audios,state.ssp_documentos)
+			return $q.all([
+				state,
+				Media.fetch(medias)
+			])
+		}, d.reject, function (mstate) {
+			if(mstate.medias)
+				d.notify(mstate)
+		})
+		.then(function (res) {
+			var state = res[0]
+			state.medias = res[1]
+			StateOne.set(state.id, state)
+			.then(d.resolve, d.reject)
+		})
+		return d.promise
+	}
+
 	// Se expone el servicio
 	return StateOne
 }])

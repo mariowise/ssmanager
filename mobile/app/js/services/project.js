@@ -36,12 +36,56 @@ angular.module('app.services.project', [])
 		return d.promise
 	}	
 
+	Project.fetchOne = function (key) {
+		console.log("Project::fetchOne")
+		var d = $q.defer()
+		  , self = this
+
+		self.find(key) // Obtiene el proyecto
+		.then(function (project) {
+			return $q.all([
+				project,
+				User.find(project.manager) // Obtiene el manager del proyecto
+			])
+		}, null, function (nproject) { // Si tenemos data en caché la notifica
+			if(nproject.manager && nproject.state_one && nproject.manager.id && nproject.state_one.id)
+				d.notify(nproject)
+		})
+		.then(function (res) { 
+			var project = res[0]
+			project.manager = res[1]
+			return $q.all([
+				project,
+				StateOne._where({ ssp_stateOne: project.id }) // Descarga el estado 1
+			])
+		})
+		.then(function (res) {
+			var project = res[0], state = res[1]
+			if(state.constructor == Array && state.length > 0 || project.state_one && project.state_one.id) {
+				return $q.all([
+					project,
+					StateOne.fetch((state.length > 0) ? state[0].id : project.state_one.id)
+				])
+			} else d.reject()
+		})
+		.then(function (res) {
+			var project = res[0]
+			project.state_one = res[1]
+			self.set(project.id, project)
+			.then(d.resolve, d.reject)
+		})
+		.catch(d.reject)
+
+		return d.promise
+	}
+
 	/*
-	 * Construye el objeto projecto con su objeto manager
-	 * Si el proyecto o el manager no pueden ser obtenidos, entonces rechaza
+	 * Busca el proyecto y su manager localmente, construye un único objeto y lo notifica
+	 * luego si en internet logra capturar 
 	 */
 	response.find = function (key) {
 		var d = $q.defer()
+		  , p = null
 
 		Project.find(key)
 		.then(function (project) {
@@ -49,8 +93,13 @@ angular.module('app.services.project', [])
 			.then(function (manager) {
 				project.manager = manager
 				d.resolve(project)
-			}, d.reject)
-		}, d.reject)
+			}, d.reject, function (manager) {
+				p.manager = manager
+				d.notify(p)
+			})
+		}, d.reject, function (project) {
+			p = project
+		})
 
 		return d.promise
 	}
@@ -58,3 +107,8 @@ angular.module('app.services.project', [])
 	// Se expone el servicio
 	return angular.extend({}, Project, response)
 }])
+
+
+
+
+

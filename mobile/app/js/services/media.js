@@ -1,6 +1,6 @@
 angular.module('app.services.media', [])
 
-.factory('Media', ['ResourceFactory', '$q', 'Session', 'Comment', 'File', function (ResourceFactory, $q, Session, Comment, File) {
+.factory('Media', ['ResourceFactory', '$q', 'Session', 'Comment', 'File', 'Tag', function (ResourceFactory, $q, Session, Comment, File, Tag) {
 	
 	// Recurso local
 	var Media = ResourceFactory('Media', 'media') // Nombre del recurso, Nombre del recurso en API (URL)	
@@ -38,18 +38,28 @@ angular.module('app.services.media', [])
 	/*
 	 * Efectúa un find y además descarga el archivo si es que no existe
 	 */
-	Media.fetch = function (key) {
+	Media.fetchOne = function (key) {
+		console.log("Media::fetchOne")
 		var d = $q.defer()
 
 		Media.find(key)
 		.then(function (media) {
-			File.download(media.url_media)
-			.then(function (uri) {
-				media.local_uri = uri
-				Media.set(media.id, media)
-				.then(d.resolve, d.reject)
-			}, d.reject)
+			return $q.all([
+				media,
+				File.download(media.url_media), 
+				Comment.fetch(media.comments_media)
+			])
+		}, d.reject, function (nmedia) {
+			if(nmedia.local_uri && nmedia.comments)
+				d.notify(nmedia)
 		})
+		.then(function (res) {
+			var media = res[0]
+			media.local_uri = res[1]
+			media.comments = res[2]
+			Media.set(media.id, media)
+			.then(d.resolve, d.reject)
+		}, d.reject)
 
 		return d.promise
 	}

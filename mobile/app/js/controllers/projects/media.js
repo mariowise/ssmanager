@@ -4,28 +4,23 @@ angular.module('app.controllers.projects.media', [])
 	console.log("media#show running")
 
 	$scope.media = {}
-	$scope.comments = []
 	$scope.comentary = {}
-	$scope.loading = true
 
-	// Se descargan los comentarios / Sino se buscan
-	Media.get($stateParams.media_id)
-	.then(function (media) {
+	function setMedia(media) {
 		$scope.media = media
-		return Comment.pull(media.comments_media)
-	})
-	.then(function (comments) {
-		comments = comments.sort(function (a, b) { return (-moment(a.date_comentary).unix() + moment(b.date_comentary).unix()) })
-		$scope.comments = comments
-		$scope.loading = false
-	})
+	}
+
+	Media.fetch($stateParams.media_id)
+	.then(setMedia, function (err) {
+		console.error(err)
+	}, setMedia)
 
 	$scope.addComment = function () {
 		$.loading.show("loading")
 
 		Media.addComment($scope.media, $scope.comentary.content_comentary)
 		.then(function (newComment) {
-			$scope.comments.unshift(newComment)
+			$scope.media.comments.unshift(newComment)
 			$scope.comentary = {}
 			$.loading.show("success", 1000)
 		}, function (err) {
@@ -51,7 +46,7 @@ angular.module('app.controllers.projects.media', [])
 			.then(function () {
 				return Media._destroy(key)
 			}, function () {
-				$.loading.error("No ha sido posible eliminar")
+				$.loading.error("No ha sido posible eliminar el contenido.")
 			})
 			.then(function () {
 				$.loading.show("success", 1500)

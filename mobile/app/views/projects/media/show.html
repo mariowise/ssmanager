@@ -14,7 +14,7 @@
 				</div>
 				<div class="col-xs-3 text-center" ng-if="media.type_media == '2'">
 					<i class="fa fa-camera panel-icon"></i><br>
-					<span class="small">Imagen</span>
+					<span class="small">Foto</span>
 				</div>
 				<div class="col-xs-9 small">
 					<h4>{{media.name_media}}</h4>
@@ -31,10 +31,10 @@
 
 	<div class="view-title text-center">
 		<i class="fa fa-comments"></i> Comentarios ({{media.comments_media.length || "0"}})
-		<div ng-if="comments.length == 0 && media.comments_media.length != 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+		<div ng-if="media.comments.length == 0 && media.comments.length != 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 	</div>
 
-	<div class="panel panel-default" ng-if="comments.length != 0 || media.comments_media.length == 0">
+	<div class="panel panel-default" ng-if="media.comments.length != 0 || media.comments_media.length == 0">
 		<div class="panel-heading">
 			<div class="panel-toolbar">
 				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 		<div class="panel-body">
-			<div class="comment small" ng-repeat="comment in comments">
+			<div class="comment small" ng-repeat="comment in media.comments | orderBy:'-date_comentary'">
 				<label for="">{{comment.user.username}} - {{comment.date_comentary | amCalendar}}</label>
 				<p>{{comment.content_comentary}}</p>
 				<br>

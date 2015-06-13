@@ -3,29 +3,20 @@ angular.module('app.controllers.projects.stateone', [])
 .controller('stateone#show', ['$scope', '$state', 'StateOne', 'Media', 'File', 'Session', function ($scope, $state, StateOne, Media, File, Session) {
 	console.log("stateone#show running")
 
-	$scope.medias = []
 	$scope.newmedia = {}
 	$scope.state = {}
 
 	function setState (state) {
 		$scope.state = state
-		$scope.medias = state.sortedMedias
 	}
 
 	$scope.$watch('project', function () {
 		if($scope.project.id) {
-			StateOne._pull($scope.project.id)
+			StateOne.fetch($scope.project.state_one.id)
 			.then(setState, function (err) {
-				StateOne.gather($scope.project.id)
-				.then(function (state) {
-					if(state.length == 1) {
-						setState(state[0])
-					} else {
-						$.loading.error("No ha sido posible cargar el estado solicitado")
-						$state.go("app.project", { project_id: $scope.project.id })
-					} 
-				})
-			})
+				$.loading.error("No ha sido posible cargar el estado solicitado")
+				$state.go("app.project", { project_id: $scope.project.id })
+			}, setState)
 		}
 	})
 
@@ -63,7 +54,7 @@ angular.module('app.controllers.projects.stateone', [])
 			.then(function (media) {
 				media.local_uri = local_uri
 				$scope.state.ssp_imagenes.push(media.id)
-				$scope.medias.unshift(media)
+				$scope.state.medias.unshift(media)
 				return StateOne.update($scope.state)
 			})
 			.then(function (media) {

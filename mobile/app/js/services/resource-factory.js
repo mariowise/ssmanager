@@ -26,7 +26,8 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 localForage.getItem(key)
                 .then(function (item) {
                     if(CONFIG.debug) console.log(item)
-                    defer.resolve(item)
+                    if(item != undefined) defer.resolve(item)
+                    else defer.reject(item)
                 })
                 .catch(function (err) {
                     console.error("ERROR: ResourceFactory::get " + name + "#" + key)
@@ -53,7 +54,12 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 if(value.toJSON)
                     value = value.toJSON()
 
-                localForage.setItem(key, value)
+                localForage.getItem(key)
+                .then(function (item) {
+                    if(item == undefined) item = {}
+                    angular.extend(item, value) // De esta forma no se borran los campos locales
+                    return localForage.setItem(key, item)
+                })
                 .then(function (item) {
                     // if(CONFIG.debug) console.log(item)
                     defer.resolve(item)
@@ -159,9 +165,10 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
             /*** REMOTE ***************************************************************/
 
             /*
-             * Intenta buscar la tupla e internet y actualizar local
-             * Si falla al encontrarla en internet, intenta entregar el valor 
-             * que tenga localForage (el cual podría ser undefined)
+             * Busca la tupla en localForage y la notifica, luego intenta buscarla en internet
+             * y si la encuentra la actualizará y la resolvera. Si no la encuentra, se resuelve
+             * el resultado que se encontró en localForage originalmente. La función esta preparada
+             * para recibir tanto ID's, como objetos y tambien arreglos de ID's
              */
             , find: function(key) {
                 if(CONFIG.debug) console.log("ResourceFactory::find " + name + "#" + key)
@@ -169,14 +176,47 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 var defer = $q.defer()
                   , self = this
 
-                // this.remote().get({ id: key }, function (item) {
-                this._find(key)
-                .then(defer.resolve, function (err) {
-                    console.error("ResourceFactory::find could not find " + name + " #" + key)
-                    self.get(key)
-                    .then(defer.resolve, defer.reject)
-                })  
+                if(key.constructor == Array) {
 
+                    var notifies = [], resolves = [], ldefer = $q.defer()
+                    key.forEach(function (query) {
+                        self.find(query)
+                        .then(function (resolvedItem) {
+                            resolves.push(resolvedItem)
+                            if(resolves.length == key.length) 
+                                ldefer.resolve(resolves)
+                        
+                        }, function (err) {
+                            resolves.push(null)
+                            notifies.push(null)
+                        
+                        }, function (notifiedItem) {
+                            notifies.push(notifiedItem)
+                            if(notifies.length == key.length)
+                                ldefer.notify(notifies)
+                        })
+                    })
+                    ldefer.promise.then(defer.resolve, null, defer.notify)
+                    if(key.length == 0) {
+                        ldefer.notify([])
+                        ldefer.resolve([])                    
+                    }
+
+                } else  {
+
+                    var key = (key[CONFIG.pk]) ? key[CONFIG.pk] : key
+                    
+                    self.get(key)
+                    .then(function (local) {
+                        defer.notify(local)                    
+                        self._find(key)
+                        .then(defer.resolve, function (err) {
+                            defer.resolve(local)
+                        })
+                    }, defer.reject) 
+
+                }
+                
                 return defer.promise
             }
 
@@ -190,7 +230,7 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 var defer = $q.defer()
                   , self = this                  
 
-                this.remote().get({ id: key }, function (item) {
+                self.remote().get({ id: key }, function (item) {
                     if(CONFIG.debug) console.log("ResourceFactory::_find found object " + JSON.stringify(item))
                     self.set(key, item)
                     .then(defer.resolve, defer.reject)
@@ -269,6 +309,35 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 }, defer.reject)
 
                 return defer.promise
+            }
+
+            /*
+             * Revisa si se esta solicitando una lista de elementos o solo uno y aplica
+             * el método 'fetchOne' que debe estar definido en cada Servicio.
+             */
+            , fetch: function (key) {
+                var d = $q.defer()
+                  , self = this
+
+                if(!self.fetchOne) {
+                    console.error("ResourceFactory::fetch no existe el método fetchOne para la clase " + name)
+                    d.reject()
+                    return d.promise
+                }
+
+                if(key.constructor != Array) {
+                    self.fetchOne(key)
+                    .then(d.resolve, d.reject, d.notify)
+                } else {
+                    var pms = []
+                    key.forEach(function (query) {
+                        pms.push(self.fetchOne(query))
+                    })
+                    $q.all(pms)
+                    .then(d.resolve, d.reject, d.notify)
+                }
+
+                return d.promise
             }
 
             /*
@@ -385,6 +454,18 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                     })
                     d.resolve(response)
                 }, d.reject)
+
+                return d.promise
+            }
+
+            /*
+             * Este método es un wrapper de query para trabajar con promesas $q
+             */
+            , _where: function (filter) {
+                var d = $q.defer()
+                  , self = this
+
+                self.remote().query(filter, d.resolve, d.reject)
 
                 return d.promise
             }

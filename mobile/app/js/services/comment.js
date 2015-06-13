@@ -34,7 +34,30 @@ angular.module('app.services.comment', [])
 				} else d.reject(err)
 			})
 		} else d.resolve()
-		
+
+		return d.promise
+	}
+
+	Comment.fetchOne = function (key) {
+		console.log("Comment::fetchOne")
+		var d = $q.defer()
+
+		Comment.find(key)
+		.then(function (comment) {
+			return $q.all([
+				comment, 
+				User.fetch(comment.autor_comentary)
+			])
+		}, d.reject, function (ncomment) {
+			if(ncomment.user)
+				d.notify(ncomment)
+		})
+		.then(function (res) {
+			var comment = res[0]
+			comment.user = res[1]
+			Comment.set(comment.id, comment)
+			.then(d.resolve, d.reject)
+		}, d.reject)
 
 		return d.promise
 	}

@@ -13,6 +13,7 @@ angular.module('app', [
 	, 'app.services.media'
 	, 'app.services.comment'
 	, 'app.services.file'
+	, 'app.services.tag'
 
 	, 'app.controllers.application'
 	, 'app.controllers.login'

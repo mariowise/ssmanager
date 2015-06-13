@@ -10,33 +10,26 @@
 			</div>
 		</div>
 		<div class="panel-body">
-			<label for="">Agregar contenido</label>
-			<div class="btn-group btn-group-justified wide">
-				<a class="btn btn-default" disabled="disabled">
-					<i class="fa fa-video-camera"></i><br>Video
-				</a>
-				<a class="btn btn-default" ng-click="takePhoto()">
-					<i class="fa fa-camera"></i><br>Foto
-				</a>
-				<a class="btn btn-default" disabled="disabled">
-					<i class="fa fa-microphone"></i><br>Audio
-				</a>
+			<div class="btn-group-vertical wide" role="group">
+				<a class="btn btn-default" disabled="disabled"><i class="fa fa-video-camera"></i> Capturar video</a>
+				<a class="btn btn-default" ng-click="takePhoto()"><i class="fa fa-camera"></i> Tomar una foto</a>
+				<a class="btn btn-default" disabled="disabled"><i class="fa fa-microphone"></i> Grabar audio</a>
 			</div>
 		</div>
 	</div>
 	
 	<div class="view-title text-center">
 		<i class="fa fa-file"></i> Archivos
-		<div ng-if="medias.length == 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+		<div ng-if="state.medias.length == 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 	</div>
-	<div ng-repeat="media in medias">
+	<div ng-repeat="media in state.medias | orderBy:'-date_media'">
 		<div ng-if="media.type_media == '2'">
 			<div class="panel panel-default panel-media">
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-xs-3 text-center">
 							<i class="fa fa-picture-o panel-icon"></i><br>
-							<span class="small">Imagen</span>
+							<span class="small">Foto</span>
 						</div>
 						<div class="col-xs-9 small">
 							<h4>{{media.name_media}}</h4>

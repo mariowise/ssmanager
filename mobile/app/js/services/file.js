@@ -1,6 +1,6 @@
 angular.module('app.services.file', [])
 
-.factory('File', ['$q', '$cordovaCamera', '$cordovaFile', '$cordovaFileTransfer', 'Session', 'ResourceFactory', function ($q, $cordovaCamera, $cordovaFile, $cordovaFileTransfer, Session, ResourceFactory) {
+.factory('File', ['$q', '$cordovaCamera', '$cordovaFile', '$cordovaFileTransfer', '$cordovaCapture', 'Session', 'ResourceFactory', function ($q, $cordovaCamera, $cordovaFile, $cordovaFileTransfer, $cordovaCapture, Session, ResourceFactory) {
 	
 	// Recurso local
 	var File = ResourceFactory('File', 'files') // Nombre del recurso, Nombre del recurso en API (URL)
@@ -22,23 +22,65 @@ angular.module('app.services.file', [])
 		return $cordovaCamera.getPicture(options)
 	}
 
+	File.takeAudio = function () {
+		var d = $q.defer()
+		  , options = {
+			limit: 1, 
+			duration: 60 * 60 // Máximo de segundos
+		  } 
+		$cordovaCapture.captureAudio(options)
+		.then(function (res) {
+			if(res && res.length && res.length == 1 && res[0].fullPath)
+				d.resolve(res[0].fullPath)
+			else
+				d.reject("File::takeAudio El objeto no pasa la verificación " + JSON.stringify(res))
+		}, d.reject)
+		return d.promise
+	}
+
+	File.takeVideo = function () {
+		var d = $q.defer()
+		  , options = {
+		  	limit: 1,
+		  	duration: 60 * 15
+		  }
+		$cordovaCapture.captureVideo(options)
+		.then(function (res) {
+			if(res && res.length && res.length == 1 && res[0].fullPath)
+				d.resolve(res[0].fullPath)
+			else
+				d.reject("File::takeVideo El objeto no pasa la verificación " + JSON.stringify(res))
+		}, d.reject)
+		return d.promise
+	}
+
 	/*
 	 * Efectúa la operación de subir un fichero a la nube, devuelve la promesa de esta operación
 	 */
 	File.upload = function (fileUri) {
 		var d = $q.defer()
+		  , ext = fileUri.split(".")
+
+		if(ext.length > 0)
+			ext = "." + ext[ext.length-1]
+		else 
+			ext = ""
+
+		var fname = guid() + ext
 
 		Session.current_user()
 		.then(function (current_user) {
 			var options = {
 				fileKey: "datafile",
-				fileName: guid(),
+				fileName: fname,
 				params: { owner: current_user.id },
 				headers: { "Authorization": "JWT " + current_user.token }
-			}				
+			}
+			console.log("Subiendo archivo")
+			console.log(options)				
 			return $cordovaFileTransfer.upload(CONFIG.api("files/"), fileUri, options, true)			
 		})
-		.then(d.resolve, d.reject)
+		.then(d.resolve, d.reject, d.notify)
 
 		return d.promise
 	}
@@ -74,9 +116,7 @@ angular.module('app.services.file', [])
 		} else d.resolve(fileUrl)
 
 		return d.promise
-	}
-
-	
+	}	
 
 	/*
 	 * Vacía la carpeta rPath ubicada dentro del directorio de documentos asignado a la App por

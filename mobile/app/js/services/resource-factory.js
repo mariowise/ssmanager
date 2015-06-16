@@ -57,7 +57,7 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 localForage.getItem(key)
                 .then(function (item) {
                     if(item == undefined) item = {}
-                    angular.extend(item, value) // De esta forma no se borran los campos locales
+                    angular.extend(item, value) // De esta forma no se borran los valores previos, pisa los que concidan y no toca los otros
                     return localForage.setItem(key, item)
                 })
                 .then(function (item) {
@@ -205,7 +205,7 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 } else  {
 
                     var key = (key[CONFIG.pk]) ? key[CONFIG.pk] : key
-                    
+
                     self.get(key)
                     .then(function (local) {
                         defer.notify(local)                    
@@ -213,7 +213,10 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                         .then(defer.resolve, function (err) {
                             defer.resolve(local)
                         })
-                    }, defer.reject) 
+                    }, function (err) {
+                        self._find(key)
+                        .then(defer.resolve, defer.reject)
+                    }) 
 
                 }
                 
@@ -316,6 +319,7 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
              * el método 'fetchOne' que debe estar definido en cada Servicio.
              */
             , fetch: function (key) {
+                if(CONFIG.debug) console.log("ResourceFactory::fetch (" + name + ") " + key)
                 var d = $q.defer()
                   , self = this
 
@@ -465,7 +469,9 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 var d = $q.defer()
                   , self = this
 
-                self.remote().query(filter, d.resolve, d.reject)
+                self.remote().query(filter, function (res) {
+                    d.resolve(res)
+                }, d.reject)
 
                 return d.promise
             }

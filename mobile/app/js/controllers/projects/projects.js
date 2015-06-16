@@ -12,9 +12,7 @@ angular.module('app.controllers.projects.projects', [])
 	Project.fetch($stateParams.project_id)
 	.then(setProject, null, setProject)
 	.catch(function (err) {
-		$.loading.error("No ha sido posible cargar el proyecto", function () {
-			$state.go("app.projects")
-		})
+		console.log(err)
 	})
 	.finally(function () {
 		$scope.$broadcast('ProjectControllerLoaded')

@@ -20,13 +20,19 @@ angular.module('app.controllers.projects.stateone', [])
 		}
 	})
 
-	$scope.takePhoto = function () {
+	$scope.takeMedia = function (type) {
 		$.loading.show("loading")
-		File.takePhoto()
+		File[type]()
 		.then(function (fileUri) {
+			console.log(fileUri)
 			$.loading.hide("loading")
 			$('#myModal').modal('show')
-			$scope.newmedia.type_media = "2" // Para imágenes xD Maldito fardo
+			if(type == "takePhoto")
+				$scope.newmedia.type_media = "2" // Para imágenes xD Maldito fardo
+			else if(type == "takeAudio")
+				$scope.newmedia.type_media = "3" // Oh el conxesumadre este
+			else if(type == "takeVideo")
+				$scope.newmedia.type_media = "1" // Yaaa para la wea, oh la wea mala
 			$scope.newmedia.url_media = fileUri
 		}, function () {
 			$.loading.error("Ha ocurrido un problema al tomar la foto")
@@ -42,6 +48,8 @@ angular.module('app.controllers.projects.stateone', [])
 			local_uri = $scope.newmedia.url_media
 			File.upload(local_uri)
 			.then(function (file) {
+				console.log("Archivo procesado")
+				console.log(file)
 				file = JSON.parse(file.response)
 				return Media.create({
 					name_media: $scope.newmedia.name_media,
@@ -50,10 +58,17 @@ angular.module('app.controllers.projects.stateone', [])
 					uploaded_by: current_user.username,
 					type_media: $scope.newmedia.type_media
 				})
+			}, null, function (notify) {
+				$scope.progress = (notify.loaded / notify.total).toFixed(0)
 			})
 			.then(function (media) {
 				media.local_uri = local_uri
-				$scope.state.ssp_imagenes.push(media.id)
+				if(media.type_media == "2")
+					$scope.state.ssp_imagenes.push(media.id)
+				else if(media.type_media == "3")
+					$scope.state.ssp_audios.push(media.id)
+				else if(media.type_media == "1")
+					$scope.state.ssp_videos.push(media.id)
 				$scope.state.medias.unshift(media)
 				return StateOne.update($scope.state)
 			})

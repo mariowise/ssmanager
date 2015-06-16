@@ -27,6 +27,7 @@ angular.module('app', [
 	, 'app.directives.footer'
 	, 'app.directives.header'
 	, 'app.directives.panel'
+	, 'app.directives.media-player'
 
 ])
 

@@ -39,7 +39,7 @@ angular.module('app.services.comment', [])
 	}
 
 	Comment.fetchOne = function (key) {
-		console.log("Comment::fetchOne")
+		if(CONFIG.debug) console.log("Comment::fetchOne")
 		var d = $q.defer()
 
 		Comment.find(key)

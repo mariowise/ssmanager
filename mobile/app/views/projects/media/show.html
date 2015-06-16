@@ -8,13 +8,17 @@
 		<button class="btn btn-link panel-destroy" ng-if="media.uploaded_by == current_user.username" ng-click="delete(media.id)"><i class="fa fa-close"></i></button>
 		<div class="panel-body">
 			<div class="row">
-				<div class="col-xs-3 text-center" ng-if="media.type_media == '3'">
-					<i class="fa fa-microphone panel-icon"></i><br>
-					<span class="small">Audio</span>
+				<div class="col-xs-3 text-center" ng-if="media.type_media == '1'">
+					<i class="fa fa-video-camera panel-icon"></i><br>
+					<span class="small">Video</span>
 				</div>
 				<div class="col-xs-3 text-center" ng-if="media.type_media == '2'">
 					<i class="fa fa-camera panel-icon"></i><br>
 					<span class="small">Foto</span>
+				</div>
+				<div class="col-xs-3 text-center" ng-if="media.type_media == '3'">
+					<i class="fa fa-microphone panel-icon"></i><br>
+					<span class="small">Audio</span>
 				</div>
 				<div class="col-xs-9 small">
 					<h4>{{media.name_media}}</h4>
@@ -22,6 +26,8 @@
 					<p class="small"><i class="fa fa-user"></i> {{media.uploaded_by}}</p>
 				</div>
 			</div>
+			<video-player source="{{media.local_uri}}" ng-if="media.type_media == '1'"></video-player>
+			<audio-player source="{{media.local_uri}}" ng-if="media.type_media == '3'"></audio-player>
 			<img src="{{media.local_uri}}" ng-if="media.type_media == '2'" class="wide" alt="">	
 		</div>
 		<div class="panel-footer small">

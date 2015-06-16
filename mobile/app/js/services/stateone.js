@@ -119,7 +119,7 @@ angular.module('app.services.stateone', [])
 	}
 
 	StateOne.fetchOne = function (key) {
-		console.log("StateOne::fetch")
+		if(CONFIG.debug) console.log("StateOne::fetchOne " + key)
 		var d = $q.defer()
 
 		StateOne.find(key)

@@ -86,6 +86,7 @@ plugins:
 	cordova plugin add org.apache.cordova.camera
 	cordova plugin add org.apache.cordova.file
 	cordova plugin add org.apache.cordova.file-transfer
+	cordova plugin add org.apache.cordova.media-capture
 	# cordova plugin add https://github.com/wildabeast/BarcodeScanner.git
 	# cordova plugin add de.appplant.cordova.plugin.local-notification
 	# cordova plugin add org.apache.cordova.device

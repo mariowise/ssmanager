@@ -37,7 +37,7 @@ angular.module('app.services.project', [])
 	}	
 
 	Project.fetchOne = function (key) {
-		console.log("Project::fetchOne")
+		if(CONFIG.debug) console.log("Project::fetchOne")
 		var d = $q.defer()
 		  , self = this
 
@@ -48,12 +48,12 @@ angular.module('app.services.project', [])
 				User.find(project.manager) // Obtiene el manager del proyecto
 			])
 		}, null, function (nproject) { // Si tenemos data en caché la notifica
-			if(nproject.manager && nproject.state_one && nproject.manager.id && nproject.state_one.id)
+			if(nproject._manager && nproject.state_one && nproject._manager.id && nproject.state_one.id)
 				d.notify(nproject)
 		})
-		.then(function (res) { 
+		.then(function (res) {
 			var project = res[0]
-			project.manager = res[1]
+			project._manager = res[1]
 			return $q.all([
 				project,
 				StateOne._where({ ssp_stateOne: project.id }) // Descarga el estado 1
@@ -75,31 +75,6 @@ angular.module('app.services.project', [])
 			.then(d.resolve, d.reject)
 		})
 		.catch(d.reject)
-
-		return d.promise
-	}
-
-	/*
-	 * Busca el proyecto y su manager localmente, construye un único objeto y lo notifica
-	 * luego si en internet logra capturar 
-	 */
-	response.find = function (key) {
-		var d = $q.defer()
-		  , p = null
-
-		Project.find(key)
-		.then(function (project) {
-			User.find(project.manager)
-			.then(function (manager) {
-				project.manager = manager
-				d.resolve(project)
-			}, d.reject, function (manager) {
-				p.manager = manager
-				d.notify(p)
-			})
-		}, d.reject, function (project) {
-			p = project
-		})
 
 		return d.promise
 	}

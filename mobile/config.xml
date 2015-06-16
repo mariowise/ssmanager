@@ -68,7 +68,23 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />	
 	-->
 
-	
+	<feature name="Capture">
+		<param name="ios-package" value="CDVCapture" />
+	</feature>	
+	<!--
+	(in app/res/xml/config.xml)
+	<feature name="File">
+		<param name="android-package" value="org.apache.cordova.file.FileUtils" />
+	</feature>
+	<feature name="Capture">
+		<param name="android-package" value="org.apache.cordova.mediacapture.Capture" />
+	</feature>
+
+	(in app/AndroidManifest.xml)
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<uses-permission android:name="android.permission.RECORD_VIDEO" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	-->
 
 </widget>
 

@@ -1,6 +1,6 @@
 angular.module('app.controllers.projects.media', [])
 
-.controller('media#show', ['$scope', '$state', '$stateParams', 'Project', 'Media', 'Comment', function ($scope, $state, $stateParams, Project, Media, Comment) {
+.controller('media#show', ['$scope', '$state', '$stateParams', '$sce', 'Project', 'Media', 'Comment', function ($scope, $state, $stateParams, $sce, Project, Media, Comment) {
 	console.log("media#show running")
 
 	$scope.media = {}
@@ -11,9 +11,10 @@ angular.module('app.controllers.projects.media', [])
 	}
 
 	Media.fetch($stateParams.media_id)
-	.then(setMedia, function (err) {
-		console.error(err)
-	}, setMedia)
+	.then(setMedia, null, setMedia)
+	.catch(function (err) {
+		console.log(err)
+	})
 
 	$scope.addComment = function () {
 		$.loading.show("loading")

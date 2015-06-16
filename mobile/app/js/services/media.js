@@ -39,7 +39,7 @@ angular.module('app.services.media', [])
 	 * Efectúa un find y además descarga el archivo si es que no existe
 	 */
 	Media.fetchOne = function (key) {
-		console.log("Media::fetchOne")
+		if(CONFIG.debug) console.log("Media::fetchOne " + key)
 		var d = $q.defer()
 
 		Media.find(key)

@@ -119,7 +119,7 @@ angular.module('app', [
 					d.resolve(undefined)
 				else
 					d.resolve(current_user.token)
-			}, function (err) { d.reject(err) })
+			}, function (err) { d.resolve(undefined) })
 
 			return d.promise
 		}

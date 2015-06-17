@@ -39,12 +39,8 @@ angular.module('app.directives.media-player', [])
 		, scope: {}
 		, template: '<video controls class="wide"></video>'
 		, link: function (scope, element, attrs) {
-			var btn = element.children("video")
-			  // , ext = attrs.source.split(".")
-			  // , ext = (ext.length > 0) ? ext[ext.length-1] : "mov"
-			
+			var btn = element.children("video")			
 			btn.attr('src', attrs.source)
-			// btn.html('<source src="'+attrs.source+'" type="video/'+ext.toLowerCase()+'">')
 		}
 	}
 })

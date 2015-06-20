@@ -58,31 +58,15 @@ angular.module('app.services.file', [])
 	 * Efectúa la operación de subir un fichero a la nube, devuelve la promesa de esta operación
 	 */
 	File.upload = function (fileUri) {
-		var d = $q.defer()
-		  , ext = fileUri.split(".")
+		var ext = fileUri.split(".")
+		  , ext = (ext.length > 0) ? ext[ext.length-1].toLowerCase() : ""
+		  , fname = guid() + ((ext != "") ? "." + ext : ext)
+		  , fileURL = CONFIG.gcs + "&name=" + fname
+		  , options = { headers: { "Content-Type": CONFIG.media[ext] } }
 
-		if(ext.length > 0)
-			ext = "." + ext[ext.length-1]
-		else 
-			ext = ""
-
-		var fname = guid() + ext
-
-		Session.current_user()
-		.then(function (current_user) {
-			var options = {
-				fileKey: "datafile",
-				fileName: fname,
-				params: { owner: current_user.id },
-				headers: { "Authorization": "JWT " + current_user.token }
-			}
-			console.log("Subiendo archivo")
-			console.log(options)				
-			return $cordovaFileTransfer.upload(CONFIG.api("files/"), fileUri, options, true)			
-		})
-		.then(d.resolve, d.reject, d.notify)
-
-		return d.promise
+		console.log("Subiendo archivo a " + fileURL + "(" + ext + ")")
+		console.log([fileURL, fileUri, options])
+		return $cordovaFileTransfer.upload(fileURL, fileUri, options, true)			
 	}
 
 	/*

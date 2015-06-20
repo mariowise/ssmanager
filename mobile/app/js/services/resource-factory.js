@@ -231,7 +231,8 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                 if(CONFIG.debug) console.log("ResourceFactory::_find " + name + "#" + key)
 
                 var defer = $q.defer()
-                  , self = this                  
+                  , self = this
+                  , key = key[CONFIG.pk] || key                  
 
                 self.remote().get({ id: key }, function (item) {
                     if(CONFIG.debug) console.log("ResourceFactory::_find found object " + JSON.stringify(item))
@@ -270,6 +271,20 @@ angular.module('app.services.resource-factory', ['LocalForageModule'])
                     self.set(key, value)
                     .then(defer.resolve, defer.reject)
                 })
+
+                return defer.promise
+            }
+
+            , _update: function (value) {
+                var defer = $q.defer()
+                  , self = this
+                  , key = value[CONFIG.pk] || value.id
+
+                self.remote().update(value, function () {
+                    if(CONFIG.debug) console.log("ResourceFactory::update updated object " + JSON.stringify(value))
+                    self.set(key, value)
+                    .then(defer.resolve, defer.reject)
+                }, defer.reject)
 
                 return defer.promise
             }
@@ -502,5 +517,6 @@ function guid() {
       .toString(10)
       .substring(1);
   }
-  return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
+
+  return (Date.now() + s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4()).substr(0, 32);
 }

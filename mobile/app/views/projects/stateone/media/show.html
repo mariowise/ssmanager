@@ -1,0 +1,78 @@
+<header-left route="app.project.stateone.show()"></header-left>
+
+<div class="container">
+
+	<div class="view-title text-center"><i class="fa fa-file"></i> Detalle archivo</div>
+
+	<div class="panel panel-default panel-media">
+		<button class="btn btn-link panel-destroy" ng-if="media.uploaded_by == current_user.username" ng-click="delete(media.id)"><i class="fa fa-close"></i></button>
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-3 text-center" ng-if="media.type_media == '1'">
+					<i class="fa fa-video-camera panel-icon"></i><br>
+					<span class="small">Video</span>
+				</div>
+				<div class="col-xs-3 text-center" ng-if="media.type_media == '2'">
+					<i class="fa fa-camera panel-icon"></i><br>
+					<span class="small">Foto</span>
+				</div>
+				<div class="col-xs-3 text-center" ng-if="media.type_media == '3'">
+					<i class="fa fa-microphone panel-icon"></i><br>
+					<span class="small">Audio</span>
+				</div>
+				<div class="col-xs-9 small">
+					<h4>{{media.name_media}}</h4>
+					<p>{{media.description_media}}</p>
+					<p class="small"><i class="fa fa-user"></i> {{media.uploaded_by}}</p>
+				</div>
+			</div>
+			<video-player source="{{media.local_uri}}" ng-if="media.type_media == '1'"></video-player>
+			<audio-player source="{{media.local_uri}}" ng-if="media.type_media == '3'"></audio-player>
+			<img src="{{media.local_uri}}" ng-if="media.type_media == '2'" class="wide" alt="">	
+		</div>
+		<div class="panel-footer small">
+			<span>{{media.date_media | amCalendar}}</span>
+		</div>
+	</div>
+
+	<div class="view-title text-center">
+		<i class="fa fa-comments"></i> Comentarios ({{media.comments_media.length || "0"}})
+		<div ng-if="media.comments.length == 0 && media.comments.length != 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+	</div>
+
+	<div class="panel panel-default" ng-if="media.comments.length != 0 || media.comments_media.length == 0">
+		<div class="panel-heading">
+			<div class="panel-toolbar">
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">
+					<i class="fa fa-plus"></i> Comentar
+				</button>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="comment small" ng-repeat="comment in media.comments | orderBy:'-date_comentary'">
+				<label for="">{{comment.user.username}} - {{comment.date_comentary | amCalendar}}</label>
+				<p>{{comment.content_comentary}}</p>
+				<br>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Nuevo comentario</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="">Comentario</label>
+						<textarea ng-model="comentary.content_comentary" rows="3" class="form-control"></textarea>
+					</div>
+					<button type="button" class="btn btn-primary btn-lg wide" data-dismiss="modal" ng-click="addComment()">Agregar comentario</button>
+				</div> 
+			</div>
+		</div>
+	</div>
+</div>

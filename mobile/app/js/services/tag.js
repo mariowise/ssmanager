@@ -4,6 +4,7 @@ angular.module('app.services.tag', [])
 	
 	// Recurso local
 	var Tag = ResourceFactory('Tag', 'tags') // Nombre del recurso, Nombre del recurso en API (URL)	
+	  , response
 
-	return Tag
+	return angular.extend({}, Tag, response)
 }])

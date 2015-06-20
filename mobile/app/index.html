@@ -17,6 +17,7 @@
         <!--[start-uncomment]>
         <link rel="stylesheet" href="css/style.min.css" />
         <![end-uncomment]-->
+        <link rel="stylesheet" href="/bower_components/jasmine/lib/jasmine-core/jasmine.css">
     </head>
     <body>
         <div ui-view></div>
@@ -69,6 +70,8 @@
         <script src="/bower_components/async/lib/async.js"></script>
         <script src="/js/lib/loading.js"></script>
         <script src="/js/lib/notice.js"></script>
+        <script src="/js/lib/sync/src/local.js"></script>
+        <script src="/js/lib/sync/src/remote.js"></script>
         
         <!-- app -->
         <script src="/js/config.js"></script>
@@ -79,8 +82,9 @@
         <script src="/js/controllers/index.js"></script>
         <script src="/js/controllers/profile.js"></script>
         <script src="/js/controllers/projects/projects.js"></script>
-        <script src="/js/controllers/projects/stateone.js"></script>
-        <script src="/js/controllers/projects/media.js"></script>
+        <script src="/js/controllers/projects/stateone/stateone.js"></script>
+        <script src="/js/controllers/projects/stateone/media.js"></script>
+        <script src="/js/controllers/projects/stateone/tags.js"></script>
         
         <script src="/js/services/resource-factory.js"></script>
         <script src="/js/services/session.js"></script>
@@ -100,6 +104,9 @@
 
         <!-- cordova -->
         <script src="/bower_components/ngCordova/dist/ng-cordova.min.js"></script>
+
+        <script src="/js/lib/sync/test/local.js"></script>
+        <script src="/js/lib/sync/test/remote.js"></script>
 
         <!--[start-uncomment]>
             <script type="text/javascript" src="js/script.min.js"></script>

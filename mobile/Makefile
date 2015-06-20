@@ -119,3 +119,8 @@ raw-ios: raw-release
 raw-android: raw-release
 	cordova build android
 	cordova run android
+
+# <script src="/bower_components/jasmine/lib/jasmine-core/jasmine.js"></script>
+# <script src="/bower_components/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+# <script src="/bower_components/jasmine/lib/jasmine-core/boot.js"></script>
+# <script src="/bower_components/angular-mocks/angular-mocks.js"></script>

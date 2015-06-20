@@ -4,6 +4,7 @@ angular.module('app.services.session', [])
 
 	// Recurso local
 	var Session = ResourceFactory('Session', '') // Nombre del recurso, Nombre del recurso en API (URL)
+	  , response = {}
 
 	Session.set_current_user = function (res) {
 		var now = Math.round(Date.now()/1000)
@@ -115,5 +116,5 @@ angular.module('app.services.session', [])
 	}
 
 	// Se expone el servicio
-	return Session
+	return angular.extend({}, Session, response)
 }])

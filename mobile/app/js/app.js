@@ -23,11 +23,14 @@ angular.module('app', [
 	, 'app.controllers.projects.projects'
 	, 'app.controllers.projects.stateone'
 	, 'app.controllers.projects.media'
+	, 'app.controllers.projects.tags'
 
 	, 'app.directives.footer'
 	, 'app.directives.header'
 	, 'app.directives.panel'
 	, 'app.directives.media-player'
+
+	, 'sync.remote'
 
 ])
 
@@ -74,16 +77,28 @@ angular.module('app', [
 			})
 			// StateOne
 			.state('app.project.stateone', {
+				abstract: true,
 				url: '/stateone',
-				templateUrl: 'views/projects/stateone/show.html',
-				controller: 'stateone#show'
-			})
-			// Media
-			.state('app.project.media', {
-				url: '/media/:media_id',
-				templateUrl: 'views/projects/media/show.html',
-				controller: 'media#show'
-			})
+				template: '<div ui-view></div>',
+				controller: 'StateOneController'
+			})	
+				.state('app.project.stateone.show', {
+					url: '/',
+					templateUrl: 'views/projects/stateone/show.html',
+					controller: 'stateone#show'
+				})
+				// Media
+				.state('app.project.stateone.media', {
+					url: '/media/:media_id',
+					templateUrl: 'views/projects/stateone/media/show.html',
+					controller: 'media#show'
+				})
+				// Tags
+				.state('app.project.stateone.tags', {
+					url: '/tags',
+					templateUrl: 'views/projects/stateone/tags/index.html',
+					controller: 'tags#index'
+				})
 
 	// Profile
 	.state('app.profile', {
@@ -145,7 +160,7 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function (Session, User, Project, StateOne, Media, Comment, StateOne, File, $localForage, amMoment) {
+.run(function ($q, Session, User, Project, StateOne, Media, Comment, StateOne, File, Remote, Tag, $localForage, amMoment) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
@@ -157,10 +172,27 @@ angular.module('app', [
 	window.StateOne = StateOne
 	window.Media = Media
 	window.Comment = Comment
-	window.StateOne = StateOne
 	window._File = File
+	window.Tag = Tag
+	window.Remote = Remote
+
+	window.dropAll = function () {
+		User.drop()
+		Project.drop()
+		StateOne.drop()
+		Media.drop()
+		Comment.drop()
+		File.drop()
+		Tag.drop()
+	}
 
 	setInterval(function () {
 		Session.refresh_token()
 	}, 15 * 1000)
+
+	testEntity = Remote("Test", "test")
+	async.series([
+		function (callback) { testLocal($q, testEntity, callback) },
+		function (callback) { testRemote($q, testEntity, callback) }
+	])
 })

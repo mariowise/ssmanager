@@ -1,6 +1,6 @@
 angular.module('app.services.stateone', [])
 
-.factory('StateOne', ['ResourceFactory', '$q', 'Session', 'Project', 'Media', 'File', function (ResourceFactory, $q, Session, Project, Media, File) {
+.factory('StateOne', ['ResourceFactory', '$q', 'Session', 'Project', 'Media', 'File', 'Tag', function (ResourceFactory, $q, Session, Project, Media, File, Tag) {
 	
 	// Recurso local
 	var StateOne = ResourceFactory('StateOne', 'state_one') // Nombre del recurso, Nombre del recurso en API (URL)	
@@ -127,18 +127,84 @@ angular.module('app.services.stateone', [])
 			var medias = [].concat(state.ssp_videos,state.ssp_imagenes,state.ssp_audios,state.ssp_documentos)
 			return $q.all([
 				state,
-				Media.fetch(medias)
+				Media.fetch(medias),
+				Tag.find(state.tags_state)
 			])
 		}, d.reject, function (mstate) {
-			if(mstate.medias)
+			if(mstate.medias && mstate.tags)
 				d.notify(mstate)
 		})
 		.then(function (res) {
 			var state = res[0]
 			state.medias = res[1]
+			state.tags = res[2]
 			StateOne.set(state.id, state)
 			.then(d.resolve, d.reject)
 		})
+		return d.promise
+	}
+
+	StateOne.addTag = function (state, newTag) {
+		var d = $q.defer()
+
+		Tag._create(newTag)
+		.then(function (newTag) {
+			return $q.all([
+				newTag,
+				StateOne.find(state)
+			])
+		})
+		.then(function (res) {
+			var state = res[1], tag = res[0]
+			state.tags_state.push(tag.id)
+			return StateOne.update(state)
+		})
+		.then(function (state) {
+			StateOne.fetch(state)
+			.then(d.resolve, d.reject)
+		})
+		.catch(d.reject)
+
+		return d.promise
+	}
+
+	StateOne.updateTag = function (state, tag) {
+		var d = $q.defer()
+
+		Tag._update(tag)
+		.then(function (tag) {
+			return StateOne.fetch(state)
+		})
+		.then(d.resolve)
+		.catch(d.reject)
+
+		return d.promise
+	}
+
+	/*
+	 * Actualiza el estado, quita la llave de la etiqueta, luego sube el estado
+	 * y finalmente elimina la etiqueta en la nube. Si ocurre cualquier cosa, 
+	 * rechaza
+	 */
+	StateOne.removeTag = function (state, tag) {
+		var d = $q.defer()
+
+		StateOne._find(state)
+		.then(function (remote) {
+			if((i = remote.tags_state.indexOf(tag.id)) != -1) {
+				remote.tags_state.splice(i, 1)
+				return StateOne.update(remote)
+			} else d.reject("Tag::deatach no ha encontrado la llave de la etiqueta para ser eliminada")
+		})
+		.then(function (remote) {
+			return Tag._destroy(tag)
+		})
+		.then(function () {
+			return StateOne.fetch(state)
+		})
+		.then(d.resolve)
+		.catch(d.reject)
+
 		return d.promise
 	}
 

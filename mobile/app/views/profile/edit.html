@@ -8,17 +8,38 @@
 			<div class="panel-title">Información de perfil</div>
 		</div>
 		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-4">
+					<img src="{{user.profile.photo_url || user.profile.photo_user}}" alt="" class="wide">
+				</div>
+				<div class="col-xs-8">
+					<div class="btn-group-vertical wide" role="group">
+						<a class="btn btn-default" ng-click="takePhoto()"><i class="fa fa-camera"></i> Tomar una foto</a>
+						<a class="btn btn-default" ng-click="takePhoto('select')"><i class="fa fa-folder-open"></i> Elegir una foto</a>
+					</div>
+				</div>
+			</div>
+			<br>
+			<br>
 			<div class="form-group">
 				<label for="">Nombre:</label>
-				<input type="text" class="form-control" ng-model="profile.first_name">
+				<input type="text" class="form-control" ng-model="user.first_name">
 			</div>
 			<div class="form-group">
 				<label for="">Apellido:</label>
-				<input type="text" class="form-control" ng-model="profile.last_name">
+				<input type="text" class="form-control" ng-model="user.last_name">
 			</div>
 			<div class="form-group">
 				<label for="">Correo electrónico:</label>
-				<input type="text" class="form-control" ng-model="profile.email">
+				<input type="text" class="form-control" ng-model="user.email">
+			</div>
+			<div class="form-group">
+				<label for="">Organización:</label>
+				<input type="text" class="form-control" ng-model="user.profile.company_user" placeholder="Nombre de tu organización">
+			</div>
+			<div class="form-group">
+				<label for="">Cargo:</label>
+				<input type="text" class="form-control" ng-model="user.profile.position_user" placeholder="Cargo que desempeñas">
 			</div>
 			<button class="btn btn-primary wide btn-lg" ng-click="save()">Guardar</button>
 		</div>

@@ -162,6 +162,16 @@ angular.module('sync.local', ['LocalForageModule'])
 
                 return defer.promise
             }
+            /*
+             * Muestra por consola todas las filas 
+             */
+            , show: function() {
+                this.all()
+                .then(function (items) {
+                    console.log("Local::show " + name)
+                    console.log(items)
+                })
+            }
 		}
 	}
 }])

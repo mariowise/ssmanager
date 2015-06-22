@@ -9,7 +9,6 @@ function testRemote($q, Remote, cb) {
 	    .then(function (item) {
 	        if(item.id) {
 	        	generatedId = item.id
-	        	console.log(generatedId)
 	        	callback(null, "- [_create] es capaz de crear un objeto en la nube #" + item.id)
 	        } else
 	        	callback("- [_create] no ha generdo un objeto con .id")	        

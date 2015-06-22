@@ -8,6 +8,7 @@ angular.module('app', [
 	, 'app.services.resource-factory'
 	, 'app.services.session'
 	, 'app.services.user'
+	, 'app.services.profile'
 	, 'app.services.project'
 	, 'app.services.stateone'
 	, 'app.services.media'
@@ -30,7 +31,7 @@ angular.module('app', [
 	, 'app.directives.panel'
 	, 'app.directives.media-player'
 
-	, 'sync.remote'
+	, 'sync.resource'
 
 ])
 
@@ -160,7 +161,7 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function ($q, Session, User, Project, StateOne, Media, Comment, StateOne, File, Remote, Tag, $localForage, amMoment) {
+.run(function ($q, Session, User, Project, StateOne, Media, Comment, StateOne, File, Resource, Tag, Profile, $localForage, amMoment) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
@@ -174,7 +175,7 @@ angular.module('app', [
 	window.Comment = Comment
 	window._File = File
 	window.Tag = Tag
-	window.Remote = Remote
+	window.Profile = Profile
 
 	window.dropAll = function () {
 		User.drop()
@@ -190,9 +191,10 @@ angular.module('app', [
 		Session.refresh_token()
 	}, 15 * 1000)
 
-	testEntity = Remote("Test", "test")
-	async.series([
-		function (callback) { testLocal($q, testEntity, callback) },
-		function (callback) { testRemote($q, testEntity, callback) }
-	])
+	// testEntity = Resource("Test", "test")
+	// async.series([
+	// 	function (callback) { testLocal($q, testEntity, callback) },
+	// 	function (callback) { testRemote($q, testEntity, callback) },
+	// 	function (callback) { testResource($q, testEntity, callback) }
+	// ])
 })

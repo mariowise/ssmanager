@@ -17,7 +17,7 @@ angular.module('app.services.file', [])
 			encodingType: Camera.EncodingType.JPEG,
 			targetWidth: 800,
 			targetHeight: 800,
-			saveToPhotoAlbum: false
+			saveToPhotoAlbum: true
 		}
 		return $cordovaCamera.getPicture(options)
 	}
@@ -54,10 +54,23 @@ angular.module('app.services.file', [])
 		return d.promise
 	}
 
+	File.selectPhoto = function () {
+		var options = {
+			quality: 100,
+			destinationType: Camera.DestinationType.FILE_URI,
+			sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+			allowEdit: true,
+			targetWidth: 800,
+			targetHeight: 800,
+			saveToPhotoAlbum: true
+		}
+		return $cordovaCamera.getPicture(options)
+	}
+
 	/*
 	 * Efectúa la operación de subir un fichero a la nube, devuelve la promesa de esta operación
 	 */
-	File.upload = function (fileUri) {
+	File.upload = function (fileUri, url, opt) {
 		var ext = fileUri.split(".")
 		  , ext = (ext.length > 0) ? ext[ext.length-1].toLowerCase() : ""
 		  , fname = guid() + ((ext != "") ? "." + ext : ext)
@@ -65,8 +78,8 @@ angular.module('app.services.file', [])
 		  , options = { headers: { "Content-Type": CONFIG.media[ext] } }
 
 		console.log("Subiendo archivo a " + fileURL + "(" + ext + ")")
-		console.log([fileURL, fileUri, options])
-		return $cordovaFileTransfer.upload(fileURL, fileUri, options, true)			
+		console.log([url || fileURL, fileUri, opt || options])
+		return $cordovaFileTransfer.upload(url || fileURL, fileUri, opt || options, true)			
 	}
 
 	/*

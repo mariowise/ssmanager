@@ -30,6 +30,7 @@ angular.module('app.controllers.application', [])
 	.then(function (user) {
 		$scope.current_user = user
 		window.current_user = user
+		$scope.$broadcast('CurrentUserLoaded')
 	})
 
 	$('#header .nav.navbar-nav li a').click(function (event) {

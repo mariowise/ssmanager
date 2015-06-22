@@ -72,7 +72,7 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
             , _destroy: function (value) {
             	if(CONFIG.debug) console.log("Remote::_destroy " + JSON.stringify(value).substr(0, 10))
                 var defer = $q.defer()
-                  , key = value.id || value
+                  , key = value[CONFIG.pk] || value.id || value
 
                 this.remote().delete({ id: key }, function (res) {
                     if(CONFIG.debug) console.log("Remote::_destroy deleted the element #" + key)

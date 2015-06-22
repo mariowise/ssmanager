@@ -68,6 +68,35 @@ angular.module('sync.resource', ['sync.remote'])
 
 		  		return d.promise
 		  	}
+		  	/*
+             * Revisa si se esta solicitando una lista de elementos o solo uno y aplica
+             * el método 'fetchOne' que debe estar definido en cada Servicio.
+             */
+            , fetch: function (key) {
+                if(CONFIG.debug) console.log("Resource::fetch (" + name + ") " + key)
+                var d = $q.defer()
+                  , self = this
+
+                if(!self.fetchOne) {
+                    console.error("Resource::fetch no existe el método fetchOne para la clase " + name)
+                    d.reject()
+                    return d.promise
+                }
+
+                if(key.constructor != Array) {
+                    self.fetchOne(key)
+                    .then(d.resolve, d.reject, d.notify)
+                } else {
+                    var pms = []
+                    key.forEach(function (query) {
+                        pms.push(self.fetchOne(query))
+                    })
+                    $q.all(pms)
+                    .then(d.resolve, d.reject, d.notify)
+                }
+
+                return d.promise
+            }
 		}
 		return angular.extend({}, Remote, res)
 	}

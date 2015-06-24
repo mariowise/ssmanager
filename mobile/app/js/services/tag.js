@@ -1,9 +1,9 @@
 angular.module('app.services.tag', [])
 
-.factory('Tag', ['ResourceFactory', '$q', function (ResourceFactory, $q) {
+.factory('Tag', ['Resource', '$q', function (Resource, $q) {
 	
 	// Recurso local
-	var Tag = ResourceFactory('Tag', 'tags') // Nombre del recurso, Nombre del recurso en API (URL)	
+	var Tag = Resource('Tag', 'tags') // Nombre del recurso, Nombre del recurso en API (URL)	
 	  , response
 
 	return angular.extend({}, Tag, response)

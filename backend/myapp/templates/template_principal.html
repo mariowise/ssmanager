@@ -22,8 +22,11 @@
            <!-- Mostrar imagen -->
             <div class="navbar-header  nav-img">
               
-              
+                {% if user.get_profile.photo_url %}
+                <img class="navbar-brand" src="{{user.get_profile.photo_url}}">
+                {% else %}
                 <img class="navbar-brand" src="/files/serve/{{user.get_profile.photo_user}}">
+                {% endif %}
                 <p class="navbar-brand">{{user.get_username}}</p>
                     
             </div> <!-- Fin Mostrar imagen -->

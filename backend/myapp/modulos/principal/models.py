@@ -44,6 +44,7 @@ class userProfile(models.Model):
 	cWeb_user = models.NullBooleanField()
 	cEmail_user = models.NullBooleanField()
 	photo_user = models.ImageField(upload_to=url, default='MultimediaData/Users/Profile_img/prueba/img1.png')
+	photo_url = models.CharField(max_length=200, blank=True, null=True)
 	project_colab_user = ListaField()#Guardar ID's de los proyectos en los que colaboro
 	id_folder_user = ListaField()#Guardar las ID's de las carpetas en drive que colabora
 	mensajes_user_leidos = ListaField()

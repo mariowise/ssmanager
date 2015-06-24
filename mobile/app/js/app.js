@@ -15,6 +15,7 @@ angular.module('app', [
 	, 'app.services.comment'
 	, 'app.services.file'
 	, 'app.services.tag'
+	, 'app.services.entity-manager'
 
 	, 'app.controllers.application'
 	, 'app.controllers.login'
@@ -192,6 +193,7 @@ angular.module('app', [
 	}, 15 * 1000)
 
 	// testEntity = Resource("Test", "test")
+	// window.Test = testEntity
 	// async.series([
 	// 	function (callback) { testLocal($q, testEntity, callback) },
 	// 	function (callback) { testRemote($q, testEntity, callback) },

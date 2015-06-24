@@ -13,8 +13,8 @@ def get_upload_file_name(instance, filename):
 
 class FileUpload(models.Model):
 	reated = models.DateTimeField(auto_now_add=True)
-	owner = models.ForeignKey(User, to_field='id')
-	datafile = models.FileField(upload_to=get_upload_file_name)
+	owner = models.ForeignKey(User, to_field='id', blank=False)
+	datafile = models.FileField(upload_to=get_upload_file_name, blank=False)
 
 class FileUploadSerializer(serializers.HyperlinkedModelSerializer):
 	owner = serializers.SlugRelatedField(read_only=True,slug_field='id')
@@ -35,4 +35,3 @@ class FileUploadViewSet(ModelViewSet):
 	def perform_create(self, serializer):
 		serializer.save(owner=self.request.user,
 			datafile=self.request.data.get('datafile'))
-

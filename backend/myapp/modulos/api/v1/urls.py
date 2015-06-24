@@ -22,6 +22,7 @@ from myapp.modulos.api.v1.models.root_definition_catwoe import RootDefinitionCat
 from myapp.modulos.api.v1.models.root_definition import RootDefinitionViewSet
 
 from myapp.modulos.api.v1.models.file import FileUploadViewSet
+from myapp.modulos.api.v1.models.test import TestEntityViewSet
 
 from rest_framework import routers
 
@@ -57,6 +58,7 @@ router.register(r'root_definition', RootDefinitionViewSet)
 
 # Extras
 router.register(r'files', FileUploadViewSet)
+router.register(r'test', TestEntityViewSet)
 
 
 # Wire up our API using automatic URL routing.

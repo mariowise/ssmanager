@@ -23,7 +23,7 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
             , _find: function(key) {
                 if(CONFIG.debug) console.log("Remote::_find " + name + "#" + key)
                 var defer = $q.defer()
-                  , key = key[CONFIG.pk] || key                  
+                  , key = key[CONFIG.pk] || key.id || key                  
 
                 this.remote().get({ id: key }, function (item) {
                     if(CONFIG.debug) console.log("Remote::_find found object " + JSON.stringify(item))

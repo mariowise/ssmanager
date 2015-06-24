@@ -99,3 +99,8 @@ indexes:
   - name: name_ssp
   - name: __key__
     direction: desc
+
+- kind: models_testentity
+  properties:
+  - name: __key__
+    direction: desc

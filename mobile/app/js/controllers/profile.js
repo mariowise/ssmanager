@@ -1,20 +1,23 @@
 angular.module('app.controllers.profile', [])
 
-.controller('ProfileController', ['$scope', 'User', 'Session', function ($scope, User, Session) {
+.controller('ProfileController', ['$scope', 'User', 'Session', 'File', function ($scope, User, Session, File) {
 	console.log("ProfileController running")
-
 	$scope.user = {}
 
-	$scope.setUser = function (user) {
-		if(angular.toJson($scope.user) != JSON.stringify(user))
+	function setUser (user) {
+		if(angular.toJson($scope.user) != JSON.stringify(user)) {
 			$scope.user = user
-		
+			File.download(user.profile.photo_url || user.profile.photo_user)
+			.then(function (fileUri) {
+				$scope.user.profile.photo_url = fileUri
+			})
+		}		
 	}
 	$scope.fetchUser = function () {
 		Session.current_user()
 		.then(function (current_user) {
-			User.fetch($scope.current_user.id)
-			.then($scope.setUser, null, $scope.setUser)
+			User.fetch(current_user.id)
+			.then(setUser, null, setUser)
 		})
 	}
 }])

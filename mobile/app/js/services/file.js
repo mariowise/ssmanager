@@ -1,9 +1,9 @@
 angular.module('app.services.file', [])
 
-.factory('File', ['$q', '$cordovaCamera', '$cordovaFile', '$cordovaFileTransfer', '$cordovaCapture', 'Session', 'ResourceFactory', function ($q, $cordovaCamera, $cordovaFile, $cordovaFileTransfer, $cordovaCapture, Session, ResourceFactory) {
+.factory('File', ['$q', '$cordovaCamera', '$cordovaFile', '$cordovaFileTransfer', '$cordovaCapture', 'Session', 'Resource', function ($q, $cordovaCamera, $cordovaFile, $cordovaFileTransfer, $cordovaCapture, Session, Resource) {
 	
 	// Recurso local
-	var File = ResourceFactory('File', 'files') // Nombre del recurso, Nombre del recurso en API (URL)
+	var File = Resource('File', 'files') // Nombre del recurso, Nombre del recurso en API (URL)
 
 	/*
 	 * Configura y toma una foto, retornando la promesa de cuando termine la captura

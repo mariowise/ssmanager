@@ -6,8 +6,9 @@ angular.module('app.controllers.projects.stateone', [])
 	$scope.state = {}
 
 	function setState (state) {
-		if(angular.toJson($scope.state) != JSON.stringify(state))
+		if(angular.toJson($scope.state) != angular.toJson(state)) {
 			$scope.state = state
+		}
 	}
 
 	$scope.$watch('project', function () {

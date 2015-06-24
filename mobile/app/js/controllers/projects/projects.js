@@ -2,11 +2,13 @@ angular.module('app.controllers.projects.projects', [])
 
 .controller('ProjectController', ['$scope', '$state', '$stateParams', 'Project', function ($scope, $state, $stateParams, Project) {
 	console.log("ProjectController running")
-
 	$scope.project = {}
 
 	function setProject(project) {
-		$scope.project = project
+		if(angular.toJson($scope.project) != angular.toJson(project)) {
+			$scope.project = project
+			$scope.$broadcast('setProject')
+		}
 	}
 
 	Project.fetch($stateParams.project_id)
@@ -14,18 +16,14 @@ angular.module('app.controllers.projects.projects', [])
 	.catch(function (err) {
 		console.log(err)
 	})
-	.finally(function () {
-		$scope.$broadcast('ProjectControllerLoaded')
-	})
 }])
 
 .controller('projects#index', ['$scope', 'Project', function ($scope, Project) {
 	console.log("projects#index running")
-
 	$scope.projects = []
 
 	// Sincronizar y luego mostrar	
-	Project.sync()
+	Project.pull()
 	.then(function (projects) {
 		$scope.projects = projects
 	})

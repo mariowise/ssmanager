@@ -153,6 +153,7 @@ INSTALLED_APPS = (
     'myapp.modulos.comunicacion',
     'myapp.modulos.api',
     'django_forms_bootstrap',
+
     # API Rest
     'jwt',
     'rest_framework',

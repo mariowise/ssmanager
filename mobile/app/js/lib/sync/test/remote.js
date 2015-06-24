@@ -47,9 +47,16 @@ function testRemote($q, Remote, cb) {
 	})
 
 	fns.push(function (callback) {
-		Remote._where({ lastname: "López" })
+		$q.all([
+			Remote._create({ name: "María Paz", lastname: "Vivanco" }),
+			Remote._create({ name: "Jaime", lastname: "Vivanco" }),
+			Remote._create({ name: "Alicia", lastname: "Landes" })	
+		])
+		.then(function () {
+			return Remote._where({ lastname: "Vivanco" })
+		})
 		.then(function (result) {
-			if(result.length == 1)
+			if(result.length == 2)
 				callback(null, "- [_where] es capaz de efectuar un filtro en la nube.")
 			else
 				callback("- [_where] no ha sido capaz de traer elementos filtrados.")
@@ -66,7 +73,20 @@ function testRemote($q, Remote, cb) {
 		.then(function () {
 			callback("- [_destroy] no ha sido capaz de eliminar el elemento, y ha sido encontrado.")
 		}, function () {
-			callback(null, "- [_destroy] es capaz de eliminar objetos en la nube.")
+			Remote.all()
+			.then(function (items) {
+				var fns = []
+				items.forEach(function (item) {
+					fns.push(Remote._destroy(item))
+				})
+				return $q.all(fns)
+			})
+			.then(function (results) {
+				callback(null, "- [_destroy] es capaz de eliminar objetos en la nube.")
+			})
+			.catch(function (err) {
+				callback("- [_destroy] no ha sido capaz de limpiar la cagá que dejó.")
+			})
 		})
 	})
 

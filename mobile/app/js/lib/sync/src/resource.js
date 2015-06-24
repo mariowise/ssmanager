@@ -36,35 +36,35 @@ angular.module('sync.resource', ['sync.remote'])
 		  	 * que no se encuentran se deja un casillero 'null' en donde deben aparecer
 		  	 */
 		  	, find: function (key) {
-		  		if(CONFIG.debug) console.log("Resource::find " + JSON.stringify(key).substr(0, 10))
+		  		if(CONFIG.debug) console.log("Resource::find " + JSON.stringify(key).substr(0, 20))
 		  		var d = $q.defer()
 		  	      , self = this
 
 		  		if(key.constructor === Array) {
-		  			var notifies = [], resolves = [], ldefer = $q.defer()
-                    key.forEach(function (query) {
+                    var count = 0, lc = 0, results = [], notifieds = []
+                    key.forEach(function (query, i) {
                         self.findOne(query)
-                        .then(function (resolvedItem) {
-                            resolves.push(resolvedItem)
-                            if(resolves.length == key.length) 
-                                ldefer.resolve(resolves)
-                        
+                        .then(function (item) {
+                            results[i] = item
+                            count++
+                            if(count == key.length)
+                                d.resolve(results)
                         }, function (err) {
-                            resolves.push(null)
-                            notifies.push(null)
-                        
-                        }, function (notifiedItem) {
-                            notifies.push(notifiedItem)
-                            if(notifies.length == key.length)
-                                ldefer.notify(notifies)
+                            results[i] = null
+                            count++
+                            if(count == key.length)
+                                d.resolve(results)
+                        }, function (litem) {
+                            notifieds[i] = litem
+                            lc++
+                            if(lc == key.length)
+                                d.notify(notifieds)
                         })
                     })
-                    ldefer.promise.then(defer.resolve, null, defer.notify)
-                    if(key.length == 0)
-                        ldefer.resolve([])                    
-		  		} else
-		  			self.findOne(key)
-		  			.then(d.resolve, d.reject, d.notify)
+		  		} else {
+                    self.findOne(key)
+                    .then(d.resolve, d.reject, d.notify)
+                }
 
 		  		return d.promise
 		  	}
@@ -83,19 +83,55 @@ angular.module('sync.resource', ['sync.remote'])
                     return d.promise
                 }
 
-                if(key.constructor != Array) {
-                    self.fetchOne(key)
-                    .then(d.resolve, d.reject, d.notify)
-                } else {
-                    var pms = []
-                    key.forEach(function (query) {
-                        pms.push(self.fetchOne(query))
+                if(key.constructor == Array) {
+                    var count = 0, lc = 0, results = [], notifieds = []
+                    key.forEach(function (query, i) {
+                        self.fetchOne(query)
+                        .then(function (item) {
+                            results[i] = item
+                            count++
+                            if(count == key.length)
+                                d.resolve(results)
+                        }, function (err) {
+                            results[i] = null
+                            count++
+                            if(count == key.length)
+                                d.resolve(results)
+                        }, function (litem) {
+                            notifieds[i] = litem
+                            lc++
+                            if(lc == key.length)
+                                d.notify(notifieds)
+                        })  
                     })
-                    $q.all(pms)
+                } else {
+                    self.fetchOne(key)
                     .then(d.resolve, d.reject, d.notify)
                 }
 
                 return d.promise
+            }
+
+            /*
+             * Realiza una búsqueda dura por local y luego realiza la búsqueda por
+             * url-param en la nube. Si no obtiene respuesta entrega la búsqueda 
+             * local
+             */
+            , where: function (filter) {
+            	if(CONFIG.debug) console.log("Resource::where (" + name + ")")
+            	var d = $q.defer()
+            	
+            	Remote.all(filter)
+            	.then(function (litems) {
+            		d.notify(litems)
+            		Remote._where(filter)
+            		.then(d.resolve, function (err) {
+            			console.error(err)
+            			d.resolve(litems)
+            		}, d.reject)
+            	}, d.reject)
+
+            	return d.promise
             }
 		}
 		return angular.extend({}, Remote, res)

@@ -1,9 +1,9 @@
 angular.module('app.services.session', [])
 
-.factory('Session', ['$q', '$http', '$state', 'jwtHelper', 'ResourceFactory', function ($q, $http, $state, jwtHelper, ResourceFactory) {
+.factory('Session', ['$q', '$http', '$state', 'jwtHelper', 'Resource', 'User', function ($q, $http, $state, jwtHelper, Resource, User) {
 
 	// Recurso local
-	var Session = ResourceFactory('Session', '') // Nombre del recurso, Nombre del recurso en API (URL)
+	var Session = Resource('Session', '') // Nombre del recurso, Nombre del recurso en API (URL)
 	  , response = {}
 
 	Session.set_current_user = function (res) {
@@ -90,27 +90,30 @@ angular.module('app.services.session', [])
 		return d.promise
 	}
 	
-	// Este método entrega el current_user y en caso de no encontrarlo
-	// quiebra la cadena de promesas genera un error (reject) y devuelve
-	// al usuario al login indicandole que la sesión ha expirado
+	/*
+	 * Este método entrega el current_user y en caso de no encontrarlo
+	 * quiebra la cadena de promesas genera un error (reject) y devuelve
+	 * al usuario al login indicandole que la sesión ha expirado
+	 */
 	Session.current_user = function () {
 		var d = $q.defer()
 
 		Session.get("current_user")
 		.then(function (current_user) {
-			if(current_user != undefined)
-				d.resolve(current_user)
-			else {
-				setTimeout(function () {
-					Session.delete("current_user")
-					.then(function () {
-						$.loading.error("La sesión ha expirado")
-						$state.go("login.index")
-					})
-				}, 3000)
-				d.reject(undefined)
-			}
-		}, d.reject)
+			return User.fetch(current_user.id)
+		})
+		.then(d.resolve)
+		.catch(function (err) {
+			console.error(err)
+			setTimeout(function () {
+				Session.delete("current_user")
+				.then(function () {
+					$.loading.error("La sesión ha expirado")
+					$state.go("login.index")
+				})
+			}, 3000)
+			d.reject(undefined)
+		})
 
 		return d.promise
 	}

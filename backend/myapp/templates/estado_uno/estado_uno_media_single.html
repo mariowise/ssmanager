@@ -120,7 +120,11 @@
 			{% if comentarios%}
 			{% for c in comentarios %}
 			<div class="contenedor-comentario">
+				{% if c.autor_comentary.get_profile.photo_url %}
+				<img src="{{c.autor_comentary.get_profile.photo_url}}" />	
+				{% else %}
 				<img src="/files/serve/{{c.autor_comentary.get_profile.photo_user}}" />	
+				{% endif %}
 				<a href="/profile/{{proyecto.id}}/{{c.autor_comentary.id}}"><strong>{{c.autor_comentary.get_username}}</strong></a><br>
 				<span class="sub-text">{{c.date_comentary}}</span>
 				<div class="comentario">			

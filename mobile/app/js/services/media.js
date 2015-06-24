@@ -1,35 +1,50 @@
 angular.module('app.services.media', [])
 
-.factory('Media', ['ResourceFactory', '$q', 'Session', 'Comment', 'File', 'Tag', function (ResourceFactory, $q, Session, Comment, File, Tag) {
+.factory('Media', ['Resource', '$q', 'Session', 'Comment', 'File', 'Tag', function (Resource, $q, Session, Comment, File, Tag) {
 	
 	// Recurso local
-	var Media = ResourceFactory('Media', 'media') // Nombre del recurso, Nombre del recurso en API (URL)	
+	var Media = Resource('Media', 'media') // Nombre del recurso, Nombre del recurso en API (URL)	
 	  , response = {}
 
 	/*
  	 * Agrega un comentario a una media
  	 * Consulta además el current_user para registrar el autor del comentario
- 	 * retorna el nuevo comentario.
+ 	 * retorna la media actualizada con el comentario dentro.
 	 */
 	Media.addComment = function (media, msg) {
 		var d = $q.defer()
+		  , generatedId 
 
 		Session.current_user()
 		.then(function (current_user) {
 			
-			Comment.create({
-				content_comentary: msg
-				, autor_comentary: current_user.id
+			$q.all([
+				(msg.id) ? msg : Comment._create({
+					content_comentary: msg
+					, autor_comentary: current_user.id
+				}),
+				Media._find(media)
+			])
+			.then(function (res) {
+				var newComment = res[0], updatedMedia = res[1]
+				generatedId = newComment.id
+				updatedMedia.comments_media.push(newComment.id) 
+				return Media._update(updatedMedia) // Condición de carrera
 			})
-			.then(function (newComment) {
-				media.comments_media.push(newComment.id)
-				Media.update(media)
-				.then(function (newMedia) {
-					newComment.user = current_user
-					d.resolve(newComment)
-				}, d.reject)
-			}, d.reject)
-
+			.then(function (updatedMedia) {
+				return Media.fetch(updatedMedia)
+			})
+			.then(function (updatedMedia) {
+				if(updatedMedia.comments_media.indexOf(generatedId) != -1)
+					d.resolve(updatedMedia)
+				else {
+					console.error("Media::addComment ha presentado condición de carrera")
+					Media.addComment(updatedMedia, msg)
+					.then(d.resolve, d.reject)
+				}	
+			})
+			.catch(d.reject)
+				
 		}, d.reject)
 
 		return d.promise

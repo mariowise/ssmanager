@@ -16,6 +16,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'mWeb_user',
             'mEmail_user',
             'photo_user',
+            'photo_url',
             'project_colab_user',
             'id_folder_user',
             'mensajes_user_leidos',
@@ -26,4 +27,5 @@ class ProfileSerializer(serializers.ModelSerializer):
 # ViewSets define the view behavior.
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = userProfile.objects.all()
+    filter_fields = ('user',)
     serializer_class = ProfileSerializer

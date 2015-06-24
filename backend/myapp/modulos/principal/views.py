@@ -54,6 +54,8 @@ def settings_view(request):
 			user.company_user = company_user
 			user.position_user = position_user
 			user.photo_user = photo_user
+			if user.photo_user != "":
+				user.photo_url = None
 			user.save()
 			status="1"
 			ctx = {'status':status, 'form':form}

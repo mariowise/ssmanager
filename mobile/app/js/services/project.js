@@ -1,38 +1,42 @@
 angular.module('app.services.project', [])
 
-.factory('Project', ['ResourceFactory', '$q', 'Session', 'User', function (ResourceFactory, $q, Session, User) {
+.factory('Project', ['Resource', '$q', 'Session', 'User', function (Resource, $q, Session, User) {
 	
 	// Recurso local
-	var Project = ResourceFactory('Project', 'projects') // Nombre del recurso, Nombre del recurso en API (URL)
+	var Project = Resource('Project', 'projects') // Nombre del recurso, Nombre del recurso en API (URL)
 	  , response = {}
 
+	/*
+	 * Descarga todos los proyectos en donde el usuario colabora y además todos 
+	 * aquellos en donde es manager
+	 */
 	Project.pull = function () {
 		var d = $q.defer()
 
 		Session.current_user()
-		.then(function (current_user) {
-			Project.remote().query({ manager: current_user.id }, function (res) {
-
-				var fns = []
-				res.forEach(function (item) {
-					fns.push(function (callback) {
-						Project.set(item.id, item)
-						.then(function (project) {
-							callback(null, item)
-						})
-					})
-
-				})
-				async.series(fns, function (err, results) {
-					if(!err) {
-						// console.log(results)
-						d.resolve(results)
-					} else d.reject(err)					
-				})
-
-			}, d.reject)
+		.then(function (user) {	
+			var fns = []
+			user.profile.project_colab_user.forEach(function (project_id) {
+				fns.push(Project.find(project_id))
+			})
+			fns.push(Project.where({ manager: user.id }))
+			return $q.all(fns)
 		})
-		
+		.then(function (res) {
+			var results = []
+			res.forEach(function (result) {
+				if(result.constructor == Array)
+					results = results.concat(result)
+				else
+					results.push(result)
+			})
+			d.resolve(results)
+		})
+		.catch(function (err) {
+			console.error(err)
+			d.reject()
+		})
+
 		return d.promise
 	}	
 
@@ -56,7 +60,7 @@ angular.module('app.services.project', [])
 			project._manager = res[1]
 			return $q.all([
 				project,
-				StateOne._where({ ssp_stateOne: project.id }) // Descarga el estado 1
+				StateOne.where({ ssp_stateOne: project.id }) // Descarga el estado 1
 			])
 		})
 		.then(function (res) {
@@ -82,6 +86,7 @@ angular.module('app.services.project', [])
 	// Se expone el servicio
 	return angular.extend({}, Project, response)
 }])
+
 
 
 

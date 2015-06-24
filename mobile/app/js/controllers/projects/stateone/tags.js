@@ -27,10 +27,13 @@ angular.module('app.controllers.projects.tags', [])
 		if(confirm("Estas seguro que quieres eliminar esta etiqueta?")) {
 			$.loading.show("loading")
 			
+			console.log("Eliminando etiqueta " + tag.id)
+
 			StateOne.removeTag($scope.state, tag)
 			.then(function (state) {
-				$scope.$emit('changeState', state)
+				console.log("Etiqueta eliminada")
 				$.loading.show("success", 1500)
+				$scope.$emit('changeState', state)
 			})
 			.catch(function (err) {
 				console.error(err)

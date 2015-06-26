@@ -16,7 +16,7 @@
 		<div class="panel-body">
 			<div class="panel-detail">
 				<label for="">Foto de perfil:</label>
-				<img src="{{user.profile.photo_url || user.profile.photo_user}}" alt="" class="wide">
+				<img src="{{user.profile.photo_local || user.profile.photo_url || user.profile.photo_user}}" alt="" class="wide">
 				<br>
 				<br>
 				<label for="">Nombre:</label>

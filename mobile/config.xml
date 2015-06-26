@@ -9,6 +9,7 @@
     <!-- Barra superior -->
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#4C95D1" />
+    <preference name="DisallowOverscroll" value="true" />
 
     <!-- [cordova plugin add org.apache.cordova.camera] -->
     <feature name="Camera">

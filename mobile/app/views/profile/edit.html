@@ -10,7 +10,7 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-xs-4">
-					<img src="{{user.profile.photo_url || user.profile.photo_user}}" alt="" class="wide">
+					<img src="{{user.profile.photo_local || user.profile.photo_url || user.profile.photo_user}}" alt="" class="wide">
 				</div>
 				<div class="col-xs-8">
 					<div class="btn-group-vertical wide" role="group">

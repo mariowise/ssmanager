@@ -1,6 +1,6 @@
 angular.module('app.controllers.projects.stateone', [])
 
-.controller('StateOneController', ['$scope', '$state', 'StateOne', function ($scope, $state, StateOne) {
+.controller('StateOneController', ['$scope', '$state', 'EM', function ($scope, $state, EM) {
 	console.log("StateOneController running")
 
 	$scope.state = {}
@@ -13,7 +13,7 @@ angular.module('app.controllers.projects.stateone', [])
 
 	$scope.$watch('project', function () {
 		if($scope.project.id) {
-			StateOne.fetch($scope.project.state_one.id)
+			EM('StateOne').fetch($scope.project.state_one.id)
 			.then($scope.setState, function (err) {
 				$.loading.error("No ha sido posible cargar el estado solicitado")
 				$state.go("app.project", { project_id: $scope.project.id })
@@ -26,14 +26,14 @@ angular.module('app.controllers.projects.stateone', [])
 	})
 }])
 
-.controller('stateone#show', ['$scope', '$state', 'StateOne', 'Media', 'File', 'Session', function ($scope, $state, StateOne, Media, File, Session) {
+.controller('stateone#show', ['$scope', '$state', 'EM', function ($scope, $state, EM) {
 	console.log("stateone#show running")
 
 	$scope.newmedia = {}	
 
 	$scope.takeMedia = function (type) {
 		$.loading.show("loading")
-		File[type]()
+		EM('File')[type]()
 		.then(function (fileUri) {
 			console.log(fileUri)
 			$.loading.hide("loading")
@@ -49,20 +49,19 @@ angular.module('app.controllers.projects.stateone', [])
 			$.loading.error("Ha ocurrido un problema al tomar la foto")
 		})
 	}
-
 	$scope.uploadMedia = function () {
-		Session.current_user()
+		EM('Session').current_user()
 		.then(function (current_user) {
 			$('#myModal').modal('hide')
 			$.loading.show("loading")
 
 			local_uri = $scope.newmedia.url_media
-			File.upload(local_uri)
+			EM('File').upload(local_uri)
 			.then(function (file) {
 				console.log("Archivo procesado")
 				console.log(file)
 				file = JSON.parse(file.response)
-				return Media._create({
+				return EM('Media')._create({
 					name_media: $scope.newmedia.name_media,
 					description_media: $scope.newmedia.description_media,
 					url_media: file.mediaLink,
@@ -72,6 +71,9 @@ angular.module('app.controllers.projects.stateone', [])
 				})
 			}, null, function (notify) {
 				$scope.progress = (notify.loaded / notify.total).toFixed(0)
+			})
+			.then(function (media) {
+				return EM('Media').fetch()
 			})
 			.then(function (media) {
 				$.loading.show("success", 1500)

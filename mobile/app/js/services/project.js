@@ -16,9 +16,11 @@ angular.module('app.services.project', [])
 		Session.current_user()
 		.then(function (user) {	
 			var fns = []
-			user.profile.project_colab_user.forEach(function (project_id) {
-				fns.push(Project.find(project_id))
-			})
+			if(user.profile && user.profile.project_colab_user) {
+				user.profile.project_colab_user.forEach(function (project_id) {
+					fns.push(Project.find(project_id))
+				})
+			}
 			fns.push(Project.where({ manager: user.id }))
 			return $q.all(fns)
 		})

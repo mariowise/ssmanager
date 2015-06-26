@@ -100,9 +100,12 @@ angular.module('app.services.session', [])
 
 		Session.get("current_user")
 		.then(function (current_user) {
-			return User.fetch(current_user.id)
+			User.fetch(current_user.id)
+			.then(d.resolve, function (err) {
+				console.error(err)
+				d.resolve(current_user)
+			}, d.notify)
 		})
-		.then(d.resolve)
 		.catch(function (err) {
 			console.error(err)
 			setTimeout(function () {

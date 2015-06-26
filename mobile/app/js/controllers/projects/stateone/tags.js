@@ -1,6 +1,6 @@
 angular.module('app.controllers.projects.tags', [])
 
-.controller('tags#index', ['$scope', 'Tag', 'StateOne', function ($scope, Tag, StateOne) {
+.controller('tags#index', ['$scope', 'EM', function ($scope, EM) {
 	console.log("tags#index running")
 
 	$scope.tag = { name_tag: "", description_tag: "" }
@@ -10,12 +10,12 @@ angular.module('app.controllers.projects.tags', [])
 		$scope.tag.state_one_id = $scope.state.id
 
 		var action = (!$scope.tag.id) ? 
-			Tag._create($scope.tag) :
-			Tag._update($scope.tag)
+			EM('Tag')._create($scope.tag) :
+			EM('Tag')._update($scope.tag)
 
 		action
 		.then(function () {
-			return StateOne.fetch($scope.state)	
+			return EM('StateOne').fetch($scope.state)	
 		})
 		.then(function (state) {
 			$scope.$emit('changeState', state)
@@ -32,9 +32,9 @@ angular.module('app.controllers.projects.tags', [])
 			
 			console.log("Eliminando etiqueta " + tag.id)
 
-			StateOne.delete_tag({ id: $scope.state.id, tag_id: tag.id })
+			EM('StateOne').delete_tag({ id: $scope.state.id, tag_id: tag.id })
 			.then(function (state) {
-				return StateOne.fetch(state)
+				return EM('StateOne').fetch(state)
 			})
 			.then(function (state) {
 				$.loading.show("success", 1500)

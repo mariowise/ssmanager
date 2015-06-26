@@ -7,6 +7,8 @@ angular.module('app.controllers.projects.media', [])
 	$scope.comentary = {}
 
 	function setMedia(media) {
+		console.info("El media de la discordia")
+		console.log(media)
 		if(angular.toJson($scope.media) != angular.toJson(media)) {
 			$scope.media = media
 		}
@@ -30,27 +32,16 @@ angular.module('app.controllers.projects.media', [])
 			$.loading.error("No ha sido posible subir el comentario")
 		})
 	}
-
 	$scope.delete = function (key) {
 		if(confirm("Estas seguro que quieres eliminar este archivo?")) {
 			$.loading.show("loading")
 			
-			EM('StateOne').where({ ssp_stateOne: $scope.project.id })
+			EM('StateOne').delete_media({ id: $scope.state.id, media_id: $scope.media.id })
 			.then(function (state) {
-				if(state.length == 1) {
-					state = state[0]
-					if((i = state.ssp_videos.indexOf(key)) != -1) state.ssp_videos.splice(i, 1)
-					else if((i = state.ssp_imagenes.indexOf(key)) != -1) state.ssp_imagenes.splice(i, 1)
-					else if((i = state.ssp_audios.indexOf(key)) != -1) state.ssp_audios.splice(i, 1)
-					else if((i = state.ssp_documentos.indexOf(key)) != -1) state.ssp_documentos.splice(i, 1)
-					else console.error("media#show::delete no ha sido capaz de encontrar la llave.")
-					return EM('StateOne')._update(state)
-				}
+				return EM('StateOne').fetch(state)
 			})
-			.then(function () {
-				return EM('Media')._destroy(key)
-			})
-			.then(function () {
+			.then(function (state) {
+				$scope.$emit('changeState', state)
 				$.loading.show("success", 1500)
 				$state.go("app.project.stateone.show")
 			})

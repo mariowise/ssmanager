@@ -9,6 +9,11 @@ angular.module('app.services.stateone', [])
 			url: CONFIG.api('state_one') + "/:id/delete_tag/",
 			responseType: 'json'
 		}
+		, delete_media: {
+			method: "POST",
+			url: CONFIG.api('state_one') + "/:id/delete_media/",
+			responseType: 'json'
+		}
 	})
 
 	StateOne.fetchOne = function (key) {
@@ -19,7 +24,7 @@ angular.module('app.services.stateone', [])
 			var medias = [].concat(state.ssp_videos,state.ssp_imagenes,state.ssp_audios,state.ssp_documentos)
 			return $q.all([
 				state,
-				Media.find(medias),
+				Media.fetch(medias),
 				Tag.find(state.tags_state)
 			])
 		}, d.reject, function (mstate) {

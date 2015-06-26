@@ -20,7 +20,6 @@ angular.module('sync.resource', ['sync.remote'])
 		  			d.notify(litem)
 		  			Remote._find(key)
 		  			.then(d.resolve, function (err) {
-		  				console.error(err)
 		  				d.resolve(litem)
 		  			})
 		  		}, function (err) {
@@ -50,6 +49,7 @@ angular.module('sync.resource', ['sync.remote'])
                             if(count == key.length)
                                 d.resolve(results)
                         }, function (err) {
+                            console.warn("Retornando null para " + name + " #" + query)
                             results[i] = null
                             count++
                             if(count == key.length)
@@ -127,7 +127,7 @@ angular.module('sync.resource', ['sync.remote'])
             		d.notify(litems)
             		Remote._where(filter)
             		.then(d.resolve, function (err) {
-            			console.error(err)
+            			console.warn(err)
             			d.resolve(litems)
             		}, d.reject)
             	}, d.reject)

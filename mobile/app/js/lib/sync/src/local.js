@@ -165,12 +165,20 @@ angular.module('sync.local', ['LocalForageModule'])
             /*
              * Muestra por consola todas las filas 
              */
-            , show: function() {
-                this.all()
-                .then(function (items) {
-                    console.log("Local::show " + name)
-                    console.log(items)
-                })
+            , show: function(key) {
+                if(key) {
+                    this.get(key)
+                    .then(function (item) {
+                        console.log("Local::show " + name)
+                        console.log(item)
+                    })
+                } else {
+                    this.all()
+                    .then(function (items) {
+                        console.log("Local::show " + name)
+                        console.log(items)
+                    })
+                }
             }
 		}
 	}

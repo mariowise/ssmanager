@@ -13,7 +13,7 @@ angular.module('app.services.user', [])
 		.then(function (user) {
 			return $q.all([
 				user,
-				Profile._where({ user: user.id })
+				Profile.where({ user: user.id })
 			])
 		}, null, function (luser) {
 			if(luser.profile && luser.profile.id)
@@ -27,6 +27,7 @@ angular.module('app.services.user', [])
 				return self.set(user.id, user)
 			} else {
 				console.error("User::fetchOne el usuario " + user.username + " tiene " + user.profile.length + " perfiles.")
+				d.reject()
 			}
 		})
 		.then(d.resolve)

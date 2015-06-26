@@ -1,6 +1,6 @@
 angular.module('app.controllers.application', [])
 
-.controller('ApplicationController', ['$scope', '$state', '$interval', 'Session', function ($scope, $state, $interval, Session) {
+.controller('ApplicationController', ['$scope', '$state', '$interval', 'EM', function ($scope, $state, $interval, EM) {
 	console.log("ApplicationController running")
 
 	$scope.flash_messages = []
@@ -9,8 +9,17 @@ angular.module('app.controllers.application', [])
 	$scope.logout = function () {
 		$('#loading').show()
 
-		Session.delete("current_user")
-		.then(function (current_user) {
+		EM('Session').delete("current_user")
+		.then(function () {
+			// Promesas abandonadas (good luck)
+			EM('Session').drop()
+			EM('Project').drop()
+			EM('StateOne').drop()
+			EM('Media').drop()
+			EM('Comment').drop()
+			EM('Tag').drop()
+			EM('User').drop()
+			
 			$.loading.transition()
 			$state.go("login.index")
 		})
@@ -26,7 +35,7 @@ angular.module('app.controllers.application', [])
 		}
 	}
 
-	Session.current_user()
+	EM('Session').current_user()
 	.then(function (user) {
 		$scope.current_user = user
 		window.current_user = user

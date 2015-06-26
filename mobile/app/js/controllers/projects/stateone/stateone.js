@@ -5,7 +5,7 @@ angular.module('app.controllers.projects.stateone', [])
 
 	$scope.state = {}
 
-	function setState (state) {
+	$scope.setState = function (state) {
 		if(angular.toJson($scope.state) != angular.toJson(state)) {
 			$scope.state = state
 		}
@@ -14,10 +14,10 @@ angular.module('app.controllers.projects.stateone', [])
 	$scope.$watch('project', function () {
 		if($scope.project.id) {
 			StateOne.fetch($scope.project.state_one.id)
-			.then(setState, function (err) {
+			.then($scope.setState, function (err) {
 				$.loading.error("No ha sido posible cargar el estado solicitado")
 				$state.go("app.project", { project_id: $scope.project.id })
-			}, setState)
+			}, $scope.setState)
 		}
 	})
 

@@ -2,8 +2,8 @@ angular.module('sync.resource', ['sync.remote'])
 
 .factory('Resource', ['$q', 'Remote', function ($q, Remote) {
 	var _Remote = Remote
-	return function (name, remoteUri) {
-		var Remote = _Remote(name, remoteUri)
+	return function (name, remoteUri, httpOptions) {
+		var Remote = _Remote(name, remoteUri, httpOptions)
 		  , res = {
 		  	/*
 		  	 * Busca un recurso en internet, mientras tanto notifica el Local
@@ -104,6 +104,7 @@ angular.module('sync.resource', ['sync.remote'])
                                 d.notify(notifieds)
                         })  
                     })
+                    if(key.length == 0) d.resolve([])
                 } else {
                     self.fetchOne(key)
                     .then(d.resolve, d.reject, d.notify)

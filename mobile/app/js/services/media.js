@@ -18,31 +18,15 @@ angular.module('app.services.media', [])
 		Session.current_user()
 		.then(function (current_user) {
 			
-			$q.all([
-				(msg.id) ? msg : Comment._create({
-					content_comentary: msg
-					, autor_comentary: current_user.id
-				}),
-				Media._find(media)
-			])
-			.then(function (res) {
-				var newComment = res[0], updatedMedia = res[1]
-				generatedId = newComment.id
-				updatedMedia.comments_media.push(newComment.id) 
-				return Media._update(updatedMedia) // Condición de carrera
+			Comment._create({
+				content_comentary: msg,
+				autor_comentary: current_user.id,
+				media_id: media.id
 			})
-			.then(function (updatedMedia) {
-				return Media.fetch(updatedMedia)
+			.then(function (comment) {
+				return Media.fetch(media)
 			})
-			.then(function (updatedMedia) {
-				if(updatedMedia.comments_media.indexOf(generatedId) != -1)
-					d.resolve(updatedMedia)
-				else {
-					console.error("Media::addComment ha presentado condición de carrera")
-					Media.addComment(updatedMedia, msg)
-					.then(d.resolve, d.reject)
-				}	
-			})
+			.then(d.resolve)
 			.catch(d.reject)
 				
 		}, d.reject)
@@ -54,7 +38,7 @@ angular.module('app.services.media', [])
 	 * Efectúa un find y además descarga el archivo si es que no existe
 	 */
 	Media.fetchOne = function (key) {
-		if(CONFIG.debug) console.log("Media::fetchOne " + key)
+		// console.log("Media::fetchOne " + key)
 		var d = $q.defer()
 
 		Media.find(key)

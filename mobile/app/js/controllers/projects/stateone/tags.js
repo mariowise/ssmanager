@@ -7,21 +7,24 @@ angular.module('app.controllers.projects.tags', [])
 
 	$scope.addTag = function () {
 		$.loading.show("loading")
-
-		function reject(err) {
-			console.error(err)
-			$.loading.error("No ha sido posible crear la etiqueta.")
-		}
+		$scope.tag.state_one_id = $scope.state.id
 
 		var action = (!$scope.tag.id) ? 
-			StateOne.addTag($scope.state, $scope.tag) :
-			StateOne.updateTag($scope.state, $scope.tag)
+			Tag._create($scope.tag) :
+			Tag._update($scope.tag)
 
 		action
+		.then(function () {
+			return StateOne.fetch($scope.state)	
+		})
 		.then(function (state) {
 			$scope.$emit('changeState', state)
 			$.loading.show("success", 1500)
-		}, reject)
+		})
+		.catch(function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible crear la etiqueta.")
+		})
 	}
 	$scope.deleteTag = function (tag) {
 		if(confirm("Estas seguro que quieres eliminar esta etiqueta?")) {
@@ -29,7 +32,11 @@ angular.module('app.controllers.projects.tags', [])
 			
 			console.log("Eliminando etiqueta " + tag.id)
 
-			StateOne.removeTag($scope.state, tag)
+			StateOne.delete_tag({ id: $scope.state.id, tag_id: tag.id })
+			// StateOne.removeTag($scope.state, tag)
+			.then(function (state) {
+				return StateOne.fetch(state)
+			})
 			.then(function (state) {
 				console.log("Etiqueta eliminada")
 				$.loading.show("success", 1500)

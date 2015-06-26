@@ -33,12 +33,10 @@ angular.module('app.controllers.projects.tags', [])
 			console.log("Eliminando etiqueta " + tag.id)
 
 			StateOne.delete_tag({ id: $scope.state.id, tag_id: tag.id })
-			// StateOne.removeTag($scope.state, tag)
 			.then(function (state) {
 				return StateOne.fetch(state)
 			})
 			.then(function (state) {
-				console.log("Etiqueta eliminada")
 				$.loading.show("success", 1500)
 				$scope.$emit('changeState', state)
 			})

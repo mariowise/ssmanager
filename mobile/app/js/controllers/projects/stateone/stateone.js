@@ -62,26 +62,16 @@ angular.module('app.controllers.projects.stateone', [])
 				console.log("Archivo procesado")
 				console.log(file)
 				file = JSON.parse(file.response)
-				return Media.create({
+				return Media._create({
 					name_media: $scope.newmedia.name_media,
 					description_media: $scope.newmedia.description_media,
 					url_media: file.mediaLink,
 					uploaded_by: current_user.username,
-					type_media: $scope.newmedia.type_media
+					type_media: $scope.newmedia.type_media,
+					state_one_id: $scope.state.id // New API
 				})
 			}, null, function (notify) {
 				$scope.progress = (notify.loaded / notify.total).toFixed(0)
-			})
-			.then(function (media) {
-				media.local_uri = local_uri
-				if(media.type_media == "2")
-					$scope.state.ssp_imagenes.push(media.id)
-				else if(media.type_media == "3")
-					$scope.state.ssp_audios.push(media.id)
-				else if(media.type_media == "1")
-					$scope.state.ssp_videos.push(media.id)
-				$scope.state.medias.unshift(media)
-				return StateOne.update($scope.state)
 			})
 			.then(function (media) {
 				$.loading.show("success", 1500)

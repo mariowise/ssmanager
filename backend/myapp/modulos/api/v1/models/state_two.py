@@ -15,4 +15,5 @@ class StateTwoSerializer(serializers.ModelSerializer):
 # ViewSets define the view behavior.
 class StateTwoViewSet(viewsets.ModelViewSet):
     queryset = StateTwo.objects.all()
+    filter_fields = ('ssp_stateTwo',)
     serializer_class = StateTwoSerializer

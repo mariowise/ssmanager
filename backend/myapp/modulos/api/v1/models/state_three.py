@@ -15,4 +15,5 @@ class StateThreeSerializer(serializers.ModelSerializer):
 # ViewSets define the view behavior.
 class StateThreeViewSet(viewsets.ModelViewSet):
     queryset = StateThree.objects.all()
+    filter_fields = ('ssp_stateThree',)
     serializer_class = StateThreeSerializer

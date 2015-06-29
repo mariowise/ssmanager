@@ -1,5 +1,5 @@
 
-from myapp.modulos.estado_1.models import StateOne, Etiqueta
+from myapp.modulos.estado_1.models import StateOne, Etiqueta, Media
 from rest_framework import serializers, viewsets
 
 from rest_framework.response import Response
@@ -43,3 +43,24 @@ class StateOneViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         except Etiqueta.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    @detail_route(methods=['post'])
+    @db.transactional(xg=True)
+    def delete_media(self, request, *args, **kargs):
+        try:
+            state = self.get_object()
+            media = Media.objects.get(id=request.data['media_id'])
+
+            if media.id in state.ssp_videos: state.ssp_videos.remove(media.id)
+            elif media.id in state.ssp_imagenes: state.ssp_imagenes.remove(media.id)
+            elif media.id in state.ssp_audios: state.ssp_audios.remove(media.id)
+            elif media.id in state.ssp_documentos: state.ssp_documentos.remove(media.id)
+            else: raise Media.DoesNotExist
+            state.save()
+            media.delete()
+
+            serializer = self.get_serializer(state)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        except Media.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+

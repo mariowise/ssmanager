@@ -1,5 +1,5 @@
 
-from myapp.modulos.estado_1.models import Media, Comentario
+from myapp.modulos.estado_1.models import Media, Comentario, StateOne, Etiqueta
 from rest_framework import serializers, viewsets
 
 from rest_framework.response import Response
@@ -29,41 +29,47 @@ class MediaViewSet(viewsets.ModelViewSet):
     queryset = Media.objects.all()
     serializer_class = MediaSerializer
 
-    # @detail_route(methods=['post'])
-    # @db.transactional(xg=True) 
-    # def add_comment(self, request, *args, **kargs):
-    #     media = self.get_object()
-    #     try:
-    #         comment = Comentario.objects.get(id=request.POST.get('comment_id'))
-    #         media.comments_media.append(comment.id)
-    #         media.save()
-    #         serializer = self.get_serializer(media)
-    #         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-    #     except Comentario.DoesNotExist:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
+    @db.transactional(xg=True)
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
 
-    # @detail_route(methods=['post'])
-    # @db.transactional(xg=True)
-    # def add_tag(self, request, *args, **kargs):
-    #     try:
-    #         media = self.get_object()
-    #         tag = Etiqueta.objects.get(id=request.POST.get('comment_id'))
-    #         media.tags_media.append(tag.id)
-    #         media.save()
-    #         serializer = self.get_serializer(media)
-    #         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-    #     except Etiqueta.DoesNotExist:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
+            state = StateOne.objects.get(id=request.data["state_one_id"])
+            if serializer.data["type_media"] == "1": state.ssp_videos.append(serializer.data["id"])
+            if serializer.data["type_media"] == "2": state.ssp_imagenes.append(serializer.data["id"])
+            if serializer.data["type_media"] == "3": state.ssp_audios.append(serializer.data["id"])
+            if serializer.data["type_media"] == "4": state.ssp_documentos.append(serializer.data["id"])
+            state.save()
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except StateOne.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-    # @detail_route(methods=['post'])
-    # @db.transactional(xg=True)
-    # def rm_tag(self, request, *args, **kargs):
-    #     try:
-    #         media = self.get_object()
-    #         tag = Etiqueta.objects.get(id=request.POST.get('comment_id'))
-    #         del media.tags_media[media.tags_media.index(tag.id)]
-    #         media.save()
-    #         serializer = self.get_serializer(media)
-    #         return Response(serializer.data)
-    #     except Etiqueta.DoesNotExist:
-    #         return Response(status=status.HTTP_404_NOT_FOUND)
+    @detail_route(methods=['post'])
+    @db.transactional(xg=True)
+    def add_tag(self, request, *args, **kargs):
+        try:
+            media = self.get_object()
+            tag = Etiqueta.objects.get(id=request.data['tag_id'])
+            if tag.id not in media.tags_media: media.tags_media.append(tag.id)
+            media.save()
+            serializer = self.get_serializer(media)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        except Etiqueta.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    @detail_route(methods=['post'])
+    @db.transactional(xg=True)
+    def rm_tag(self, request, *args, **kargs):
+        try:
+            media = self.get_object()
+            tag = Etiqueta.objects.get(id=request.data['tag_id'])
+            if tag.id in media.tags_media: media.tags_media.remove(tag.id)
+            media.save()
+            serializer = self.get_serializer(media)
+            return Response(serializer.data)
+        except Etiqueta.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)

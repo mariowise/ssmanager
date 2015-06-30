@@ -55,11 +55,13 @@ Obtiene el largo de la tabla en `localForage`
 
 Muestra por consola un objeto o bien la tabla completa. 
 Además, deja el resultado en `window.neo` para poder examinarlo
+
 Remote
 ------
 * param `name`: String. Corresponde al nombre que tendrá la entidad para el EntityManager (Local)
 * param `remoteUri`: String. Se trata del nombre que recibe el recurso en la API, ej: http://www.softsystemanager.com/api/v1/**remoteUri**
 * param `httpOptions`: Object. Se trata de un objeto que extiende a la configuración por defecto de `$resource`, que fue fijada en config.js 
+
 Implementa las primitivas que permiten consumir los recursos de la API REST.
 Toda método de Remote, solo tiene exito si es que logra comunicarse con la API,
 en caso contrario siempre rechaza.
@@ -75,6 +77,7 @@ el recurso publicado en la API.
 
 
 * param `key`: Objeto o número
+
 Realiza un get de ng-resource
 esta para trabajar con promesas $q las peticiones get
 
@@ -82,6 +85,7 @@ esta para trabajar con promesas $q las peticiones get
 
 
 * param `value`: Objeto o número
+
 Intenta crear un objeto en la nube y si no puede rechaza la promesa, si logra crearlo
 entonces además lo guarda localmente
 
@@ -89,12 +93,14 @@ entonces además lo guarda localmente
 
 
 * param `value`: Objeto o número
+
 Intenta actualizar un objeto en la nube y si no puede rechaza la promesa
 
 #### _destroy(value)
 
 
 * param `value`: Objeto o número
+
 Intenta eliminar desde la nube para luego eliminar desde local
 si no logra eliminar en la nube, entonces rechaza
 
@@ -102,6 +108,7 @@ si no logra eliminar en la nube, entonces rechaza
 
 
 * param `filter`: Objeto o número
+
 Este método es un wrapper de query para trabajar con promesas $q
 Al encontrar los elementos aprovecha de actualizarlos en Local
 Resource

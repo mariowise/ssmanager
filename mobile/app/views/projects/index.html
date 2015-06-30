@@ -3,8 +3,13 @@
 <div class="container">
 
 	<div class="view-title text-center"><i class="fa fa-folder-open"></i> Mis proyectos
-		<div ng-if="projects.length == 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+		<div ng-if="loading" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 	</div>
+
+	<button ng-if="!loading" class="btn btn-success wide" data-toggle="modal" data-target="#newProject"><i class="fa fa-plus"></i> Nuevo proyecto</button>
+	<br>
+	<br>
+
 	<div class="btn-group-vertical wide" role="group">
 		<div class="btn btn-default text-left" ng-repeat="project in projects" ui-sref="app.project.show({ project_id: project.id })">
 			{{project.name_ssp}}
@@ -12,4 +17,27 @@
 		</div>
 	</div>
 
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="newProject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="clean()"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Nuevo proyecto</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="">Nombre</label>
+					<input ng-model="newproject.name_ssp" type="text" placeholder="Nombre o título del proyecto" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="">Descripción</label>
+					<textarea ng-model="newproject.description_ssp" placeholder="Una breve descripción de qué se trata el proyecto; qué fenómeno estudia." name="" id="" rows="8" class="form-control"></textarea>
+				</div>
+				<button class="btn btn-success btn-lg wide" ng-click="newProject()"><i class="fa fa-plus"></i> Crear proyecto</button>
+			</div> 
+		</div>
+	</div>
 </div>

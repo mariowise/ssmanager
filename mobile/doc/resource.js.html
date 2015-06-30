@@ -1,25 +1,55 @@
-/*--
- *-- Resource
- *-- --------
- *-- Hereda los métodos de Remote (y por lo tanto también de Local). Su misión
- *-- es contener todos aquellos métodos encargados de lograr la sincronizción
- *-- y el funcionamiento `OffLine` de la aplicación.
-*/
-angular.module('sync.resource', ['sync.remote'])
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: resource.js</title>
 
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: resource.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>angular.module('sync.resource', ['sync.remote'])
+
+/**
+ * @ngdoc factory
+ * @name Resource
+ * @description 
+ *     Agrupa los métodos de Local y de Remote, implementando funciones que hagan
+ *     uso de ambos y logren gestionar el problema de la sincronización.
+ */
 .factory('Resource', ['$q', 'Remote', function ($q, Remote) {
 	var _Remote = Remote
 	return function (name, remoteUri, httpOptions) {
 		var Remote = _Remote(name, remoteUri, httpOptions)
 		  , res = {}
-	  	/* 
-         *-- ### findOne(key)
-         *-- * param `key`: Objeto o bien un número (indicando el *primary key*)
-         *-- * return `promise`
-	  	 *-- Busca un recurso en internet, mientras tanto notifica el Local
-	  	 *-- si lo encuentra en internet, resuelve el nuevo, si no lo encuentra
-	  	 *-- entonces resuleve el Local. Si el objeto no se encuentra ni en Remote
-         *-- ni en Local, entonces rechaza el error de buscarlo en Remote
+	  	/** 
+         * Busca un objeto
+         * @memberof Resource
+         * @param {Object} key Un objeto que posea .id o bien un número
+         * @returns {Promise} Un objeto
+         * @description
+	  	 *     Busca un recurso en internet, mientras tanto notifica el Local
+	  	 *     si lo encuentra en internet, resuelve el nuevo, si no lo encuentra
+	  	 *     entonces resuleve el Local. Si el objeto no se encuentra ni en Remote
+         *     ni en Local, entonces rechaza el error de buscarlo en Remote
 	  	 */
 	  	res.findOne = function (key) {
 	  		if(CONFIG.debug) console.log("Resource::findOne " + JSON.stringify(key).substr(0, 10))
@@ -41,12 +71,9 @@ angular.module('sync.resource', ['sync.remote'])
 	  		return d.promise
 	  	}
 	  	/*
-         *-- ### find(key)
-         *-- * param ´key´: Objeto, lista de objetos o número 
-         *-- * return ´promise´
-	  	 *-- Ejecuta la función findOne para una lista de elementos o bien uno solo
-	  	 *-- dependiendo si recibe un arreglo, un objeto o un id. Para aquellos objetos 
-	  	 *-- que no se encuentran se deja un casillero 'null' en donde deben aparecer
+	  	 * Ejecuta la función findOne para una lista de elementos o bien uno solo
+	  	 * dependiendo si recibe un arreglo, un objeto o un id. Para aquellos objetos 
+	  	 * que no se encuentran se deja un casillero 'null' en donde deben aparecer
 	  	 */
         res.find = function (key) {
 	  		if(CONFIG.debug) console.log("Resource::find " + JSON.stringify(key).substr(0, 20))
@@ -83,11 +110,8 @@ angular.module('sync.resource', ['sync.remote'])
 	  		return d.promise
 	  	}
 	  	/*
-         *-- ### fetch(key)
-         *-- * param ´key´: Objeto, lista de objetos o número
-         *-- * return ´promise´
-         *-- Revisa si se esta solicitando una lista de elementos o solo uno y aplica
-         *-- el método 'fetchOne' que debe estar definido en cada Servicio.
+         * Revisa si se esta solicitando una lista de elementos o solo uno y aplica
+         * el método 'fetchOne' que debe estar definido en cada Servicio.
          */
         res.fetch = function (key) {
             if(CONFIG.debug) console.log("Resource::fetch (" + name + ") " + key)
@@ -131,12 +155,9 @@ angular.module('sync.resource', ['sync.remote'])
         }
 
         /*
-         *-- ### where(filter)
-         *-- * param ´filter´: Objeto (Hash)
-         *-- * return ´promise´
-         *-- Realiza una búsqueda dura por local y luego realiza la búsqueda por
-         *-- url-param en la nube. Si no obtiene respuesta entrega la búsqueda 
-         *-- local
+         * Realiza una búsqueda dura por local y luego realiza la búsqueda por
+         * url-param en la nube. Si no obtiene respuesta entrega la búsqueda 
+         * local
          */
         res.where = function (filter) {
         	if(CONFIG.debug) console.log("Resource::where (" + name + ")")
@@ -156,11 +177,8 @@ angular.module('sync.resource', ['sync.remote'])
         }
 
         /*
-         *-- ### create(fields)
-         *-- * param ´fields´: Objeto (Hash)
-         *-- * return ´promise´
-         *-- Intenta crear un objeto en la nube y si falla lo crea de forma
-         *-- local, marcando su estado (atributo __syncPending) = true
+         * Intenta crear un objeto en la nube y si falla lo crea de forma
+         * local, marcando su estado (atributo __syncPending) = true
          */
         res.create = function (fields) {
             var d = $q.defer()
@@ -177,11 +195,8 @@ angular.module('sync.resource', ['sync.remote'])
         }
 
         /*
-         *-- ### syncOne(litem)
-         *-- * param ´litem´: Objeto (Hash)
-         *-- * return ´promise´
-         *-- Si la tupla posee la bandera __syncPending ejecuta _update
-         *-- si el _update arroja 404 (no existe) ejecuta _create
+         * Si la tupla posee la bandera __syncPending ejecuta _update
+         * si el _update arroja 404 (no existe) ejecuta _create
          */
         res.syncOne = function (litem) {
             var d = $q.defer()
@@ -208,4 +223,26 @@ angular.module('sync.resource', ['sync.remote'])
         }
 		return angular.extend({}, Remote, res)
 	}
-}])
+}])</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Resource">Resource</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.2</a> on Mon Jun 29 2015 19:36:45 GMT-0400 (CLT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -518,5 +518,5 @@ function guid() {
       .substring(1);
   }
 
-  return (Date.now() + s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4()).substr(0, 32);
+  return (Date.now() + s4() + s4() + s4()).substr(0, 16);
 }

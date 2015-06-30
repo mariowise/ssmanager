@@ -3,6 +3,7 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
 .factory('Remote', ['$q', '$resource', 'Local', function ($q, $resource, Local) {
     var _Local = Local
     return function (name, remoteUri, httpMethods) {
+        angular.extend(httpMethods || {}, { save: { method: "POST", url: CONFIG.api(remoteUri.toLowerCase()) + "/" } })
         var Local = _Local(name)
 		  , res = {
 		  	/*
@@ -109,14 +110,19 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
 		}
 
         for(method in httpMethods) {
-            res[method] = function (params) {
-                var d = $q.defer()
+            res[method] = (function (method) {
+                return function (params) {
+                    // console.log(name + "::" + method + "()")
+                    var d = $q.defer()
 
-                res.remote()[method](params).$promise
-                .then(d.resolve, d.reject)
+                    res.remote()[method](params).$promise
+                    .then(d.resolve, d.reject)
 
-                return d.promise
-            }
+                    return d.promise
+                }
+            })(method)
+
+            
         }
 
 		return angular.extend({}, Local, res)

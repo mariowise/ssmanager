@@ -171,12 +171,14 @@ angular.module('sync.local', ['LocalForageModule'])
                     .then(function (item) {
                         console.log("Local::show " + name)
                         console.log(item)
+                        window.neo = item
                     })
                 } else {
                     this.all()
                     .then(function (items) {
                         console.log("Local::show " + name)
                         console.log(items)
+                        window.neo = items
                     })
                 }
             }

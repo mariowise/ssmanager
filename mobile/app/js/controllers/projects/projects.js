@@ -18,15 +18,46 @@ angular.module('app.controllers.projects.projects', [])
 	})
 }])
 
-.controller('projects#index', ['$scope', 'Project', function ($scope, Project) {
+.controller('projects#index', ['$scope', 'EM', function ($scope, EM) {
 	console.log("projects#index running")
 	$scope.projects = []
+	$scope.newproject = {}
+	$scope.loading = true
+
+	function setProjects(projects) {
+		$scope.projects = projects
+		$scope.loading = false
+	}
 
 	// Sincronizar y luego mostrar	
-	Project.pull()
-	.then(function (projects) {
-		$scope.projects = projects
-	})
+	EM('Project').pull()
+	.then(setProjects)
+
+	$scope.newProject = function () {
+		$.loading.show("loading")
+
+		EM('Session').current_user()
+		.then(function (current_user) {
+			$scope.newproject.manager = current_user.id
+			return EM('Project')._create($scope.newproject)
+		})
+		.then(function (neo) {
+			$scope.loading = true
+			return EM('Project').pull()
+		})
+		.then(function (projects) {
+			setProjects(projects)
+			$('#newProject').modal('hide')
+			$.loading.show("success", 1800)
+		})
+		.catch(function (err) {
+			console.error(err) 
+			$.loading.error("No ha sido posible crear el proyecto.")
+		})
+	}
+	$scope.clean = function () {
+		$scope.newproject = {}
+	}
 }])
 
 .controller('projects#show', ['$scope', '$stateParams', 'Project', 'User', function ($scope, $stateParams, Project, User) {
@@ -34,6 +65,3 @@ angular.module('app.controllers.projects.projects', [])
 
 	
 }])
-
-
-

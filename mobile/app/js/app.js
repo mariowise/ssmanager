@@ -162,38 +162,34 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function ($q, Session, User, Project, StateOne, Media, Comment, StateOne, File, Resource, Tag, Profile, $localForage, amMoment) {
+.run(function ($q, amMoment, Resource, EM) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
 	// Testing ground
-	window.Session = Session
-	window.$localForage = $localForage
-	window.User = User
-	window.Project = Project
-	window.StateOne = StateOne
-	window.Media = Media
-	window.Comment = Comment
-	window._File = File
-	window.Tag = Tag
-	window.Profile = Profile
+	window.EM = EM
 
 	window.dropAll = function () {
-		User.drop()
-		Project.drop()
-		StateOne.drop()
-		Media.drop()
-		Comment.drop()
-		File.drop()
-		Tag.drop()
+		EM('User').drop()
+		EM('Project').drop()
+		EM('StateOne').drop()
+		EM('Media').drop()
+		EM('Comment').drop()
+		EM('File').drop()
+		EM('Tag').drop()
 	}
 
 	setInterval(function () {
-		Session.refresh_token()
+		EM('Session').refresh_token()
 	}, 15 * 1000)
 
-	// testEntity = Resource("Test", "test")
-	// window.Test = testEntity
+	testEntity = Resource("Test", "test", { 
+		save: {
+			method: "POST",
+			url: CONFIG.api("test") + "/"
+		}
+	})
+	window.Test = testEntity
 	// async.series([
 	// 	function (callback) { testLocal($q, testEntity, callback) },
 	// 	function (callback) { testRemote($q, testEntity, callback) },

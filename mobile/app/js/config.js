@@ -13,7 +13,8 @@ var CONFIG = {
             isArray: false
         }
         , save: { 
-            method: 'POST'
+            method: 'POST',
+            params: []
         }
         , get: { 
             isArray: false 

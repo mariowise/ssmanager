@@ -3,7 +3,18 @@ angular.module('app.services.media', [])
 .factory('Media', ['Resource', '$q', 'Session', 'Comment', 'File', 'Tag', function (Resource, $q, Session, Comment, File, Tag) {
 	
 	// Recurso local
-	var Media = Resource('Media', 'media') // Nombre del recurso, Nombre del recurso en API (URL)	
+	var Media = Resource('Media', 'media', {
+		add_tag: {
+			method: "POST",
+			url: CONFIG.api("media") + "/:id/add_tag/",
+			responseType: "json"
+		}
+		, rm_tag: {
+			method: "POST",
+			url: CONFIG.api("media") + "/:id/rm_tag/",
+			responseType: "json"
+		}
+	}) // Nombre del recurso, Nombre del recurso en API (URL)	
 	  , response = {}
 
 	/*
@@ -46,16 +57,18 @@ angular.module('app.services.media', [])
 			return $q.all([
 				media,
 				File.download(media.url_media), 
-				Comment.fetch(media.comments_media)
+				Comment.fetch(media.comments_media),
+				Tag.find(media.tags_media)
 			])
 		}, d.reject, function (nmedia) {
-			if(nmedia.local_uri && nmedia.comments)
+			if(nmedia.local_uri && nmedia.comments && nmedia.tags)
 				d.notify(nmedia)
 		})
 		.then(function (res) {
 			var media = res[0]
 			media.local_uri = res[1]
 			media.comments = res[2]
+			media.tags = res[3]
 			Media.set(media.id, media)
 			.then(d.resolve, d.reject)
 		}, d.reject)

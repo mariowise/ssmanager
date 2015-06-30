@@ -7,8 +7,6 @@ angular.module('app.controllers.projects.media', [])
 	$scope.comentary = {}
 
 	function setMedia(media) {
-		console.info("El media de la discordia")
-		console.log(media)
 		if(angular.toJson($scope.media) != angular.toJson(media)) {
 			$scope.media = media
 		}
@@ -47,6 +45,46 @@ angular.module('app.controllers.projects.media', [])
 			})
 			.catch(function (err) {
 				$.loading.error("No ha sido posible eliminar el contenido.")
+			})
+		}
+	}
+	$scope.addTag = function (tag, $event) {
+		angular.element($event.target).addClass("active")
+		$.loading.show("loading")
+
+		// $('#addTag').modal('hide')
+		EM('Media').add_tag({ id: $scope.media.id, tag_id: tag.id })
+		.then(function (media) {
+			return EM('Media').fetch(media)
+		})
+		.then(function (media) {
+			setMedia(media)
+			$.loading.show("success", 1800)
+		})
+		.catch(function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible completar la operación.")
+		})
+		.finally(function () {
+			angular.element($event.target).removeClass("active")
+			$('#addTag').modal('hide')
+		})
+	}
+	$scope.rmTag = function (tag) {
+		if(confirm("¿Quitar esta etiqueta?")) {
+			$.loading.show("loading")
+
+			EM('Media').rm_tag({ id: $scope.media.id, tag_id: tag.id })
+			.then(function (media) {
+				return EM('Media').fetch(media)
+			})
+			.then(function (media) {
+				setMedia(media)
+				$.loading.show("success", 1800)
+			})
+			.catch(function (err) {
+				console.error(err)
+				$.loading.error("No ha sido posible completar la operación.")
 			})
 		}
 	}

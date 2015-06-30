@@ -1,6 +1,11 @@
 /*--
  *-- Resource
  *-- --------
+ *-- 
+ *-- * param `name`: String. Corresponde al nombre que tendrá la entidad para el EntityManager (Local)
+ *-- * param `remoteUri`: String. Se trata del nombre que recibe el recurso en la API, ej: http://www.softsystemanager.com/api/v1/**remoteUri**
+ *-- * param `httpOptions`: Object. Se trata de un objeto que extiende a la configuración por defecto de `$resource`, que fue fijada en config.js
+ *-- 
  *-- Hereda los métodos de Remote (y por lo tanto también de Local). Su misión
  *-- es contener todos aquellos métodos encargados de lograr la sincronizción
  *-- y el funcionamiento `OffLine` de la aplicación.
@@ -13,9 +18,11 @@ angular.module('sync.resource', ['sync.remote'])
 		var Remote = _Remote(name, remoteUri, httpOptions)
 		  , res = {}
 	  	/* 
-         *-- ### findOne(key)
+         *-- #### findOne(key)
+         *--
          *-- * param `key`: Objeto o bien un número (indicando el *primary key*)
          *-- * return `promise`
+         *--
 	  	 *-- Busca un recurso en internet, mientras tanto notifica el Local
 	  	 *-- si lo encuentra en internet, resuelve el nuevo, si no lo encuentra
 	  	 *-- entonces resuleve el Local. Si el objeto no se encuentra ni en Remote
@@ -41,9 +48,11 @@ angular.module('sync.resource', ['sync.remote'])
 	  		return d.promise
 	  	}
 	  	/*
-         *-- ### find(key)
-         *-- * param ´key´: Objeto, lista de objetos o número 
-         *-- * return ´promise´
+         *-- #### find(key)
+         *--
+         *-- * param `key`: Objeto, lista de objetos o número 
+         *-- * return `promise`
+         *--
 	  	 *-- Ejecuta la función findOne para una lista de elementos o bien uno solo
 	  	 *-- dependiendo si recibe un arreglo, un objeto o un id. Para aquellos objetos 
 	  	 *-- que no se encuentran se deja un casillero 'null' en donde deben aparecer
@@ -83,9 +92,11 @@ angular.module('sync.resource', ['sync.remote'])
 	  		return d.promise
 	  	}
 	  	/*
-         *-- ### fetch(key)
-         *-- * param ´key´: Objeto, lista de objetos o número
-         *-- * return ´promise´
+         *-- #### fetch(key)
+         *--
+         *-- * param `key`: Objeto, lista de objetos o número
+         *-- * return `promise`
+         *--
          *-- Revisa si se esta solicitando una lista de elementos o solo uno y aplica
          *-- el método 'fetchOne' que debe estar definido en cada Servicio.
          */
@@ -131,9 +142,11 @@ angular.module('sync.resource', ['sync.remote'])
         }
 
         /*
-         *-- ### where(filter)
-         *-- * param ´filter´: Objeto (Hash)
-         *-- * return ´promise´
+         *-- #### where(filter)
+         *--
+         *-- * param `filter`: Objeto (Hash)
+         *-- * return `promise`
+         *--
          *-- Realiza una búsqueda dura por local y luego realiza la búsqueda por
          *-- url-param en la nube. Si no obtiene respuesta entrega la búsqueda 
          *-- local
@@ -156,9 +169,11 @@ angular.module('sync.resource', ['sync.remote'])
         }
 
         /*
-         *-- ### create(fields)
-         *-- * param ´fields´: Objeto (Hash)
-         *-- * return ´promise´
+         *-- #### create(fields)
+         *--
+         *-- * param `fields`: Objeto (Hash)
+         *-- * return `promise`
+         *--
          *-- Intenta crear un objeto en la nube y si falla lo crea de forma
          *-- local, marcando su estado (atributo __syncPending) = true
          */
@@ -177,9 +192,11 @@ angular.module('sync.resource', ['sync.remote'])
         }
 
         /*
-         *-- ### syncOne(litem)
-         *-- * param ´litem´: Objeto (Hash)
-         *-- * return ´promise´
+         *-- #### syncOne(litem)
+         *--
+         *-- * param `litem`: Objeto (Hash)
+         *-- * return `promise`
+         *--
          *-- Si la tupla posee la bandera __syncPending ejecuta _update
          *-- si el _update arroja 404 (no existe) ejecuta _create
          */

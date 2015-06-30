@@ -1,3 +1,15 @@
+/*--
+ *-- Remote
+ *-- ------
+ *--
+ *-- * param `name`: String. Corresponde al nombre que tendrá la entidad para el EntityManager (Local)
+ *-- * param `remoteUri`: String. Se trata del nombre que recibe el recurso en la API, ej: http://www.softsystemanager.com/api/v1/**remoteUri**
+ *-- * param `httpOptions`: Object. Se trata de un objeto que extiende a la configuración por defecto de `$resource`, que fue fijada en config.js 
+ *--
+ *-- Implementa las primitivas que permiten consumir los recursos de la API REST.
+ *-- Toda método de Remote, solo tiene exito si es que logra comunicarse con la API,
+ *-- en caso contrario siempre rechaza.
+*/
 angular.module('sync.remote', ['sync.local', 'ngResource'])
 
 .factory('Remote', ['$q', '$resource', 'Local', function ($q, $resource, Local) {
@@ -7,8 +19,12 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
         var Local = _Local(name)
 		  , res = {
 		  	/*
-             * Retorna el recurso angular.resource que conecta con
-             * el recurso publicado en la API
+             *-- #### remote()
+             *--
+             *-- * return `$resource`
+             *--
+             *-- Retorna el recurso angular.resource que conecta con
+             *-- el recurso publicado en la API.
              */
             remote: function() {
                 return $resource(
@@ -18,8 +34,12 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
                 )
             }
             /*
-             * Realiza un get de ng-resource
-             * esta para trabajar con promesas $q las peticiones get
+             *-- #### _find(key)
+             *-- 
+             *-- * param `key`: Objeto o número
+             *--
+             *-- Realiza un get de ng-resource
+             *-- esta para trabajar con promesas $q las peticiones get
              */
             , _find: function(key) {
                 if(CONFIG.debug) console.log("Remote::_find " + name + "#" + key)
@@ -35,8 +55,12 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
                 return defer.promise
             }
             /*
-             * Intenta crear un objeto en la nube y si no puede rechaza la promesa, si logra crearlo
-             * entonces además lo guarda localmente
+             *-- #### _create(value)
+             *-- 
+             *-- * param `value`: Objeto o número
+             *--
+             *-- Intenta crear un objeto en la nube y si no puede rechaza la promesa, si logra crearlo
+             *-- entonces además lo guarda localmente
              */
             , _create: function (value) {
             	if(CONFIG.debug) console.log("Remote::_create " + JSON.stringify(value).substr(0, 10))
@@ -51,7 +75,11 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
                 return defer.promise
             }
             /*
-             * Intenta actualizar un objeto en la nube y si no puede rechaza la promesa
+             *-- #### _update(value)
+             *-- 
+             *-- * param `value`: Objeto o número
+             *--
+             *-- Intenta actualizar un objeto en la nube y si no puede rechaza la promesa
              */
             , _update: function (value) {
             	if(CONFIG.debug) console.log("Remote::_update " + JSON.stringify(value).substr(0, 10))
@@ -67,8 +95,12 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
                 return defer.promise
             }
             /*
-             * Intenta eliminar desde la nube para luego eliminar desde local
-             * si no logra eliminar en la nube, entonces rechaza
+             *-- #### _destroy(value)
+             *-- 
+             *-- * param `value`: Objeto o número
+             *--
+             *-- Intenta eliminar desde la nube para luego eliminar desde local
+             *-- si no logra eliminar en la nube, entonces rechaza
              */
             , _destroy: function (value) {
             	if(CONFIG.debug) console.log("Remote::_destroy " + JSON.stringify(value).substr(0, 10))
@@ -84,8 +116,12 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
                 return defer.promise
             }
             /*
-             * Este método es un wrapper de query para trabajar con promesas $q
-             * Al encontrar los elementos aprovecha de actualizarlos en Local
+             *-- #### _where(filter)
+             *-- 
+             *-- * param `filter`: Objeto o número
+             *--
+             *-- Este método es un wrapper de query para trabajar con promesas $q
+             *-- Al encontrar los elementos aprovecha de actualizarlos en Local
              */
             , _where: function (filter) {
             	if(CONFIG.debug) console.log("Remote::_where " + JSON.stringify(filter).substr(0, 10))
@@ -120,9 +156,7 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
 
                     return d.promise
                 }
-            })(method)
-
-            
+            })(method)            
         }
 
 		return angular.extend({}, Local, res)

@@ -1,3 +1,11 @@
+/*--
+ *-- Remote
+ *-- ------
+ *--
+ *-- * param `name`: String. Corresponde al nombre que tendrá la entidad para el EntityManager (Local)
+ *--
+ *-- Implementa las primitivas para el almacenamiento de objetos en `localForage`.
+*/
 angular.module('sync.local', ['LocalForageModule'])
 
 .factory('Local', ['$q', '$localForage', function ($q, $localForage) {
@@ -11,7 +19,12 @@ angular.module('sync.local', ['LocalForageModule'])
 
 		return {
             /*
-             * Retorna un valor según llave
+             *-- #### get(key)
+             *--
+             *-- * param `key`: String o número
+             *-- * return `promise`
+             *--
+             *-- Busca el elemento en localForage a partir de una llave (*primary key*)
              */
             get: function (key) {
                 if(CONFIG.debug) console.log("Local::get " + name + "#" + key)
@@ -34,7 +47,15 @@ angular.module('sync.local', ['LocalForageModule'])
                 return defer.promise
             }
             /*
-             * Setea un llave-valor en la tabla
+             *-- #### set(key, value)
+             *--
+             *-- * param `key`: String o número
+             *-- * param `value`: Objeto
+             *-- * return `promise`
+             *--
+             *-- Setea un valor a partir de una llave. En caso de que el objeto
+             *-- ya esta almacenado, realiza un `angular.extend` para evitar eliminar
+             *-- columnas que no se ven involucradas en la operación.
              */
             , set: function (key, value) {
                 if(CONFIG.debug) console.log("Local::set " + name + "#" + key + ":" + value)
@@ -68,8 +89,13 @@ angular.module('sync.local', ['LocalForageModule'])
                 return defer.promise
             }
             /*
-             * Retorna un arreglo con todas las filas de la tabla, en caso de entregar
-             * un objeto, entreta solo aquellas filas que cumplen con el filtro
+             *-- #### all(filter)
+             *--
+             *-- * param `filter`: Objeto
+             *-- * return `promise`
+             *--
+             *-- Retorna un arreglo con todas las filas de la tabla, en caso de entregar
+             *-- un objeto, entreta solo aquellas filas que cumplen con el filtro
              */
             , all: function (filter) {
                 if(CONFIG.debug) console.log("Local::all " + name)
@@ -103,12 +129,17 @@ angular.module('sync.local', ['LocalForageModule'])
                 return defer.promise
             }
             /*
-             * Elimina un elemento de la tabla
+             *-- #### delete(key)
+             *--
+             *-- * param `key`: Objeto, String o número
+             *-- * return `promise`
+             *--
+             *-- Elimina un elemento de `localForage`.
              */
             , delete: function (key) {
                 if(CONFIG.debug) console.log("Local::delete " + name + "#" + key)
-
                 var defer = $q.defer()
+                  , key = key[CONFIG.pk] || key.id || key
 
                 localForage.removeItem(key)
                 .then(function () {
@@ -123,7 +154,11 @@ angular.module('sync.local', ['LocalForageModule'])
                 return defer.promise
             }
             /*
-             * Borra toda la tabla
+             *-- #### drop()
+             *--
+             *-- * return `promise`
+             *--
+             *-- Borra todo el contenido de la tabla en `localForage`
              */
             , drop: function () {
                 if(CONFIG.debug) console.log("Local::drop " + name)
@@ -142,7 +177,11 @@ angular.module('sync.local', ['LocalForageModule'])
                 return defer.promise
             }
             /*
-             * Obtiene el largo de la tabla
+             *-- #### length()
+             *--
+             *-- * return `promise`
+             *--
+             *-- Obtiene el largo de la tabla en `localForage`
              */
             , length: function () {
                 if(CONFIG.debug) console.log("Local::length " + name)
@@ -163,7 +202,13 @@ angular.module('sync.local', ['LocalForageModule'])
                 return defer.promise
             }
             /*
-             * Muestra por consola todas las filas 
+             *-- #### show([key]) - DEBUG
+             *--
+             *-- * param `key`: Objeto, String o número
+             *-- * return `promise`
+             *--
+             *-- Muestra por consola un objeto o bien la tabla completa. 
+             *-- Además, deja el resultado en `window.neo` para poder examinarlo
              */
             , show: function(key) {
                 if(key) {

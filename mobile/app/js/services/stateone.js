@@ -1,6 +1,6 @@
 angular.module('app.services.stateone', [])
 
-.factory('StateOne', ['Resource', '$q', 'Session', 'Project', 'Media', 'File', 'Tag', function (Resource, $q, Session, Project, Media, File, Tag) {
+.factory('StateOne', ['Resource', '$q', 'Session', 'Media', 'File', 'Tag', function (Resource, $q, Session, Media, File, Tag) {
 	
 	// Recurso local
 	var StateOne = Resource('StateOne', 'state_one', {

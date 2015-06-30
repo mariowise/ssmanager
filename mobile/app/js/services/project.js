@@ -1,6 +1,6 @@
 angular.module('app.services.project', [])
 
-.factory('Project', ['Resource', '$q', 'Session', 'User', function (Resource, $q, Session, User) {
+.factory('Project', ['Resource', '$q', 'Session', 'User', 'StateOne', function (Resource, $q, Session, User, StateOne) {
 	
 	// Recurso local
 	var Project = Resource('Project', 'projects') // Nombre del recurso, Nombre del recurso en API (URL)

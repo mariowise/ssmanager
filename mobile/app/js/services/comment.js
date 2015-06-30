@@ -1,6 +1,6 @@
 angular.module('app.services.comment', [])
 
-.factory('Comment', ['Resource', '$q', function (Resource, $q) {
+.factory('Comment', ['Resource', '$q', 'User', function (Resource, $q, User) {
 	
 	// Recurso local
 	var Comment = Resource('Comment', 'comments') // Nombre del recurso, Nombre del recurso en API (URL)	

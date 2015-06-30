@@ -1,6 +1,6 @@
 angular.module('app.controllers.projects.projects', [])
 
-.controller('ProjectController', ['$scope', '$state', '$stateParams', 'Project', function ($scope, $state, $stateParams, Project) {
+.controller('ProjectController', ['$scope', '$state', '$stateParams', 'EM', function ($scope, $state, $stateParams, EM) {
 	console.log("ProjectController running")
 	$scope.project = {}
 
@@ -11,7 +11,7 @@ angular.module('app.controllers.projects.projects', [])
 		}
 	}
 
-	Project.fetch($stateParams.project_id)
+	EM('Project').fetch($stateParams.project_id)
 	.then(setProject, null, setProject)
 	.catch(function (err) {
 		console.log(err)

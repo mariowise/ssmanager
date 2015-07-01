@@ -36,6 +36,33 @@ angular.module('app.services.user', [])
 		return d.promise
 	}
 
+	/*
+	 *-- #### allUsers
+	 *--
+	 *-- * return `promise`
+	 *-- 
+	 *-- Busca todos los usuarios almacenados localmente y los notifica. Luego 
+	 *-- intenta descargar toda la tabla de usuarios de la nube, si lo logra
+	 *-- resuelve los usuarios, si falla, resuelve con los usuarios almacenados
+	 *-- localmente
+	*/
+	User.allUsers = function () {
+		var d = $q.defer()
+		  , self = this
+
+		self.all()
+		.then(function (lall) {
+			d.notify(lall)
+			self._where({})
+			.then(d.resolve, function (err) {
+				console.error(err)
+				d.resolve(lall)
+			})
+		}, d.reject)
+
+		return d.promise
+	}
+
 	// Se expone el servicio
 	return User
 }])

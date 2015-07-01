@@ -15,7 +15,6 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
 .factory('Remote', ['$q', '$resource', 'Local', function ($q, $resource, Local) {
     var _Local = Local
     return function (name, remoteUri, httpMethods) {
-        angular.extend(httpMethods || {}, { save: { method: "POST", url: CONFIG.api(remoteUri.toLowerCase()) + "/" } })
         var Local = _Local(name)
 		  , res = {
 		  	/*
@@ -27,10 +26,11 @@ angular.module('sync.remote', ['sync.local', 'ngResource'])
              *-- el recurso publicado en la API.
              */
             remote: function() {
+                var methods = angular.extend({}, httpMethods || {}, { save: { method: "POST", url: CONFIG.api(remoteUri.toLowerCase()) + "/" } })
                 return $resource(
                     CONFIG.api(remoteUri.toLowerCase() + '/:id/'), 
                     { id: '@id' }, 
-                    angular.extend(CONFIG.apiMethods, httpMethods || {})
+                    angular.extend(CONFIG.apiMethods, methods)
                 )
             }
             /*

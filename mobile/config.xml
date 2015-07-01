@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cordova.ssmobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>SoftSystem Manager</name>
+    <name>SSM</name>
     <description>A mobile app to store your softsystem projects.</description>
     <author email="mariolopezlandes@gmail.cl" href="http://mariowise.wordpress.cl">Mario López Landes</author>
     <content src="index.html" />

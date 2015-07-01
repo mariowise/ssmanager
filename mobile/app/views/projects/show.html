@@ -22,7 +22,8 @@
 					<div>{{project.date_spp | amDateFormat:'DD/MM/YYYY (hh:mm a)'}}</div>
 
 					<label>Administrador</label>
-					<div>{{project._manager.first_name}} {{project._manager.last_name}} <{{project._manager.email}}></div>
+					<div>{{project._manager.first_name}} {{project._manager.last_name}}</div>
+					<div class="small">{{project._manager.email}}</div>
 				</div>
 			</div>
 		</div>
@@ -34,4 +35,52 @@
 		</div>
 	</div>
 
+	<br>
+	<div class="view-title text-center"><i class="fa fa-users"></i> Colaboradores</div>
+	<button class="btn btn-success wide" data-toggle="modal" data-target="#addUser"><i class="fa fa-plus"></i> Invitar</button>
+	<br>
+	<br>
+	<div class="container">
+		<div class="row row-list" ng-if="project._manager.username">
+			<div class="col-xs-8">
+				<i class="fa fa-user"></i> {{project._manager.username}}
+			</div>
+			<div class="col-xs-4 text-right small">
+				Manager
+			</div>
+		</div>
+		<div class="row row-list" ng-repeat="contrib in project.contribs_ssp">
+			<div class="col-xs-8">
+				<i class="fa fa-user"></i> {{contrib}}
+			</div>
+			<div class="col-xs-4 text-right">
+				<a class="small" ng-if="current_user.id == project.manager || contrib == current_user.username" ng-click="rmContrib(contrib)"><i class="fa fa-times"></i> Desvincular</a>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="clean()"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Invitar usuario</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="">Buscar</label>
+						<input ng-model="targetUser.username" type="text" placeholder="Buscar por nombre de usuario" class="form-control">
+					</div>
+					<div class="form-group">
+						<a class="btn btn-link" ng-click="allUsers()"><i class="fa fa-refresh"></i> Actualizar</a>
+						<div class="select">
+							<div class="select-item" ng-repeat="user in users | filter:targetUser.username" ng-if="user.id != current_user.id && project.contribs_ssp.indexOf(user.username) == -1" ng-click="addUser(user)"><i class="fa fa-user"></i> {{user.username}}</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </div>

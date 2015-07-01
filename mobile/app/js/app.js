@@ -1,6 +1,7 @@
 angular.module('app', [
 	'ui.router'
 	, 'ngResource'
+	, 'ngAnimate'
 	, 'ngCordova'
 	, 'angular-jwt'
 	, 'angularMoment'

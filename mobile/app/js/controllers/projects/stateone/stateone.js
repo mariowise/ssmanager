@@ -39,12 +39,13 @@ angular.module('app.controllers.projects.stateone', [])
 			$.loading.hide("loading")
 			$('#myModal').modal('show')
 			if(type == "takePhoto")
-				$scope.newmedia.type_media = "2" // Para imágenes xD Maldito fardo
+				$scope.newmedia.type_media = "2"
 			else if(type == "takeAudio")
-				$scope.newmedia.type_media = "3" // Oh el conxesumadre este
+				$scope.newmedia.type_media = "3"
 			else if(type == "takeVideo")
-				$scope.newmedia.type_media = "1" // Yaaa para la wea, oh la wea mala
+				$scope.newmedia.type_media = "1"
 			$scope.newmedia.url_media = fileUri
+			$scope.newmedia.local_uri = fileUri
 		}, function () {
 			$.loading.error("Ha ocurrido un problema al tomar la foto")
 		})
@@ -55,27 +56,29 @@ angular.module('app.controllers.projects.stateone', [])
 			$('#myModal').modal('hide')
 			$.loading.show("loading")
 
-			local_uri = $scope.newmedia.url_media
-			EM('File').upload(local_uri)
-			.then(function (file) {
-				console.log("Archivo procesado")
-				console.log(file)
-				file = JSON.parse(file.response)
-				return EM('Media')._create({
-					name_media: $scope.newmedia.name_media,
-					description_media: $scope.newmedia.description_media,
-					url_media: file.mediaLink,
-					uploaded_by: current_user.username,
-					type_media: $scope.newmedia.type_media,
-					state_one_id: $scope.state.id // New API
-				})
-			}, null, function (notify) {
-				$scope.progress = (notify.loaded / notify.total).toFixed(0)
-			})
+			EM('Media').create(angular.extend({}, $scope.newmedia, { state_one_id: $scope.state.id }))
+			// local_uri = $scope.newmedia.url_media
+			// EM('File').upload(local_uri)
+			// .then(function (file) {
+			// 	console.log("Archivo procesado")
+			// 	console.log(file)
+			// 	file = JSON.parse(file.response)
+			// 	return EM('Media')._create({
+			// 		name_media: $scope.newmedia.name_media,
+			// 		description_media: $scope.newmedia.description_media,
+			// 		url_media: file.mediaLink,
+			// 		uploaded_by: current_user.username,
+			// 		type_media: $scope.newmedia.type_media,
+			// 		state_one_id: $scope.state.id // New API
+			// 	})
+			// }, null, function (notify) {
+			// 	$scope.progress = (notify.loaded / notify.total).toFixed(0)
+			// })
 			.then(function (media) {
-				return EM('Media').fetch()
+				return EM('StateOne').fetch($scope.state)
 			})
-			.then(function (media) {
+			.then(function (state) {
+				$scope.$emit('changeState', state)
 				$.loading.show("success", 1500)
 			})
 			.catch(function (err) {

@@ -76,6 +76,70 @@ angular.module('app.services.media', [])
 		return d.promise
 	}
 
+	/*
+	 *-- #### pushOne(key)
+	 *--
+	 *-- * param `key`: Object, String o Number
+	 *-- * return `promise`
+	 *-- 
+	 *-- Si es que la tupla local posee la bandera __syncPending, entonces 
+	*/
+	Media.pushOne = function (key) {
+		var d = $q.defer()
+		  , self = this
+		  , key = key[CONFIG.pk] || key.id || key
+
+		self.get(key)
+		.then(function (litem) {
+			if(!litem.__syncPending)
+				d.resolve(litem)
+			else
+				return $q.all([
+					litem
+					, File.upload(litem.local_uri)
+					, Session.current_user()
+				])
+		})
+		.then(function (res) {
+			var litem = res[0]
+			litem.url_media = JSON.parse(res[1].response).mediaLink
+			litem.uploaded_by = res[2].username
+			return self._create(litem)
+		})
+		.then(function (litem) {
+			delete litem.__syncPending
+			return self.set(litem.id, litem)
+		})
+		.then(d.resolve)
+		.catch(d.reject)
+
+		return d.promise
+	}
+
+	Media.create = function (newMedia) {
+		var d = $q.defer()
+		  , self = this
+
+		$q.all([
+			Session.current_user()
+			, File.upload(newMedia.local_uri)
+		])
+		.then(function (res) {
+			newMedia.url_media = JSON.parse(res[1].response).mediaLink
+			newMedia.uploaded_by = res[0].username
+			return self._create(newMedia)
+		})
+		.then(d.resolve)
+		.catch(function (err) {
+			newMedia.id = guid()
+			newMedia.__syncPending = true
+			self.set(newMedia.id, newMedia)
+			.then(d.resolve, d.reject)
+		})
+
+		return d.promise
+	}
+
 	// Se expone el servicio
 	return angular.extend({}, Media, response)
 }])

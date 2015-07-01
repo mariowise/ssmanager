@@ -3,7 +3,18 @@ angular.module('app.services.project', [])
 .factory('Project', ['Resource', '$q', 'Session', 'User', 'StateOne', function (Resource, $q, Session, User, StateOne) {
 	
 	// Recurso local
-	var Project = Resource('Project', 'projects') // Nombre del recurso, Nombre del recurso en API (URL)
+	var Project = Resource('Project', 'projects', {
+		invite_contrib: {
+			method: 'POST',
+			url: CONFIG.api("projects") + "/:id/invite_contrib/",
+			responseType: 'json'
+		}
+		, rm_contrib: {
+			method: 'POST',
+			url: CONFIG.api("projects") + "/:id/rm_contrib/",
+			responseType: 'json'
+		}
+	}) // Nombre del recurso, Nombre del recurso en API (URL)
 	  , response = {}
 
 	/*
@@ -54,7 +65,11 @@ angular.module('app.services.project', [])
 				User.find(project.manager) // Obtiene el manager del proyecto
 			])
 		}, null, function (nproject) { // Si tenemos data en caché la notifica
-			if(nproject._manager && nproject.state_one && nproject._manager.id && nproject.state_one.id)
+			if(nproject._manager && 
+				nproject.state_one && 
+				nproject._manager.id && 
+				nproject.state_one.id)
+				
 				d.notify(nproject)
 		})
 		.then(function (res) {
@@ -75,7 +90,7 @@ angular.module('app.services.project', [])
 			} else d.reject()
 		})
 		.then(function (res) {
-			var project = res[0]
+			var project = res[0], contribs = []
 			project.state_one = res[1]
 			self.set(project.id, project)
 			.then(d.resolve, d.reject)

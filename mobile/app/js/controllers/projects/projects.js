@@ -16,6 +16,10 @@ angular.module('app.controllers.projects.projects', [])
 	.catch(function (err) {
 		console.log(err)
 	})
+
+	$scope.$on('changeProject', function (event, newVal) {
+		$scope.project = newVal
+	})
 }])
 
 .controller('projects#index', ['$scope', 'EM', function ($scope, EM) {
@@ -60,8 +64,58 @@ angular.module('app.controllers.projects.projects', [])
 	}
 }])
 
-.controller('projects#show', ['$scope', '$stateParams', 'Project', 'User', function ($scope, $stateParams, Project, User) {
+.controller('projects#show', ['$scope', '$state', '$stateParams', 'EM', function ($scope, $state, $stateParams, EM) {
 	console.log("projects#show running")
 
-	
+	$scope.targetUser = {}
+	$scope.users = []
+	$scope.colabs = []
+
+	function setUsers(users) {
+		if(angular.toJson(users) != angular.toJson($scope.users))
+			$scope.users = users
+	}
+
+	EM('User').all()
+	.then(setUsers)
+
+	$scope.allUsers = function () {
+		EM('User').allUsers()
+		.then(setUsers, function (err) {
+			$.loading.error("No ha sido posible descargar la lista de usuarios.")
+		}, setUsers)
+	}
+	$scope.addUser = function (user) {
+		if(confirm("Estas seguro que quieres invitar a '" + user.username + "' a participar de este proyecto?")) {
+			$.loading.show("loading")
+			EM('Project').invite_contrib({ id: $scope.project.id, user_id: user.id })
+			.then(function () {
+				$('#addUser').modal('hide')
+				$scope.targetUser = {}
+				$.loading.show("success", 1500)
+			}, function (err) {
+				console.error(err)
+				$.loading.error("No ha sido posible invitar al usuario.")
+			})
+		}
+	}
+	$scope.rmContrib = function (username) {
+		if(confirm("Estas seguro que quieres desvincular a '" + username + "' del proyecto?")) {
+			$.loading.show("loading")
+			EM('Project').rm_contrib({ id: $scope.project.id, username: username })
+			.then(function () {
+				return EM('Project').find($scope.project)
+			})
+			.then(function (project) {
+				$scope.$emit('changeProject', project)
+				$.loading.show("success", 1800)
+				if($scope.current_user.username == username)
+					$state.go("app.projects")
+			})
+			.catch(function (err) {
+				console.error(err)
+				$.loading.error("No ha sido posible desvingular al usuario.")
+			})
+		}
+	}
 }])

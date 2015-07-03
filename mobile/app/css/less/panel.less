@@ -1,162 +1,173 @@
 
 /*
- * Se extiende panel para que funcione con table-full
- * Basiscamente se ha copiado cada estilo para table-responsive
- */
+* Se extiende panel para que funcione con table-full
+* Basiscamente se ha copiado cada estilo para table-responsive
+*/
 .panel {
-  position: relative;
+    position: relative;
 
-  .panel-destroy {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    z-index: 1;
-  }
+    .panel-destroy {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        z-index: 1;
+    }
 
-  .slidable {
-    margin-bottom: 0;
-  }
+    .slidable {
+        margin-bottom: 0;
+    }
 
-  // Delete margin bottom on user permissions tables
-  > .slidable-table > .table {
-    margin-bottom: 0px;
-    > thead > tr > th {
-      border-bottom: 1px solid @table-border-color;
+    > .slidable-table > .table {
+        margin-bottom: 0px;
+        > thead > tr > th {
+            border-bottom: 1px solid @table-border-color;
+        }
     }
-  }
 
-  > .table-full > .table {
-    margin-bottom: 0;
-  }
-  // Add border top radius for first one
-  > .table-full:first-child > .table:first-child {
-    > thead:first-child,
-    > tbody:first-child {
-      > tr:first-child {
-        td:first-child,
-        th:first-child {
-          border-top-left-radius: (@panel-border-radius - 1);
-        }
-        td:last-child,
-        th:last-child {
-          border-top-right-radius: (@panel-border-radius - 1);
-        }
-      }
+    > .table-full > .table {
+        margin-bottom: 0;
     }
-  }
-  // Add border bottom radius for last one
-  > .table-full:last-child > .table:last-child {
-    > tbody:last-child,
-    > tfoot:last-child {
-      > tr:last-child {
-        td:first-child,
-        th:first-child {
-          border-bottom-left-radius: (@panel-border-radius - 1);
+    > .table-full:first-child > .table:first-child {
+        > thead:first-child,
+        > tbody:first-child {
+            > tr:first-child {
+                td:first-child,
+                th:first-child {
+                    border-top-left-radius: (@panel-border-radius - 1);
+                }
+                td:last-child,
+                th:last-child {
+                    border-top-right-radius: (@panel-border-radius - 1);
+                }
+            }
         }
-        td:last-child,
-        th:last-child {
-          border-bottom-right-radius: (@panel-border-radius - 1);
-        }
-      }
     }
-  }
-  > .panel-body + .table-full {
-    border-top: 1px solid @table-border-color;
-  }
+    > .table-full:last-child > .table:last-child {
+        > tbody:last-child,
+        > tfoot:last-child {
+            > tr:last-child {
+                td:first-child,
+                th:first-child {
+                    border-bottom-left-radius: (@panel-border-radius - 1);
+                }
+                td:last-child,
+                th:last-child {
+                    border-bottom-right-radius: (@panel-border-radius - 1);
+                }
+            }
+        }
+    }
+    > .panel-body + .table-full {
+        border-top: 1px solid @table-border-color;
+    }
 
-  > .table-full > .table-bordered {
-    border: 0;
-    > thead,
-    > tbody,
-    > tfoot {
-      > tr {
-        > th:first-child,
-        > td:first-child {
-          border-left: 0;
+    > .table-full > .table-bordered {
+        border: 0;
+        > thead,
+        > tbody,
+        > tfoot {
+            > tr {
+                > th:first-child,
+                > td:first-child {
+                    border-left: 0;
+                }
+                > th:last-child,
+                > td:last-child {
+                    border-right: 0;
+                }
+                &:first-child > th,
+                &:first-child > td {
+                    border-top: 0;
+                }
+                &:last-child > th,
+                &:last-child > td {
+                    border-bottom: 0;
+                }
+            }
         }
-        > th:last-child,
-        > td:last-child {
-          border-right: 0;
-        }
-        &:first-child > th,
-        &:first-child > td {
-          border-top: 0;
-        }
-        &:last-child > th,
-        &:last-child > td {
-          border-bottom: 0;
-        }
-      }
     }
-  }
-  > .table-full {
-    border: 0;
-    margin-bottom: 0;
-  }
-  .panel-detail {
-    > div {
-      margin-bottom: 15px;
+    > .table-full {
+        border: 0;
+        margin-bottom: 0;
     }
-    > label {
-      color: @panel-detail-label-color;
+    .panel-detail {
+        > div {
+            margin-bottom: 15px;
+        }
+        > label {
+            color: @panel-detail-label-color;
+        }
     }
-  }
+    .panel-sheet {
+        position: absolute;
+        top: 0px; left: 0px;
+        width: 100%; height: 100%;
+        color: white; background-color: rgba(0,0,0,0.6);
+        padding: 100px 50px;
+        padding-top: 10px;
+        text-align: center;
+        border-radius: 4px;
+
+        .panel-sheet-icon {
+            font-size: 50px;
+        }
+    }
 }
 
 
 .panel-heading {
-  padding: 5px 5px 5px 5px;
-  .clearfix();
+    padding: 5px 5px 5px 5px;
+    .clearfix();
 
-  > .panel-title {
-    display: inline-block;
-    margin: 5px 10px;
-  }
-
-  > .panel-toolbar {
-    float: right;
-    display: inline-block;
-
-    > .form-control {
-      display: inline-block;
-      width: auto;
-      vertical-align: middle;
+    > .panel-title {
+        display: inline-block;
+        margin: 5px 10px;
     }
-  }
+
+    > .panel-toolbar {
+        float: right;
+        display: inline-block;
+
+        > .form-control {
+            display: inline-block;
+            width: auto;
+            vertical-align: middle;
+        }
+    }
 }
 
 
 .panel-footer {
-  padding: 5px 10px 5px 10px;
-  .clearfix();
+    padding: 5px 10px 5px 10px;
+    .clearfix();
 
-  > .panel-toolbar {
-    float: right;
-    display: inline-block;
-  }
+    > .panel-toolbar {
+        float: right;
+        display: inline-block;
+    }
 
-  .pagination {
-    margin-top:0;
-    margin-left:0;
-    margin-right:0;
-    margin-bottom:0;
-  }
-  
+    .pagination {
+        margin-top:0;
+        margin-left:0;
+        margin-right:0;
+        margin-bottom:0;
+    }
+
 }
 
 .panel-primary {
-  .panel-variant(@panel-default-border; @panel-primary-text; @panel-primary-heading-bg; @panel-primary-border);
+    .panel-variant(@panel-default-border; @panel-primary-text; @panel-primary-heading-bg; @panel-primary-border);
 }
 
 .panel-media {
-  h4 {
-    margin-top: 0px;
-  }
-  i.fa.panel-icon {
-    font-size: 40px;
-    margin-top: 5px;
-  }
-  .row .col-xs-3 {
-    border-right: 1px solid @table-border-color;
-  }
+    h4 {
+        margin-top: 0px;
+    }
+    i.fa.panel-icon {
+        font-size: 40px;
+        margin-top: 5px;
+    }
+    .row .col-xs-3 {
+        border-right: 1px solid @table-border-color;
+    }
 }

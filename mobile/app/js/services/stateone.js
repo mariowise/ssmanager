@@ -41,6 +41,26 @@ angular.module('app.services.stateone', [])
 		return d.promise
 	}
 
+	StateOne.addMediaOffline = function (state, media) {
+		var d = $q.defer()
+
+		StateOne.get(state.id)
+		.then(function (state) {
+			state.medias.unshift(media)
+			if(media.type_media == "1")
+				state.ssp_videos.push(media.id)
+			else if(media.type_media == "2")
+				state.ssp_imagenes.push(media.id)
+			else if(media.type_media == "3")
+				state.ssp_audios.push(media.id)
+			return StateOne.set(state.id, state)
+		})
+		.then(d.resolve)
+		.catch(d.reject)
+
+		return d.promise
+	}
+
 	// Se expone el servicio
 	return StateOne
 }])

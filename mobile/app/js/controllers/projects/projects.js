@@ -119,3 +119,24 @@ angular.module('app.controllers.projects.projects', [])
 		}
 	}
 }])
+
+.controller('project#colab', ['$scope', '$stateParams', 'EM', function ($scope, $stateParams, EM) {
+	console.log("project#colab running")
+
+	$scope.colab = {}
+
+	EM('User').where({ username: $stateParams.colab_username })
+	.then(function (user) {
+		if(user.length == 1)
+			return EM('User').fetch(user[0]) 
+		else
+			$.loading.error("No ha sido posible encontrar la información del usuario")			
+	})
+	.then(function (user) {
+		$scope.colab = user
+	})
+	.catch(function (err) {
+		console.error(err)
+		$.loading.error("No ha sido posible encontrar la información del usuario")
+	})
+}])

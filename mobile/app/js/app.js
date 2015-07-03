@@ -78,6 +78,11 @@ angular.module('app', [
 				templateUrl: 'views/projects/show.html',
 				controller: 'projects#show'
 			})
+			.state('app.project.colab', {
+				url: '/colab/:colab_username',
+				templateUrl: 'views/projects/colab.html',
+				controller: 'project#colab'
+			})
 			// StateOne
 			.state('app.project.stateone', {
 				abstract: true,

@@ -57,34 +57,41 @@ angular.module('app.controllers.projects.stateone', [])
 			$.loading.show("loading")
 
 			EM('Media').create(angular.extend({}, $scope.newmedia, { state_one_id: $scope.state.id }))
-			// local_uri = $scope.newmedia.url_media
-			// EM('File').upload(local_uri)
-			// .then(function (file) {
-			// 	console.log("Archivo procesado")
-			// 	console.log(file)
-			// 	file = JSON.parse(file.response)
-			// 	return EM('Media')._create({
-			// 		name_media: $scope.newmedia.name_media,
-			// 		description_media: $scope.newmedia.description_media,
-			// 		url_media: file.mediaLink,
-			// 		uploaded_by: current_user.username,
-			// 		type_media: $scope.newmedia.type_media,
-			// 		state_one_id: $scope.state.id // New API
-			// 	})
-			// }, null, function (notify) {
-			// 	$scope.progress = (notify.loaded / notify.total).toFixed(0)
-			// })
 			.then(function (media) {
-				return EM('StateOne').fetch($scope.state)
+				if(media.__syncPending)
+					return EM('StateOne').addMediaOffline($scope.state, media)
 			})
-			.then(function (state) {
-				$scope.$emit('changeState', state)
-				$.loading.show("success", 1500)
+			.then(function () {
+				EM('StateOne').fetch($scope.state)
+				.then(function (state) {
+					$scope.$emit('changeState', state)
+					$.loading.show("success", 1500)
+				})
 			})
 			.catch(function (err) {
 				console.log(err)
 				$.loading.error("Ha ocurrido un error al subir el contenido")
 			})
+		})
+	}
+	$scope.syncItem = function (media) {
+		var spinner = $('#panel-media-' + media.id + " .panel-sheet-icon")
+		$(spinner).addClass("fa-spin")
+
+		EM('Media').syncOne(media)
+		.then(function (media) {
+			$(spinner).removeClass("fa-spin")
+			$.loading.show("loading")
+			return EM('StateOne').fetch($scope.state)
+		})
+		.then(function (state) {
+			$scope.$emit('changeState', state)
+			$.loading.show("success", 1800)
+		})
+		.catch(function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible subir el contenido")
+			$(spinner).removeClass("fa-spin")
 		})
 	}
 }])

@@ -1,13 +1,13 @@
 angular.module('app.controllers.profile', [])
 
-.controller('ProfileController', ['$scope', 'User', 'Session', 'File', 'EM', function ($scope, User, Session, File, EM) {
+.controller('ProfileController', ['$scope', 'EM', function ($scope, EM) {
 	console.log("ProfileController running")
 	$scope.user = {}
 
 	function setUser (user) {
 		if(angular.toJson($scope.user) != JSON.stringify(user)) {
 			
-			File.download(user.profile.photo_url || user.profile.photo_user)
+			EM('File').download(user.profile.photo_url || user.profile.photo_user)
 			.then(function (fileUri) {
 				user.profile.photo_local = fileUri
 				EM('Profile').set(user.profile.id, user.profile)
@@ -19,9 +19,9 @@ angular.module('app.controllers.profile', [])
 		}		
 	}
 	$scope.fetchUser = function () {
-		Session.current_user()
+		EM('Session').current_user()
 		.then(function (current_user) {
-			User.fetch(current_user.id)
+			EM('User').fetch(current_user.id)
 			.then(setUser, null, setUser)
 		})
 	}
@@ -32,7 +32,7 @@ angular.module('app.controllers.profile', [])
 	$scope.fetchUser()
 }])
 
-.controller('profile#edit', ['$q', '$scope', '$state', 'User', 'File', function ($q, $scope, $state, User, File) {
+.controller('profile#edit', ['$q', '$scope', '$state', 'EM', function ($q, $scope, $state, EM) {
 	console.log("profile#edit running")
 	$scope.fetchUser()
 
@@ -42,8 +42,8 @@ angular.module('app.controllers.profile', [])
 		delete profile.photo_user
 
 		$q.all([
-			User._update($scope.user),
-			Profile._update(profile)
+			EM('User')._update($scope.user),
+			EM('Profile')._update(profile)
 		])
 		.then(function (res) {
 			$.loading.show("success", 1500)
@@ -57,16 +57,16 @@ angular.module('app.controllers.profile', [])
 
 	$scope.takePhoto = function (option) {
 		$.loading.show("loading")
-		var aux = (option != "select") ? File.takePhoto() : File.selectPhoto()
+		var aux = (option != "select") ? EM('File').takePhoto() : EM('File').selectPhoto()
 		aux
 		.then(function (photoURI) {
-			return File.upload(photoURI)
+			return EM('File').upload(photoURI)
 		})
 		.then(function (file) {
 			var profile = $scope.user.profile
 			delete profile.photo_user
 			profile.photo_url = JSON.parse(file.response).mediaLink
-			return Profile._update(profile)
+			return EM('Profile')._update(profile)
 		})
 		.then(function () {
 			$.loading.show("success", 1500)

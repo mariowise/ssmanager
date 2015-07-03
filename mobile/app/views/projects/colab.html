@@ -1,0 +1,40 @@
+<header-left route="app.project.show"></header-left>
+
+<div class="container">
+
+	<div class="view-title text-center"><i class="fa fa-user"></i> Perfil del colaborador
+		<div ng-if="!colab.id" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+	</div>
+
+	<div class="panel panel-default" ng-if="colab.email != undefined">
+		<div class="panel-heading">
+			<div class="panel-title">Información de perfil</div>
+			<div class="panel-toolbar">
+				
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="panel-detail">
+				<label for="">Foto de perfil:</label>
+				<img src="{{colab.profile.photo_local || colab.profile.photo_url || colab.profile.photo_user}}" alt="" class="wide">
+				<br>
+				<br>
+				<label for="">Nombre:</label>
+				<div>{{colab.first_name}}</div>
+
+				<label for="">Apellido:</label>
+				<div>{{colab.last_name}}</div>
+
+				<label for="">Correo electrónico:</label>
+				<div>{{colab.email}}</div>
+
+				<label for="">Organización:</label>
+				<div>{{colab.profile.company_user || "Ninguna"}}</div>
+
+				<label for="">Cargo:</label>
+				<div>{{colab.profile.position_user || "Ninguno"}}</div>
+			</div>
+		</div>
+	</div>
+
+</div>

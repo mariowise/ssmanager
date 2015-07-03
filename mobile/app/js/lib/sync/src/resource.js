@@ -62,6 +62,11 @@ angular.module('sync.resource', ['sync.remote'])
 	  		var d = $q.defer()
 	  	      , self = this
 
+            // if(!key) {
+            //     d.reject(key)
+            //     return d.promise
+            // }
+
 	  		if(key.constructor === Array) {
                 var count = 0, lc = 0, results = [], notifieds = []
                 key.forEach(function (query, i) {
@@ -110,6 +115,11 @@ angular.module('sync.resource', ['sync.remote'])
                 d.reject()
                 return d.promise
             }
+
+            // if(!key) {
+            //     d.reject(key)
+            //     return d.promise
+            // }
 
             if(key.constructor == Array) {
                 var count = 0, lc = 0, results = [], notifieds = []

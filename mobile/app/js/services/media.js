@@ -46,7 +46,12 @@ angular.module('app.services.media', [])
 	}
 
 	/*
-	 * Efectúa un find y además descarga el archivo si es que no existe
+	 *-- #### fetchOne
+	 *--
+	 *-- * param `key`: Object, String o Number
+	 *--
+	 *-- Efectúa un find y además descarga el archivo si es que no existe
+	 *--
 	 */
 	Media.fetchOne = function (key) {
 		// console.log("Media::fetchOne " + key)
@@ -84,7 +89,7 @@ angular.module('app.services.media', [])
 	 *-- 
 	 *-- Si es que la tupla local posee la bandera __syncPending, entonces 
 	*/
-	Media.pushOne = function (key) {
+	Media.syncOne = function (key) {
 		var d = $q.defer()
 		  , self = this
 		  , key = key[CONFIG.pk] || key.id || key
@@ -107,7 +112,7 @@ angular.module('app.services.media', [])
 			return self._create(litem)
 		})
 		.then(function (litem) {
-			delete litem.__syncPending
+			litem.__syncPending = false
 			return self.set(litem.id, litem)
 		})
 		.then(d.resolve)
@@ -120,21 +125,27 @@ angular.module('app.services.media', [])
 		var d = $q.defer()
 		  , self = this
 
-		$q.all([
-			Session.current_user()
-			, File.upload(newMedia.local_uri)
-		])
-		.then(function (res) {
-			newMedia.url_media = JSON.parse(res[1].response).mediaLink
-			newMedia.uploaded_by = res[0].username
-			return self._create(newMedia)
-		})
-		.then(d.resolve)
-		.catch(function (err) {
-			newMedia.id = guid()
-			newMedia.__syncPending = true
-			self.set(newMedia.id, newMedia)
-			.then(d.resolve, d.reject)
+		Session.current_user()
+		.then(function (current_user) {
+			newMedia.uploaded_by = current_user.username
+			newMedia.date_media = moment(Date.now()).toISOString().split("Z")[0]
+
+			File.upload(newMedia.local_uri)
+			.then(function (file) {
+				newMedia.url_media = JSON.parse(file.response).mediaLink
+				return self._create(newMedia)
+			})
+			.then(d.resolve)
+			.catch(function (err) {
+				newMedia.id = Number(guid())
+				newMedia.__syncPending = true
+				newMedia.comments_media = []
+				newMedia.comment = []
+				newMedia.tags = []
+				newMedia.tags_media = []			
+				self.set(newMedia.id, newMedia)
+				.then(d.resolve, d.reject)
+			})
 		})
 
 		return d.promise

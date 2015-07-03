@@ -124,6 +124,11 @@ angular.module('app', [
 		templateUrl: 'views/profile/edit.html',
 		controller: 'profile#edit'
 	})	
+	.state('app.profile.changepass', {
+		url: '/changepass',
+		templateUrl: 'views/profile/changepass.html',
+		controller: 'profile#changepass'
+	})
 
 	$urlRouterProvider.otherwise('/app/projects')
 

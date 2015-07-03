@@ -3,7 +3,13 @@ angular.module('app.services.user', [])
 .factory('User', ['$q', 'Profile', 'Resource', function ($q, Profile, Resource) {
 	
 	// Recurso local
-	var User = Resource('User', 'users') // Nombre del recurso, Nombre del recurso en API (URL)
+	var User = Resource('User', 'users', {
+		changepass: {
+			method: 'POST',
+			url: CONFIG.api("users") + "/changepass/",
+			responseType: 'json'
+		}
+	}) // Nombre del recurso, Nombre del recurso en API (URL)
 
 	User.fetchOne = function (key) {
 		var d = $q.defer()

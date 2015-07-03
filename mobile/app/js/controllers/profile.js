@@ -77,3 +77,27 @@ angular.module('app.controllers.profile', [])
 		})
 	}
 }])
+
+.controller('profile#changepass', ['$scope', '$state', 'EM', function ($scope, $state, EM) {
+	console.log("profile#changepass running")
+
+	$scope.changePass = function () {
+		if($scope.user.new_password != $scope.user.new_password2) {
+			$.loading.error("Las contraseña no coinciden")
+			return 
+		}	
+		if(confirm("Si cambias tu contraseña deberás volver a iniciar sesión. Quieres continuar?")) {
+			EM('User').changepass($scope.user)
+			.then(function (user) {
+				$.loading.show("success", 2000)
+				$scope.logout()
+			})
+			.catch(function (err) {
+				if(err.status == 412)
+					$.loading.error("Tu contraseña actual no fue aceptada.")
+				else
+					$.loading.error("No ha sido posible completar la operación.")
+			})
+		}
+	}
+}])

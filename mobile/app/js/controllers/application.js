@@ -29,9 +29,11 @@ angular.module('app.controllers.application', [])
 		if(CONFIG.api_address == 'http://softsystemanager.appspot.com') {
 			CONFIG.api_address += "a"
 			$('#header .dropdown .modo').html('<i class="fa fa-globe"></i> Modo online')
+			console.warn("Modo offline activado")
 		} else {
 			CONFIG.api_address = 'http://softsystemanager.appspot.com'
 			$('#header .dropdown .modo').html('<i class="fa fa-globe"></i> Modo offline')
+			console.warn("Modo online activado")
 		}
 	}
 
@@ -41,6 +43,14 @@ angular.module('app.controllers.application', [])
 		window.current_user = user
 		$scope.$broadcast('CurrentUserLoaded')
 	})
+
+	function setCurrentUser(evnt, user) {
+		if(angular.toJson(user) != angular.toJson($scope.current_user)) {
+			$scope.current_user = user
+			window.current_user = $scope.current_user
+		}
+	}
+	$scope.$on('setCurrentUser', setCurrentUser)
 
 	$('#header .nav.navbar-nav li a').click(function (event) {
 		$('#header .navbar-toggle').click()

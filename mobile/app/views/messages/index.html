@@ -1,0 +1,42 @@
+<header-left remove></header-left>
+
+<div class="container">
+
+	<div class="view-title text-center">
+		<i class="fa fa-envelope-o"></i> Mensajes <span ng-if="current_user.profile.noreads && current_user.profile.reads">({{0 + current_user.profile.noreads.length}})</span>
+		<div ng-if="loading" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+	</div>
+
+	<div ng-if="!loading">
+		<div class="btn-group-vertical wide" role="group">
+			<div class="btn btn-default message-item" ng-repeat="message in current_user.profile.noreads | orderBy:'-date_mensaje'" ui-sref="app.messages.show({ message_id: {{message.id}} })">
+				<div class="row">
+					<div class="col-xs-1">
+						<i class="fa fa-envelope"></i>
+					</div>
+					<div class="col-xs-10">
+						<div class="subject">{{message.asunto_mensaje}}</div>
+						<div class="brief">{{message.contenido_mensaje}}</div>
+					</div>
+				</div>
+				<i class="fa fa-chevron-right"></i>
+			</div>
+		</div>
+		<br>
+		<br>
+		<div class="btn-group-vertical wide" role="group" ng-if="current_user.profile.reads">
+			<div class="btn btn-default message-item read" ng-repeat="message in current_user.profile.reads | orderBy:'-date_mensaje'" ui-sref="app.messages.show({ message_id: {{message.id}} })">
+				<div class="row">
+					<div class="col-xs-1">
+						<i class="fa fa-envelope-o"></i>
+					</div>
+					<div class="col-xs-10">
+						<div class="subject">{{message.asunto_mensaje}}</div>
+						<div class="brief">{{message.contenido_mensaje}}</div>
+					</div>
+				</div>
+				<i class="fa fa-chevron-right"></i>
+			</div>
+		</div>
+	</div>
+</div>

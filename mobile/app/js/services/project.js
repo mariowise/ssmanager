@@ -14,6 +14,11 @@ angular.module('app.services.project', [])
 			url: CONFIG.api("projects") + "/:id/rm_contrib/",
 			responseType: 'json'
 		}
+		, contribs: {
+			method: 'GET',
+			url: CONFIG.api("projects") + "/:id/contribs/",
+			isArray: true
+		}
 	}) // Nombre del recurso, Nombre del recurso en API (URL)
 	  , response = {}
 
@@ -68,7 +73,8 @@ angular.module('app.services.project', [])
 			if(nproject._manager && 
 				nproject.state_one && 
 				nproject._manager.id && 
-				nproject.state_one.id)
+				nproject.state_one.id &&
+				nproject.contribs)
 				
 				d.notify(nproject)
 		})
@@ -85,13 +91,15 @@ angular.module('app.services.project', [])
 			if(state.constructor == Array && state.length > 0 || project.state_one && project.state_one.id) {
 				return $q.all([
 					project,
-					StateOne.fetch((state.length > 0) ? state[0].id : project.state_one.id)
+					StateOne.fetch((state.length > 0) ? state[0].id : project.state_one.id),
+					Project.contribs({ id: project.id })
 				])
 			} else d.reject()
 		})
 		.then(function (res) {
-			var project = res[0], contribs = []
+			var project = res[0]
 			project.state_one = res[1]
+			project.contribs = res[2]
 			self.set(project.id, project)
 			.then(d.resolve, d.reject)
 		})

@@ -3,7 +3,6 @@ from djangotoolbox.fields import ListField
 from django.contrib.auth.models import User
 from myapp.modulos.principal.forms import StringListField
 
-
 # Create your models here.
 class ListaMensajes(ListField):
     def formfield(self, **kwargs):

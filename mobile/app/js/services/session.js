@@ -91,9 +91,13 @@ angular.module('app.services.session', [])
 	}
 	
 	/*
-	 * Este método entrega el current_user y en caso de no encontrarlo
-	 * quiebra la cadena de promesas genera un error (reject) y devuelve
-	 * al usuario al login indicandole que la sesión ha expirado
+	 *-- #### current_user()
+	 *--
+	 *-- * return `promise`
+	 *--
+	 *-- Este método entrega el current_user y en caso de no encontrarlo
+	 *-- quiebra la cadena de promesas genera un error (reject) y devuelve
+	 *-- al usuario al login indicandole que la sesión ha expirado
 	 */
 	Session.current_user = function () {
 		var d = $q.defer()
@@ -117,6 +121,39 @@ angular.module('app.services.session', [])
 			}, 3000)
 			d.reject(undefined)
 		})
+
+		return d.promise
+	}
+
+	/*
+	 *-- #### colabs()
+	 *--
+	 *-- * return `promise`
+	 *-- 
+	 *-- Entrega la lista de colaboradores que tiene el usuario actualmente logeado
+	 *-- intenta además actualizar esta lista desde la nube, mientras tanto notifica
+	 *-- el valor local, y si recibe respuesta, actualiza el local y resuelve el actualizado
+	 *-- Si no logra conectarse, finalmente resuelve el valor local.
+	 */
+	Session.colabs = function () {
+		var d = $q.defer()
+
+		Session.get("colabs")
+		.then(function (obj) {
+			d.notify(obj.colabs)
+			return User.colabs()
+		}, function (err) {
+			return User.colabs()
+		})
+		.then(function (rcolabs) {
+			return Session.set("colabs", { colabs: rcolabs })
+		}, function (err) {
+			console.error(err)
+			return Session.get("colabs")
+		})
+		.then(function (obj) {
+			d.resolve(obj.colabs)
+		}, d.reject)
 
 		return d.promise
 	}

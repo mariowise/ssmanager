@@ -5,6 +5,7 @@ angular.module('app', [
 	, 'ngCordova'
 	, 'angular-jwt'
 	, 'angularMoment'
+	, 'selectize'
 
 	, 'app.services.resource-factory'
 	, 'app.services.session'
@@ -16,18 +17,21 @@ angular.module('app', [
 	, 'app.services.comment'
 	, 'app.services.file'
 	, 'app.services.tag'
+	, 'app.services.message'
 	, 'app.services.entity-manager'
 
 	, 'app.controllers.application'
 	, 'app.controllers.login'
 	, 'app.controllers.index'
 	, 'app.controllers.profile'
+	, 'app.controllers.messages'
 
 	, 'app.controllers.projects.projects'
 	, 'app.controllers.projects.stateone'
 	, 'app.controllers.projects.media'
 	, 'app.controllers.projects.tags'
-
+	, 'app.controllers.projects.statetwo'
+	
 	, 'app.directives.footer'
 	, 'app.directives.header'
 	, 'app.directives.panel'
@@ -107,6 +111,18 @@ angular.module('app', [
 					templateUrl: 'views/projects/stateone/tags/index.html',
 					controller: 'tags#index'
 				})
+			// StateTwo
+			.state('app.project.statetwo', {
+				abstract: true,
+				url: '/statetwo',
+				template: '<div ui-view></div>',
+				controller: 'StateTwoController'
+			})
+				.state('app.project.statetwo.show', {
+					url: '/',
+					templateUrl: 'views/projects/statetwo/show.html',
+					controller: 'statetwo#show'
+				})
 
 	// Profile
 	.state('app.profile', {
@@ -128,6 +144,24 @@ angular.module('app', [
 		url: '/changepass',
 		templateUrl: 'views/profile/changepass.html',
 		controller: 'profile#changepass'
+	})
+
+	// Messages
+	.state('app.messages', {
+		abstract: true,
+		url: '/messages',
+		template: '<div ui-view></div>',
+		controller: 'MessageController'
+	})
+	.state('app.messages.index', {
+		url: '/',
+		templateUrl: 'views/messages/index.html',
+		controller: 'messages#index'
+	})
+	.state('app.messages.show', {
+		url: '/:message_id',
+		templateUrl: 'views/messages/show.html',
+		controller: 'messages#show'
 	})
 
 	$urlRouterProvider.otherwise('/app/projects')

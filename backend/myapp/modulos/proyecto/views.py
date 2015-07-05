@@ -45,6 +45,7 @@ def contrib_view(request, id_ssp):
 				ctx = {'proyecto':proyecto, 'status': status, 'usuarios' : usersObj, 
 						'destinatarios' : destinatarios, 'usuariosSSM' : usuarios}
 
+				# Esta condición de carrera es traida a ustedes por Aldo Navarrete: Los titanes del Python
 				newMensaje = Mensaje.objects.create(remitente_mensaje=request.user.get_username(), asunto_mensaje='Invitacion', contenido_mensaje='%s te ha invitado a que colabores en su proyecto %s'%(request.user.get_username(), proyecto.name_ssp), proyecto_mensaje=proyecto.id, url_asoc_mensaje='/aceptarInvitacion/%s/%s'%(id_ssp, user.id))
 				newMensaje.receptores_mensaje.append(user.id)
 				newMensaje.save()
@@ -121,10 +122,14 @@ def invitacion_view(request, id_ssp, id_user, id_mensaje):
 	      'parents' : [{'id' : contribP.id_drive_folder}]
 	    }
 
-		folder = drive_service.files().insert(body = body).execute()
-		folderID = folder.get('id')
-		proyecto.ids_folder_ssp.append(folderID)
-		contribP.id_folder_user.append(folderID)
+		try:
+			folder = drive_service.files().insert(body = body).execute()
+			folderID = folder.get('id')
+			proyecto.ids_folder_ssp.append(folderID)
+			contribP.id_folder_user.append(folderID)
+		except:
+			pass
+			
 		proyecto.save()
 		contribP.save()
 

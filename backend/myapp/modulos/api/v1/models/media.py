@@ -37,7 +37,7 @@ class MediaViewSet(viewsets.ModelViewSet):
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
 
-            state = StateOne.objects.get(id=request.data["state_one_id"])
+            state = StateOne.objects.get(id = request.data["state_one_id"])
             if serializer.data["type_media"] == "1": state.ssp_videos.append(serializer.data["id"])
             if serializer.data["type_media"] == "2": state.ssp_imagenes.append(serializer.data["id"])
             if serializer.data["type_media"] == "3": state.ssp_audios.append(serializer.data["id"])

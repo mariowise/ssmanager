@@ -8,6 +8,11 @@ angular.module('app.services.user', [])
 			method: 'POST',
 			url: CONFIG.api("users") + "/changepass/",
 			responseType: 'json'
+		},
+		colabs: {
+			method: 'GET',
+			url: CONFIG.api("users") + "/colabs/",
+			isArray: true
 		}
 	}) // Nombre del recurso, Nombre del recurso en API (URL)
 

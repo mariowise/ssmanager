@@ -9,6 +9,8 @@ from django.contrib import admin
 from oauth2client.django_orm import CredentialsField
 from myapp import settings
 
+from google.appengine.ext import db
+
 class ListaField(ListField):
     def formfield(self, **kwargs):
         return models.Field.formfield(self, StringListField, **kwargs)
@@ -78,6 +80,53 @@ class userProfile(models.Model):
 			messages.append(M)
 		return messages
 
+	@classmethod
+	@db.transactional()
+	def add_message_nl(self, profile_id, message_id):
+		profile = self.objects.get(id = profile_id)
+		profile.mensajes_user_noleidos.append(message_id)
+		profile.save()
+		return profile
+
+	@classmethod
+	@db.transactional()
+	def add_project(self, profile_id, project_id):
+		profile = self.objects.get(id = profile_id)
+		profile.project_colab_user.append(project_id)
+		profile.save()
+		return profile
+
+	@classmethod
+	@db.transactional()
+	def rm_project(self, profile_id, project_id):
+		profile = self.objects.get(id = profile_id)
+		if project_id in profile.project_colab_user:
+			profile.project_colab_user.remove(project_id)		
+		profile.save()
+		return profile	
+
+	@classmethod
+	@db.transactional()
+	def rm_message(self, profile_id, message_id):
+		profile = self.objects.get(id = profile_id)
+		if message_id in profile.mensajes_user_leidos: 
+			profile.mensajes_user_leidos.remove(message_id)	
+		if message_id in profile.mensajes_user_noleidos:
+			profile.mensajes_user_noleidos.remove(message_id)
+		profile.save()
+		return profile
+
+	@classmethod
+	@db.transactional()
+	def mark_message(self, profile_id, message_id):
+		profile = self.objects.get(id = profile_id)
+		if message_id in profile.mensajes_user_noleidos:
+			profile.mensajes_user_noleidos.remove(message_id)
+			if message_id not in profile.mensajes_user_leidos:
+				profile.mensajes_user_leidos.append(message_id)
+		profile.save()
+		return profile
+
 class userSoftSystemProject(models.Model):
 
 	manager = models.ForeignKey(User)
@@ -125,3 +174,20 @@ class userSoftSystemProject(models.Model):
 			cU = User.objects.get(username__exact=cN)
 			contribUsers.append(cU)
 		return contribUsers
+
+	@classmethod
+	@db.transactional()
+	def add_contrib(self, project_id, contrib_username):
+		project = self.objects.get(id = project_id)
+		project.project_colab_user.append(contrib_username)
+		project.save()
+		return project
+
+	@classmethod
+	@db.transactional()
+	def rm_contrib(self, project_id, contrib_username):
+		project = self.objects.get(id = project_id)
+		if contrib_username in project.contribs_ssp:
+			project.contribs_ssp.remove(contrib_username)
+		project.save()
+		return project

@@ -1,0 +1,35 @@
+<header-left route="app.messages.index"></header-left>
+
+<div class="container">
+	
+	<div class="view-title text-center">
+		<i class="fa fa-envelope-o"></i> Ver mensaje
+		<div ng-if="message.id == undefined" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+	</div>
+
+	<div ng-if="message.id != undefined">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="panel-title">{{message.date_mensaje | amCalendar}}</div>
+				<div class="panel-toolbar">
+					<div class="btn btn-danger" ng-click="delete()"><i class="fa fa-trash"></i> Eliminar</div>
+				</div>
+			</div>
+			
+			<div class="panel-body">
+				<label for="">Remitente</label>
+				<div>{{message.remitente_mensaje}}</div>
+				<br>
+
+				<label for="">Asunto</label>
+				<div>{{message.asunto_mensaje}}</div>
+				<br>
+
+				<label for="">Contenido</label>
+				<div>{{message.contenido_mensaje}}</div>
+				<br>
+			</div>
+		</div>
+	</div>
+
+</div>

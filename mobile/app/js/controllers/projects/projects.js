@@ -69,7 +69,18 @@ angular.module('app.controllers.projects.projects', [])
 
 	$scope.targetUser = {}
 	$scope.users = []
-	$scope.colabs = []
+	$scope.config = {
+		valueField: 'id',
+		labelField: 'username',
+		searchField: ['first_name', 'last_name', 'username'],
+		placeholder: 'Buscar por nombre de usuario',
+		maxItems: 4
+	}
+	$scope.contribs = []
+
+	$scope.$on('setProject', function () {
+		$scope.contribs = $scope.project.contribs
+	})
 
 	function setUsers(users) {
 		if(angular.toJson(users) != angular.toJson($scope.users))
@@ -117,6 +128,23 @@ angular.module('app.controllers.projects.projects', [])
 				$.loading.error("No ha sido posible desvingular al usuario.")
 			})
 		}
+	}
+	$scope.sendMessage = function () {
+		$.loading.show("loading")
+
+		$scope.message.id = Number(guid())
+		$scope.message.remitente_mensaje = $scope.current_user.username
+		$scope.message.proyecto_mensaje = $scope.project.id
+
+		EM('Message')._create($scope.message)
+		.then(function (msg) {
+			$.loading.show("success", 2000)
+			$('#newMessage').modal('hide')
+			$scope.message = {}
+		}, function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible enviar el mensaje")
+		})
 	}
 }])
 

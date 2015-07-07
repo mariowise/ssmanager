@@ -7,16 +7,27 @@ from rest_framework.decorators import detail_route
 from rest_framework import status
 from google.appengine.ext import db
 
+from django.contrib.auth.models import User
+from myapp.modulos.api.v1.models.users import UserSerializer
+
 # Serializers define the API representation.
 class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
     class Meta:
         model = Comentario
         fields = (
             'id',
         	'autor_comentary',
             'date_comentary',
-            'content_comentary'
+            'content_comentary',
+            'user'
         )
+    def get_user(self, obj):
+        try:
+            user = User.objects.get(id = obj.autor_comentary.id)
+            return UserSerializer(user).data
+        except User.DoesNotExist:
+            return obj.autor_comentary_id
 
 # ViewSets define the view behavior.
 class CommentViewSet(viewsets.ModelViewSet):

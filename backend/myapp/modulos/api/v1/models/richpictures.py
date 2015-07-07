@@ -21,4 +21,7 @@ class RichpictureSerializer(serializers.ModelSerializer):
 # ViewSets define the view behavior.
 class RichpictureViewSet(viewsets.ModelViewSet):
     queryset = RichPicture.objects.all()
+    filter_fields = ('created_by',)
     serializer_class = RichpictureSerializer
+
+    

@@ -1,0 +1,59 @@
+<header-left route="app.project.statethree.show({ catwoe_id: '{{catwoe.id}}' })"></header-left>
+
+<div class="container">
+
+	<div class="view-title text-center"><i class="fa fa-list"></i> Editar CATWOE</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="panel-title">Ficha CATWOE</div>
+		</div>
+		<div class="panel-body">
+			<div class="form-group">
+				<label for="">Nombre:</label>
+				<input type="text" class="form-control" ng-model="catwoe.name_dr">
+			</div>
+			<div class="form-group">
+				<label for="">Autor:</label>
+				<div>{{catwoe.created_by}}</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<label for="">(C) Clientes:</label>
+				<textarea rows="5" class="form-control" ng-model="catwoe.clientes_dr"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="">(A) Actores:</label>
+				<textarea rows="5" class="form-control" ng-model="catwoe.actores_dr"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="">(T) Transformación:</label>
+				<div class="row">
+					<div class="col-sm-6">
+						<b class="small">Entrada:</b>
+						<textarea rows="5" class="form-control" ng-model="catwoe.trans_input_dr"></textarea>
+					</div>
+					<div class="col-sm-6">
+						<b class="small">Salida:</b>
+						<textarea rows="5" class="form-control" ng-model="catwoe.trans_output_dr"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="">(W) Cosmovisión:</label>
+				<textarea rows="5" class="form-control" ng-model="catwoe.cosmo_dr"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="">(O) Propietarios:</label>
+				<textarea rows="5" class="form-control" ng-model="catwoe.propietario_dr"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="">(E) Entorno:</label>
+				<textarea rows="5" class="form-control" ng-model="catwoe.entorno_dr"></textarea>
+			</div>
+			<hr>
+			<button class="btn btn-success btn-lg wide" ng-click="save()"><i class="fa fa-floppy-o"></i> Guardar cambios</button>
+		</div>
+	</div>
+
+</div>

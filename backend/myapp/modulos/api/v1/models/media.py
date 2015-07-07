@@ -7,8 +7,13 @@ from rest_framework.decorators import detail_route
 from rest_framework import status
 from google.appengine.ext import db
 
+from myapp.modulos.api.v1.models.comments import CommentSerializer
+from myapp.modulos.api.v1.models.tags import TagSerializer
+
 # Serializers define the API representation.
 class MediaSerializer(serializers.ModelSerializer):
+    comments = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
     class Meta:
         model = Media
         fields = (
@@ -21,8 +26,18 @@ class MediaSerializer(serializers.ModelSerializer):
             'type_media',
             
             'comments_media',
-            'tags_media'
+            'tags_media',
+
+            'comments',
+            'tags'
         )
+    def get_comments(self, obj):
+        comments = obj.returnComments()
+        return CommentSerializer(comments, many = True).data
+
+    def get_tags(self, obj):
+        tags = obj.returnTags()
+        return TagSerializer(tags, many = True).data
 
 # ViewSets define the view behavior.
 class MediaViewSet(viewsets.ModelViewSet):

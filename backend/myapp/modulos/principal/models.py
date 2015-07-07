@@ -171,8 +171,11 @@ class userSoftSystemProject(models.Model):
 		contribNames = self.contribs_ssp
 		contribUsers = []
 		for cN in contribNames:
-			cU = User.objects.get(username__exact=cN)
-			contribUsers.append(cU)
+			try:
+				cU = User.objects.get(username__exact=cN)
+				contribUsers.append(cU)
+			except:
+				pass
 		return contribUsers
 
 	@classmethod

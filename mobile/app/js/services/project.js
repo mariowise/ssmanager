@@ -14,10 +14,10 @@ angular.module('app.services.project', [])
 			url: CONFIG.api("projects") + "/:id/rm_contrib/",
 			responseType: 'json'
 		}
-		, contribs: {
+		, state_three: {
 			method: 'GET',
-			url: CONFIG.api("projects") + "/:id/contribs/",
-			isArray: true
+			url: CONFIG.api("projects") + "/:id/state_three/",
+			responseType: 'json'
 		}
 	}) // Nombre del recurso, Nombre del recurso en API (URL)
 	  , response = {}
@@ -73,8 +73,7 @@ angular.module('app.services.project', [])
 			if(nproject._manager && 
 				nproject.state_one && 
 				nproject._manager.id && 
-				nproject.state_one.id &&
-				nproject.contribs)
+				nproject.state_one.id)
 				
 				d.notify(nproject)
 		})
@@ -91,19 +90,53 @@ angular.module('app.services.project', [])
 			if(state.constructor == Array && state.length > 0 || project.state_one && project.state_one.id) {
 				return $q.all([
 					project,
-					StateOne.fetch((state.length > 0) ? state[0].id : project.state_one.id),
-					Project.contribs({ id: project.id })
+					StateOne.fetch((state.length > 0) ? state[0].id : project.state_one.id)
 				])
 			} else d.reject()
 		})
 		.then(function (res) {
 			var project = res[0]
 			project.state_one = res[1]
-			project.contribs = res[2]
 			self.set(project.id, project)
 			.then(d.resolve, d.reject)
 		})
 		.catch(d.reject)
+
+		return d.promise
+	}
+
+	/*
+	 *-- #### fetchStateThree(key)
+	 *--
+	 *-- * param `key`: Object, String or Number
+	 *-- * return `promise`
+	 *--
+	 *-- Actualiza el valor de la columna `state_three` de la tupla Project en local
+	 *-- si no logra actualizarla, resuelve con el valor previo almacenado en local. Si
+	 *--
+	 */
+	Project.fetchStateThree = function (key) {
+		var d = $q.defer(), self = this
+		  , key = key[CONFIG.pk] || key.id || key
+
+		self.get(key)
+		.then(function (lproject) {
+			
+			if(lproject.state_three)
+				d.notify(lproject.state_three)
+
+			self.state_three({ id: key })
+			.then(function (state) {
+				lproject.state_three = state
+				self.set(key, lproject)
+				.then(function (lproject) {
+					d.resolve(lproject.state_three)
+				}, d.reject)
+			}, function (err) {
+				console.error(err)
+				d.resolve(lproject.state_three)
+			})
+		}, d.reject)
 
 		return d.promise
 	}

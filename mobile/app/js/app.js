@@ -18,6 +18,7 @@ angular.module('app', [
 	, 'app.services.file'
 	, 'app.services.tag'
 	, 'app.services.message'
+	, 'app.services.catwoe'
 	, 'app.services.entity-manager'
 
 	, 'app.controllers.application'
@@ -31,6 +32,7 @@ angular.module('app', [
 	, 'app.controllers.projects.media'
 	, 'app.controllers.projects.tags'
 	, 'app.controllers.projects.statetwo'
+	, 'app.controllers.projects.statethree'
 	
 	, 'app.directives.footer'
 	, 'app.directives.header'
@@ -122,6 +124,28 @@ angular.module('app', [
 					url: '/',
 					templateUrl: 'views/projects/statetwo/show.html',
 					controller: 'statetwo#show'
+				})
+			// StateThree
+			.state('app.project.statethree', {
+				abstract: true,
+				url: '/statethree',
+				template: '<div ui-view></div>',
+				controller: 'StateThreeController'
+			})
+				.state('app.project.statethree.index', {
+					url: '/',
+					templateUrl: 'views/projects/statethree/index.html',
+					controller: 'statethree#index'
+				})
+				.state('app.project.statethree.show', {
+					url: '/:catwoe_id',
+					templateUrl: 'views/projects/statethree/show.html',
+					controller: 'statethree#show'
+				})
+				.state('app.project.statethree.edit', {
+					url: '/:catwoe_id/edit',
+					templateUrl: 'views/projects/statethree/edit.html',
+					controller: 'statethree#edit'
 				})
 
 	// Profile

@@ -24,6 +24,7 @@ class RootDefinitionCatwoeSerializer(serializers.ModelSerializer):
             'created_by',
         	'date_dr'
         )
+        read_only_fields = ('comments_dr','definiciones_dr',)
 
 # ViewSets define the view behavior.
 class RootDefinitionCatwoeViewSet(viewsets.ModelViewSet):

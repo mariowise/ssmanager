@@ -13,9 +13,13 @@ from rest_framework import status
 from google.appengine.ext import db
 
 from myapp.modulos.api.v1.models.users import UserSerializer
+from myapp.modulos.api.v1.models.state_three import StateThreeSerializer
 
 # Serializers define the API representation.
 class ProjectSerializer(serializers.ModelSerializer):
+    contribs = serializers.SerializerMethodField()
+    state_three = serializers.SerializerMethodField()
+
     class Meta:
         model = userSoftSystemProject
         fields = (
@@ -29,8 +33,21 @@ class ProjectSerializer(serializers.ModelSerializer):
         	# Listas
         	'contribs_ssp',
         	'notificaciones_ssp',
-        	'ids_folder_ssp'
+        	'ids_folder_ssp',
+
+            #Nested
+            'state_three',
+            'contribs'
         )
+
+    def get_state_three(self, obj):
+        nested = StateThree.objects.get(ssp_stateThree = obj)
+        return StateThreeSerializer(nested).data
+
+    def get_contribs(self, obj):
+        contribs = obj.contribUsers()
+        return UserSerializer(contribs, many = True).data
+
 
 # ViewSets define the view behavior.
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -86,5 +103,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def contribs(self, request, *args, **kwargs):
         project = self.get_object()
         serializer = UserSerializer(project.contribUsers(), many=True)
+        return Response(serializer.data, status=200)
+
+    @detail_route(methods=['get'])
+    def state_three(self, request, *args, **kwargs):
+        project = self.get_object()
+        state = StateThree.objects.get(ssp_stateThree = project)
+        serializer = StateThreeSerializer(state)
         return Response(serializer.data, status=200)
 

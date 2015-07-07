@@ -61,19 +61,15 @@ angular.module('app.services.media', [])
 		.then(function (media) {
 			return $q.all([
 				media,
-				File.download(media.url_media), 
-				Comment.fetch(media.comments_media),
-				Tag.find(media.tags_media)
+				File.download(media.url_media)
 			])
 		}, d.reject, function (nmedia) {
-			if(nmedia.local_uri && nmedia.comments && nmedia.tags)
+			if(nmedia.local_uri)
 				d.notify(nmedia)
 		})
 		.then(function (res) {
 			var media = res[0]
 			media.local_uri = res[1]
-			media.comments = res[2]
-			media.tags = res[3]
 			Media.set(media.id, media)
 			.then(d.resolve, d.reject)
 		}, d.reject)

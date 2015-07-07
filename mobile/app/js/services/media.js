@@ -18,9 +18,15 @@ angular.module('app.services.media', [])
 	  , response = {}
 
 	/*
- 	 * Agrega un comentario a una media
- 	 * Consulta además el current_user para registrar el autor del comentario
- 	 * retorna la media actualizada con el comentario dentro.
+	 *-- #### addComment(media, msg)
+	 *--
+	 *-- * param `media`: Objecto Media
+	 *-- * param `msg`: Objeto Comentary
+	 *-- * return `promise`
+	 *--
+ 	 *-- Agrega un comentario a una media
+ 	 *-- Consulta además el current_user para registrar el autor del comentario
+ 	 *-- retorna la media actualizada con el comentario dentro.
 	 */
 	Media.addComment = function (media, msg) {
 		var d = $q.defer()

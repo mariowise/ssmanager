@@ -19,6 +19,8 @@ angular.module('app', [
 	, 'app.services.tag'
 	, 'app.services.message'
 	, 'app.services.catwoe'
+	, 'app.services.statethree'
+	, 'app.services.has'
 	, 'app.services.entity-manager'
 
 	, 'app.controllers.application'

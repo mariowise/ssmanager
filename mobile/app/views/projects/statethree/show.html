@@ -20,7 +20,9 @@
 				<label for="">Autor:</label>
 				<div>{{catwoe.created_by}}</div>
 			</div>
+
 			<hr>
+			
 			<div class="form-group">
 				<label for="">(C) Clientes:</label>
 				<div>{{catwoe.clientes_dr || "Vacío"}}</div>
@@ -57,4 +59,97 @@
 		</div>
 	</div>
 
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="panel-title">Definiciones HAS</div>
+			<div class="panel-toolbar">
+				<button class="btn btn-success" data-toggle="modal" data-target="#hasModal"><i class="fa fa-plus"></i> Nuevo</button>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="row" ng-repeat="root in catwoe.roots">
+				<div class="col-xs-1"><h4><i class="fa fa-star-o"></i></h4></div>
+				<div class="col-xs-10">
+					<h4>
+						{{root.name_DR}}
+						<div class="btn btn-default float-right" ng-click="editHAS(root)"><i class="fa fa-pencil"></i></div>
+					</h4>
+					<div class="small"><div class="small"><i class="fa fa-user"></i> {{root.created_by}} - {{root.date_DR | amCalendar}}</div></div>
+					<br>
+					<div class="small">{{root.description_DR}}</div>
+					<br>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="view-title text-center">
+		<i class="fa fa-comments"></i> Comentarios ({{catwoe.comments.length || "0"}})
+		<div ng-if="catwoe.comments.length == 0 && catwoe.comments.length != 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+	</div>
+
+	<button type="button" class="btn btn-success wide" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus"></i> Comentar</button>
+	<br>
+	<br>
+
+	<div ng-if="catwoe.comments.length != 0 || catwoe.comments.length == 0">
+		<div class="panel panel-default" ng-repeat="comment in catwoe.comments | orderBy:'-date_comentary'">
+			<div class="panel-body">
+				<div class="comment small">
+					<label for="">{{comment.user.username}}</label>
+					<div class="small">{{comment.date_comentary | amCalendar}}</div>
+					<br>
+					<p>{{comment.content_comentary}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal comment -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Nuevo comentario</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="">Comentario</label>
+					<textarea ng-model="comentary.content_comentary" rows="3" class="form-control"></textarea>
+				</div>
+				<button type="button" class="btn btn-primary btn-lg wide" data-dismiss="modal" ng-click="addComment()">Agregar comentario</button>
+			</div> 
+		</div>
+	</div>
+</div>
+
+<!-- Modal HAS -->
+<div class="modal fade" id="hasModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="clean()"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Nueva definición HAS</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="">Nombre</label>
+					<input ng-model="has.name_DR" type="text" class="form-control" placeholder="Nombre o título">
+				</div>
+				<div class="form-group">
+					<label for="">Descripción</label>
+					<textarea ng-model="has.description_DR" class="form-control" rows="8" placeholder="Un sistema de actividad humana que hace X por medio de Y, con el objetivo de conseguir Z"></textarea>
+				</div>
+				<button ng-if="!has.id" type="button" class="btn btn-primary btn-lg wide" data-dismiss="modal" ng-click="addHAS()">Agregar HAS</button>
+				<div ng-if="has.id">
+					<button class="btn btn-primary btn-lg wide" ng-click="updateHAS()"><i class="fa fa-arrow-up"></i> Editar HAS</button>
+					<br>
+					<br>
+					<button class="btn btn-danger wide" ng-click="removeHAS(has)"><i class="fa fa-trash"></i> Eliminar HAS</button>
+				</div>
+			</div> 
+		</div>
+	</div>
 </div>

@@ -12,7 +12,9 @@ angular.module('app.services.entity-manager', [])
 	'File',
 	'Message',
 	'Catwoe',
-	function ($q, Session, User, Profile, Project, StateOne, Media, Comment, Tag, File, Message, Catwoe) {
+	'StateThree',
+	'Has',
+	function ($q, Session, User, Profile, Project, StateOne, Media, Comment, Tag, File, Message, Catwoe, StateThree, Has) {
 
 	var entities = {
 		Session: Session,
@@ -25,7 +27,9 @@ angular.module('app.services.entity-manager', [])
 		Tag: Tag,
 		File: File,
 		Message: Message,
-		Catwoe: Catwoe
+		Catwoe: Catwoe,
+		StateThree: StateThree,
+		Has: Has
 	}
 
 	return function (entity) {

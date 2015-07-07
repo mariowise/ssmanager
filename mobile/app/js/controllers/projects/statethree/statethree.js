@@ -56,16 +56,20 @@ angular.module('app.controllers.projects.statethree', [])
 	}
 	updateCatwoe()
 	
-
 	$scope.addComment = function () {
 		$.loading.show("loading")
 
-		EM('Catwoe').addComment($scope.catwoe, $scope.comentary.content_comentary)
+		$scope.comentary.autor_comentary = $scope.current_user.id
+		$scope.comentary.catwoe_id = $scope.catwoe.id
+		EM('Comment')._create($scope.comentary)
+		.then(function () {
+			return updateCatwoe()
+		})
 		.then(function (catwoe) {
-			setCatwoe(catwoe)
 			$scope.comentary = {}
 			$.loading.show("success", 1800)
-		}, function (err) {
+		})
+		.catch(function (err) {
 			console.error(err)
 			$.loading.error("No ha sido posible registrar el comentario.")
 		})
@@ -73,9 +77,13 @@ angular.module('app.controllers.projects.statethree', [])
 	$scope.addHAS = function () {
 		$.loading.show("loading")
 
-		EM('Catwoe').addHAS($scope.catwoe, $scope.has)
-		.then(function (catwoe) {
-			setCatwoe(catwoe)
+		$scope.has.created_by = $scope.current_user.username
+		$scope.has.catwoe_id = $scope.catwoe.id
+		EM('Has')._create($scope.has)
+		.then(function () {
+			return updateCatwoe()
+		})
+		.then(function () {
 			$scope.has = {}
 			$.loading.show("success", 1800)
 		}, function (err) {
@@ -83,25 +91,29 @@ angular.module('app.controllers.projects.statethree', [])
 			$.loading.error("No ha sido posible registrar el HAS")
 		})
 	}
-	$scope.editHAS = function (root) {
-		$scope.has = root
-		$('#hasModal').modal('show')
-	}
 	$scope.removeHAS = function (root) {
 		if(confirm("Estas seguro que quieres eliminar este HAS?")) {
 			$.loading.show("loading")
 
-			EM('Catwoe').removeHAS($scope.catwoe, $scope.has)
-			.then(function (catwoe) {
+			$scope.has.catwoe_id = $scope.catwoe.id
+			EM('Has').remove($scope.has)
+			.then(function () {
+				return updateCatwoe()
+			})
+			.then(function () {
 				$('#hasModal').modal('hide')
-				setCatwoe(catwoe)
 				$scope.has = {}
 				$.loading.show("success", 1800)
-			}, function (err) {
+			})
+			.catch(function (err) {
 				console.error(err)
 				$.loading.error("No ha sido posible eliminar el HAS")
 			})
 		}
+	}
+	$scope.editHAS = function (root) {
+		$scope.has = root
+		$('#hasModal').modal('show')
 	}
 	$scope.updateHAS = function () {
 		$.loading.show("loading")

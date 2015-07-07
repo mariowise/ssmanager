@@ -33,6 +33,7 @@ angular.module('app.controllers.messages', [])
 	console.log("messages#show running")
 
 	$scope.message = {}
+	$scope.reply = {}
 
 	EM('Message').get($stateParams.message_id)
 	.then(function (message) {
@@ -53,5 +54,23 @@ angular.module('app.controllers.messages', [])
 				$.loading.error("No ha sido posible eliminar el mensaje")
 			})
 		}
+	}
+	$scope.sendMessage = function () {
+		$.loading.show("loading")
+
+		$scope.reply.id = Number(guid())
+		$scope.reply.receptores_mensaje = [$scope.message.remitente.id]
+		$scope.reply.remitente_mensaje = $scope.current_user.username
+		$scope.reply.proyecto_mensaje = $scope.message.proyecto_mensaje
+
+		EM('Message')._create($scope.reply)
+		.then(function (msg) {
+			$.loading.show("success", 2000)
+			$('#reply').modal('hide')
+			$scope.reply = {}
+		}, function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible enviar el mensaje")
+		})
 	}
 }])

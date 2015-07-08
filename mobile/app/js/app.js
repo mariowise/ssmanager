@@ -21,6 +21,8 @@ angular.module('app', [
 	, 'app.services.catwoe'
 	, 'app.services.statethree'
 	, 'app.services.has'
+	, 'app.services.richpicture'
+	, 'app.services.document'
 	, 'app.services.entity-manager'
 
 	, 'app.controllers.application'
@@ -122,8 +124,13 @@ angular.module('app', [
 				template: '<div ui-view></div>',
 				controller: 'StateTwoController'
 			})
-				.state('app.project.statetwo.show', {
+				.state('app.project.statetwo.index', {
 					url: '/',
+					templateUrl: 'views/projects/statetwo/index.html',
+					controller: 'statetwo#index'
+				})
+				.state('app.project.statetwo.show', {
+					url: '/:picture_id',
 					templateUrl: 'views/projects/statetwo/show.html',
 					controller: 'statetwo#show'
 				})

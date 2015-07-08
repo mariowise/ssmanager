@@ -76,11 +76,6 @@ angular.module('app.controllers.projects.projects', [])
 		placeholder: 'Buscar por nombre de usuario',
 		maxItems: 4
 	}
-	$scope.contribs = []
-
-	$scope.$on('setProject', function () {
-		$scope.contribs = $scope.project.contribs
-	})
 
 	function setUsers(users) {
 		if(angular.toJson(users) != angular.toJson($scope.users))

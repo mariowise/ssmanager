@@ -1,7 +1,76 @@
-<header-left route="app.project.show({ project_id: '{{project.id}}' })"></header-left>
+<header-left route="app.project.statetwo.index()"></header-left>
 
 <div class="container">
 	
-	<div class="view-title text-center"><i class="fa fa-folder-open"></i> Estadio 2</div>
+	<div class="view-title text-center"><i class="fa fa-file-image-o"></i> Detalle Rich Picture</div>
 
+	<div class="panel panel-default panel-media">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-3 text-center">
+					<i class="fa fa-file-image-o"></i>
+					<br>
+					<span class="small">Rich Picture</span>
+				</div>
+				<div class="col-xs-9 small">
+					<h4>{{picture.name_rp}}</h4>
+					<p class="small"><i class="fa fa-user"></i> {{picture.created_by}}</p>
+				</div>
+			</div>
+			<br>
+			<div ng-repeat="file in picture.documents track by $index">
+				<img class="wide" ng-if="$index == 0" src="{{file.local_uri}}">
+			</div>
+		</div>
+		<div class="panel-footer small">
+			<div class="row">
+				<div class="col-xs-6">
+					{{picture.date_rp | amCalendar}}
+				</div>
+				<div class="col-xs-6 text-right"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="view-title text-center">
+		<i class="fa fa-comments"></i> Comentarios ({{picture.comments.length || "0"}})
+		<div ng-if="picture.comments.length == 0 && picture.comments.length != 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+	</div>
+
+	<button type="button" class="btn btn-success wide" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus"></i> Comentar</button>
+	<br>
+	<br>
+
+	<div ng-if="picture.comments.length != 0 || picture.comments.length == 0">
+		<div class="panel panel-default" ng-repeat="comment in picture.comments | orderBy:'-date_comentary'">
+			<div class="panel-body">
+				<div class="comment small">
+					<label for="">{{comment.user.username}}</label>
+					<div class="small">{{comment.date_comentary | amCalendar}}</div>
+					<br>
+					<p>{{comment.content_comentary}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<!-- Modal comentary -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Nuevo comentario</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="">Comentario</label>
+					<textarea ng-model="comentary.content_comentary" rows="3" class="form-control"></textarea>
+				</div>
+				<button type="button" class="btn btn-primary btn-lg wide" data-dismiss="modal" ng-click="addComment()">Agregar comentario</button>
+			</div> 
+		</div>
+	</div>
 </div>

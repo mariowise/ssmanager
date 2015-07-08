@@ -1,0 +1,37 @@
+<header-left route="app.project.show({ project_id: '{{project.id}}' })"></header-left>
+
+<div class="container">
+	
+	<div class="view-title text-center"><i class="fa fa-folder-open"></i> Estadio 2</div>
+
+	<div class="panel panel-default panel-media" ng-repeat="pic in pictures">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-3 text-center">
+					<i class="fa fa-file-image-o"></i>
+					<br>
+					<span class="small">Rich Picture</span>
+				</div>
+				<div class="col-xs-9 small">
+					<h4>{{pic.name_rp}}</h4>
+					<p class="small"><i class="fa fa-user"></i> {{pic.created_by}}</p>
+				</div>
+			</div>
+			<br>
+			<div ng-repeat="file in pic.documents track by $index">
+				<img class="wide" ng-if="$index == 0" src="{{file.local_uri}}">
+			</div>
+		</div>
+		<div class="panel-footer small">
+			<div class="row">
+				<div class="col-xs-6">
+					{{pic.date_rp | amCalendar}}
+				</div>
+				<div class="col-xs-6 text-right">
+					<a ui-sref="app.project.statetwo.show({ picture_id: pic.id })">Ver detalle <i class="fa fa-chevron-right"></i></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

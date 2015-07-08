@@ -14,10 +14,12 @@ from google.appengine.ext import db
 
 from myapp.modulos.api.v1.models.users import UserSerializer
 from myapp.modulos.api.v1.models.state_three import StateThreeSerializer
+from myapp.modulos.api.v1.models.state_two import StateTwoSerializer
 
 # Serializers define the API representation.
 class ProjectSerializer(serializers.ModelSerializer):
     contribs = serializers.SerializerMethodField()
+    state_two = serializers.SerializerMethodField()
     state_three = serializers.SerializerMethodField()
 
     class Meta:
@@ -36,9 +38,14 @@ class ProjectSerializer(serializers.ModelSerializer):
         	'ids_folder_ssp',
 
             #Nested
+            'state_two',
             'state_three',
             'contribs'
         )
+
+    def get_state_two(self, obj):
+        nested = StateTwo.objects.get(ssp_stateTwo = obj)
+        return StateTwoSerializer(nested).data
 
     def get_state_three(self, obj):
         nested = StateThree.objects.get(ssp_stateThree = obj)

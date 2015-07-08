@@ -82,7 +82,3 @@ class DefinicionRaiz(models.Model):
 	description_DR = models.TextField(max_length=500, blank=False, null=False)
 	created_by = models.CharField(max_length=200, blank=True, null=True)
 	date_DR = models.DateTimeField(auto_now_add=True, blank=False)
-
-	
-
-

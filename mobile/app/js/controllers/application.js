@@ -1,6 +1,6 @@
 angular.module('app.controllers.application', [])
 
-.controller('ApplicationController', ['$scope', '$state', '$interval', 'EM', function ($scope, $state, $interval, EM) {
+.controller('ApplicationController', ['$scope', '$state', '$rootScope', 'EM', function ($scope, $state, $rootScope, EM) {
 	console.log("ApplicationController running")
 
 	$scope.flash_messages = []
@@ -40,6 +40,7 @@ angular.module('app.controllers.application', [])
 	EM('Session').current_user()
 	.then(function (user) {
 		$scope.current_user = user
+		$rootScope.current_user = user
 		window.current_user = user
 		$scope.$broadcast('CurrentUserLoaded')
 	})

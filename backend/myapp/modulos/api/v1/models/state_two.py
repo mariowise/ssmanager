@@ -2,6 +2,8 @@
 from myapp.modulos.estado_2.models import StateTwo
 from rest_framework import serializers, viewsets
 
+from myapp.modulos.api.v1.models.richpictures import RichpictureSerializer
+
 # Serializers define the API representation.
 class StateTwoSerializer(serializers.ModelSerializer):
     class Meta:

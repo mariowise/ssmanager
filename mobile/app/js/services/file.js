@@ -88,13 +88,13 @@ angular.module('app.services.file', [])
 	 * URI, en caso contrario, comienza la transferencia para descargarlo, resolviendo con su URI fresca.
 	 * Si ocurre algún error con la descarga, rechaza la promsea
 	 */
-	File.download = function (fileUrl) {
+	File.download = function (fileUrl, fname) {
 		if(CONFIG.debug) console.log("File::download running for URL: " + fileUrl)
 		var d = $q.defer()
 
 		if(typeof cordova != "undefined") {
 			var l = fileUrl.split("/")
-			  , fileName = (l[l.length-1] != "") ? l[l.length-1] : l[l.length-2]
+			  , fileName = (fname != undefined) ? fname : ( (l[l.length-1] != "") ? l[l.length-1] : l[l.length-2] )
 			  , mediaPath = cordova.file.documentsDirectory + "media/"
 			  , fileUri = mediaPath + fileName
 

@@ -5,7 +5,7 @@ angular.module('app.directives.footer', [])
 		restrict: "E"
 		, templateUrl: "views/partials/footer.html"
 		, scope: {}
-		, controller: function ($scope, $state) {
+		, controller: function ($scope, $state, $rootScope) {
 			if($('#footer .btn-primary').length == 0) {
 				var route = $state.current.name.split(".")[1].split("-")[0] // standar standar standar
 				  , btn = $('#footer [route="' + route + '"]')
@@ -26,6 +26,10 @@ angular.module('app.directives.footer', [])
 				$(btn).addClass("btn-primary")
 				$(btn).addClass("active")
 			}
+
+			$scope.$on('CurrentUserLoaded', function () {
+				$scope.current_user = $rootScope.current_user
+			})
 		}
 	}
 })

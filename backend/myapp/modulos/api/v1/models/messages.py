@@ -8,8 +8,13 @@ from rest_framework.decorators import detail_route, list_route
 from rest_framework import status
 from google.appengine.ext import db
 
+from myapp.modulos.api.v1.models.users import UserSerializer
+
 # Serializers define the API representation.
 class MessageSerializer(serializers.ModelSerializer):
+    receptores = serializers.SerializerMethodField()
+    remitente = serializers.SerializerMethodField()
+    
     class Meta:
         model = Mensaje
         fields = (
@@ -20,8 +25,19 @@ class MessageSerializer(serializers.ModelSerializer):
             'contenido_mensaje',
             'date_mensaje',
             'proyecto_mensaje',
-            'url_asoc_mensaje'
+            'url_asoc_mensaje',
+
+            'receptores',
+            'remitente'
         )
+
+    def get_receptores(self, obj):
+        receptores = obj.returnReceptores()
+        return UserSerializer(receptores, many=True).data
+
+    def get_remitente(self, obj):
+        remitente = obj.returnRemitente()
+        return UserSerializer(remitente).data
 
 # ViewSets define the view behavior.
 class MessageViewSet(viewsets.ModelViewSet):

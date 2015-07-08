@@ -21,14 +21,20 @@ class Mensaje(models.Model):
 		receptoresID = self.receptores_mensaje
 		receptores = []
 		for r in receptoresID:
-			R = User.objects.get(id=r)
-			receptores.append(R)
+			try:
+				R = User.objects.get(id=r)
+				receptores.append(R)
+			except:
+				pass
 		return receptores
 
 	def returnRemitente(self):
 		username = self.remitente_mensaje
-		user = User.objects.get(username__exact=username)
-		return user
+		try:
+			user = User.objects.get(username__exact=username)
+			return user
+		except:
+			return None
 
 class Notificacion(models.Model):
 	creador_notificacion =  models.CharField(max_length=200, blank=False, null=False)

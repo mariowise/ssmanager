@@ -1,5 +1,7 @@
 
 from myapp.modulos.estado_1.models import Comentario, Media
+from myapp.modulos.estado_2.models import RichPicture
+from myapp.modulos.estado_3.models import DefinicionRaizCATWOE
 from rest_framework import serializers, viewsets
 
 from rest_framework.response import Response
@@ -42,10 +44,19 @@ class CommentViewSet(viewsets.ModelViewSet):
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
 
-            media = Media.objects.get(id=request.data["media_id"])
-            media.comments_media.append(serializer.data["id"])
-            media.save()
-            
+            if(request.data.get("media_id", -1) != -1):
+                media = Media.objects.get(id=request.data["media_id"])
+                media.comments_media.append(serializer.data["id"])
+                media.save()
+            elif(request.data.get("catwoe_id", -1) != -1):
+                catwoe = DefinicionRaizCATWOE.objects.get(id=request.data["catwoe_id"])
+                catwoe.comments_dr.append(serializer.data["id"])
+                catwoe.save()
+            elif(request.data.get("picture_id", -1) != -1):
+                picture = RichPicture.objects.get(id=request.data["picture_id"])
+                picture.comments_rp.append(serializer.data["id"])
+                picture.save()
+
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        except Media.DoesNotExist:
+        except:
             return Response(status=status.HTTP_404_NOT_FOUND)

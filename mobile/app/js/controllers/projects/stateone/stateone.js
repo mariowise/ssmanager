@@ -8,6 +8,7 @@ angular.module('app.controllers.projects.stateone', [])
 	$scope.setState = function (state) {
 		if(angular.toJson($scope.state) != angular.toJson(state)) {
 			$scope.state = state
+			$scope.$broadcast("setState")
 		}
 	}
 
@@ -22,7 +23,7 @@ angular.module('app.controllers.projects.stateone', [])
 	})
 
 	$scope.$on('changeState', function (event, newVal) {
-		$scope.state = newVal
+		setState(newVal)
 	})
 }])
 

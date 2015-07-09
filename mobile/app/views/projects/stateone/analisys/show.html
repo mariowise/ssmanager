@@ -1,51 +1,47 @@
-<header-left route="app.project.statetwo.index()"></header-left>
+<header-left route="app.project.stateone.analisys()"></header-left>
 
 <div class="container">
 	
-	<div class="view-title text-center"><i class="fa fa-file-image-o"></i> Detalle Rich Picture</div>
+	<div class="view-title text-center"><i class="fa fa-lightbulb-o"></i> Detalle analisis</div>
 
 	<div class="panel panel-default panel-media">
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-xs-3 text-center">
-					<i class="fa fa-file-image-o"></i>
+					<i class="fa fa-lightbulb-o panel-icon"></i>
 					<br>
-					<span class="small">Rich Picture</span>
+					<span class="small">Analisis</span>
 				</div>
 				<div class="col-xs-9 small">
-					<h4>{{picture.name_rp}}</h4>
-					<p class="small"><i class="fa fa-user"></i> {{picture.created_by}}</p>
+					<h4>{{anal.name_analisis}}</h4>
+					<p class="small"><i class="fa fa-user"></i> {{anal.created_by}}</p>
 				</div>
 			</div>
-			<div class="small">{{picture.description_rp}}</div>
 			<br>
-			<div ng-repeat="file in picture.documents track by $index">
-				<img class="wide" ng-if="$index == 0" src="{{file.local_uri}}">
-			</div>
+			<button class="btn btn-default wide" ng-repeat="doc in anal.documents" ng-click="open(doc)"><i class="fa fa-google"></i> Abrir documento {{doc.name_documento}}</button>
+			<br>
+			<br>
+			<p class="small">{{anal.description_analisis}}</p>
 		</div>
 		<div class="panel-footer small">
-			<div class="row">
-				<div class="col-xs-6">
-					{{picture.date_rp | amCalendar}}
-				</div>
-				<div class="col-xs-6 text-right">
-					<a ng-click="editPicture()" data-toggle="modal" data-target="#pictureModal"><i class="fa fa-pencil"></i> Editar</a>
-				</div>
+			<span class="small">{{anal.date_analisis | amCalendar}}</span>
+			<div class="panel-toolbar">
+				<a data-toggle="modal" data-target="#editAnalisys" ng-click="editAnal()"><i class="fa fa-pencil"></i> Editar</a>
 			</div>
 		</div>
 	</div>
 
 	<div class="view-title text-center">
-		<i class="fa fa-comments"></i> Comentarios ({{picture.comments.length || "0"}})
-		<div ng-if="picture.comments.length == 0 && picture.comments.length != 0" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+		<i class="fa fa-comments"></i> Comentarios ({{anal.comments.length || "0"}})
+		<div ng-if="!anal.id" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 	</div>
 
 	<button type="button" class="btn btn-success wide" data-toggle="modal" data-target="#commentModal"><i class="fa fa-plus"></i> Comentar</button>
 	<br>
 	<br>
 
-	<div ng-if="picture.comments.length != 0 || picture.comments.length == 0">
-		<div class="panel panel-default" ng-repeat="comment in picture.comments | orderBy:'-date_comentary'">
+	<div ng-if="anal.comments.length != 0">
+		<div class="panel panel-default" ng-repeat="comment in anal.comments | orderBy:'-date_comentary'">
 			<div class="panel-body">
 				<div class="comment small">
 					<label for="">{{comment.user.username}}</label>
@@ -59,7 +55,7 @@
 
 </div>
 
-<!-- Modal comentary -->
+<!-- Modal comment -->
 <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -78,24 +74,24 @@
 	</div>
 </div>
 
-<!-- Modal picture -->
-<div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+<!-- Modal analisys-->
+<div class="modal fade" id="editAnalisys" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Nuevo comentario</h4>
+				<h4 class="modal-title" id="myModalLabel">Editar analisys</h4>
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
 					<label for="">Nombre</label>
-					<input ng-model="edited.name_rp" type="text" class="form-control">
+					<input type="text" ng-model="edited.name_analisis" class="form-control"></input>
 				</div>
 				<div class="form-group">
 					<label for="">Resumen</label>
-					<textarea ng-model="edited.description_rp" rows="6" class="form-control"></textarea>
+					<textarea type="text" ng-model="edited.description_analisis" rows="6" class="form-control"></textarea>
 				</div>
-				<button type="button" class="btn btn-primary btn-lg wide" data-dismiss="modal" ng-click="updatePicture()">Editar RichPicture</button>
+				<button type="button" class="btn btn-primary btn-lg wide" data-dismiss="modal" ng-click="updateAnal()">Editar analisis</button>
 			</div> 
 		</div>
 	</div>

@@ -1,0 +1,29 @@
+<header-left route="app.project.stateone.show()"></header-left>
+
+<div class="container">
+	
+	<div class="view-title text-center"><i class="fa fa-lightbulb-o"></i> Analisis</div>
+
+	<div class="panel panel-default panel-media" ng-repeat="anal in analisys">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-3 text-center">
+					<i class="fa fa-lightbulb-o panel-icon"></i>
+					<br>
+					<span class="small">Analisis</span>
+				</div>
+				<div class="col-xs-9 small">
+					<h4>{{anal.name_analisis}}</h4>
+					<p class="small"><i class="fa fa-user"></i> {{anal.created_by}}</p>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer small">
+			<span class="small">{{anal.date_analisis | amCalendar}}</span>
+			<div class="panel-toolbar">
+				<a ui-sref="app.project.stateone.analisys-show({ analisys_id: anal.id })">Ver detalle <i class="fa fa-chevron-right"></i></a>
+			</div>
+		</div>
+	</div>
+
+</div>

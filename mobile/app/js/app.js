@@ -23,6 +23,7 @@ angular.module('app', [
 	, 'app.services.has'
 	, 'app.services.richpicture'
 	, 'app.services.document'
+	, 'app.services.analisys'
 	, 'app.services.entity-manager'
 
 	, 'app.controllers.application'
@@ -35,6 +36,7 @@ angular.module('app', [
 	, 'app.controllers.projects.stateone'
 	, 'app.controllers.projects.media'
 	, 'app.controllers.projects.tags'
+	, 'app.controllers.projects.analisys'
 	, 'app.controllers.projects.statetwo'
 	, 'app.controllers.projects.statethree'
 	
@@ -116,6 +118,17 @@ angular.module('app', [
 					url: '/tags',
 					templateUrl: 'views/projects/stateone/tags/index.html',
 					controller: 'tags#index'
+				})
+				// Analisys
+				.state('app.project.stateone.analisys', {
+					url: '/analisys',
+					templateUrl: 'views/projects/stateone/analisys/index.html',
+					controller: 'analisys#index'
+				})
+				.state('app.project.stateone.analisys-show', {
+					url: '/analisys/:analisys_id',
+					templateUrl: 'views/projects/stateone/analisys/show.html',
+					controller: 'analisys#show'
 				})
 			// StateTwo
 			.state('app.project.statetwo', {

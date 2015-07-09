@@ -32,6 +32,7 @@ angular.module('app.controllers.projects.statetwo', [])
 
 	$scope.picture = {}	
 	$scope.comentary = {}
+	$scope.edited = {}
 
 	function setPicture(picture) {
 		if(angular.toJson(picture) != angular.toJson($scope.picture))
@@ -63,6 +64,25 @@ angular.module('app.controllers.projects.statetwo', [])
 			console.error(err)
 			$.loading.error("No ha sido posible guardar el comentario.")
 		})
+	}
+	$scope.editPicture = function () {
+		$scope.edited = $scope.picture
+	}
+	$scope.updatePicture = function () {
+		$.loading.show("loading")
 
+		EM('RichPicture')._update($scope.edited)
+		.then(function () {
+			return updatePicture()
+		})
+		.then(function () {
+			$scope.edited = {}
+			$('#pictureModal').modal('hide')
+			$.loading.show("success", 1800)
+		})
+		.catch(function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible actualizar el RichPicture")
+		})
 	}
 }])

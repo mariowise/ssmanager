@@ -135,6 +135,7 @@ def media_agregar_view(request, id_ssp):
 				newMedia.save()
 				stateOne = StateOne.objects.get(ssp_stateOne=project)
 
+				# Oh wn, el Aldo programando es como pasarle una motocierra a un mono
 				if media_type == '1':
 					stateOne.ssp_videos.append(newMedia.id)
 				if media_type == '2':

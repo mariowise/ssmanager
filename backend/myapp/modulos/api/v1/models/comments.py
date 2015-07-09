@@ -1,5 +1,5 @@
 
-from myapp.modulos.estado_1.models import Comentario, Media
+from myapp.modulos.estado_1.models import Comentario, Media, Analisis
 from myapp.modulos.estado_2.models import RichPicture
 from myapp.modulos.estado_3.models import DefinicionRaizCATWOE
 from rest_framework import serializers, viewsets
@@ -56,6 +56,10 @@ class CommentViewSet(viewsets.ModelViewSet):
                 picture = RichPicture.objects.get(id=request.data["picture_id"])
                 picture.comments_rp.append(serializer.data["id"])
                 picture.save()
+            elif(request.data.get("analisys_id", -1) != -1):
+                analisys = Analisis.objects.get(id=request.data["analisys_id"])
+                analisys.comments_analisis.append(serializer.data["id"])
+                analisys.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:

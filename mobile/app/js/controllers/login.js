@@ -1,6 +1,6 @@
 angular.module('app.controllers.login', [])
 
-.controller('login#index', ['$scope', '$state', '$http', 'jwtHelper', 'Session', function ($scope, $state, $http, jwtHelper, Session) {
+.controller('login#index', ['$scope', '$state', '$http', '$cordovaOauth', '$cordovaInAppBrowser', 'jwtHelper', 'Session', function ($scope, $state, $http, $cordovaOauth, $cordovaInAppBrowser, jwtHelper, Session) {
 	console.log("login#index running")
 
 	$scope.user = { username: "mariowise", password: "mario123" }
@@ -15,7 +15,7 @@ angular.module('app.controllers.login', [])
 			.then(function (current_user) {
 				console.log(current_user)
 				$.loading.transition()
-				$state.go("app.projects")
+				$state.go("app.projects")	
 			})
 
 		})

@@ -22,10 +22,14 @@
 			<br>
 			<br>
 			<p class="small">{{anal.description_analisis}}</p>
+			<div class="tag-group">
+				<span class="label label-default float-left" ng-repeat="tag in anal.tags" ng-click="rmTag(tag)"><i class="fa fa-tag"></i> {{tag.name_tag}}</span>
+			</div>
 		</div>
 		<div class="panel-footer small">
 			<span class="small">{{anal.date_analisis | amCalendar}}</span>
 			<div class="panel-toolbar">
+				<a  data-toggle="modal" data-target="#addTag"><i class="fa fa-tags" ng-click=""></i> Etiquetar</a>
 				<a data-toggle="modal" data-target="#editAnalisys" ng-click="editAnal()"><i class="fa fa-pencil"></i> Editar</a>
 			</div>
 		</div>
@@ -92,6 +96,26 @@
 					<textarea type="text" ng-model="edited.description_analisis" rows="6" class="form-control"></textarea>
 				</div>
 				<button type="button" class="btn btn-primary btn-lg wide" data-dismiss="modal" ng-click="updateAnal()">Editar analisis</button>
+			</div> 
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addTag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Etiquetar análisis</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="">Etiquetas disponibles</label>
+					<div class="select">
+						<div class="select-item" ng-repeat="tag in state.tags" ng-click="addTag(tag, $event)"><i class="fa fa-tag"></i> {{tag.name_tag}}</div>
+					</div>
+				</div>
 			</div> 
 		</div>
 	</div>

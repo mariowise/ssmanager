@@ -1,3 +1,5 @@
+[< Volver](https://github.com/mariowise/ssmanager/tree/master/mobile)
+
 Remote
 ------
 * param `name`: String. Corresponde al nombre que tendrá la entidad para el EntityManager (Local)

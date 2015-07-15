@@ -274,13 +274,13 @@ angular.module('app', [
 		EM('Session').refresh_token()
 	}, 15 * 1000)
 
-	testEntity = Resource("Test", "test", { 
-		save: {
-			method: "POST",
-			url: CONFIG.api("test") + "/"
-		}
-	})
-	window.Test = testEntity
+	// testEntity = Resource("Test", "test", { 
+	// 	save: {
+	// 		method: "POST",
+	// 		url: CONFIG.api("test") + "/"
+	// 	}
+	// })
+	// window.Test = testEntity
 	// async.series([
 	// 	function (callback) { testLocal($q, testEntity, callback) },
 	// 	function (callback) { testRemote($q, testEntity, callback) },

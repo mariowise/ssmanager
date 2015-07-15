@@ -16,7 +16,7 @@ function testLocal($q, Local, cb) {
 			  , b = angular.toJson(res[0])
 			  , c = angular.toJson(res[1])
 			if(a == b && b == c)
-				callback(null, "- [get] es capaz de guardar objetos y luego obtenerlos.")
+				callback(null, "- [get] es capaz de obtener objetos previamente guardados.")
 			else
 				callback("- [get] al crear los objetos, lo guardado, lo resuleto y lo almacenado no coincide.")
 		})

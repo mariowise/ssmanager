@@ -70,6 +70,41 @@ function testResource($q, Resource, cb) {
 	})
 
 	fns.push(function (callback) {
+		CONFIG.api_address += "a"
+		Resource.create({ name: "Peter", lastname: "Local ID" })
+		.then(function (local) {
+			return Resource.find(local.id)
+		})
+		.then(function (local) {
+			testingObject = local
+			CONFIG.api_address = CONFIG.api_address.substring(0, CONFIG.api_address.length-1)
+			if(local.id) 
+				callback(null, "- [create] es capaz de crear objetos en modo offline")
+			else
+				callback("- [create] no fue capaz de entregarle un ID al objeto local")
+		})
+		.catch(function (err) {
+			callback("- [create] no ha sido capaz de realizar su labor offline")
+		})
+	})
+
+	fns.push(function (callback) {
+		Resource.syncOne(testingObject.id)
+		.then(function (remote) {
+			return Resource._find(remote.id)
+		})
+		.then(function (remote) {
+			if(remote.id)
+				callback(null, "- [syncOne] es capaz de sincronizar un objeto marcado como pendiente.")
+			else
+				callback("- [syncOne] presenta problemas a la hora de sincronizar objetos creados localmente")
+		})
+		.catch(function (err) {
+			callback("- [syncOne] no ha sido capaz de efectuar las labores de sincronización")
+		})
+	})
+
+	fns.push(function (callback) {
 		Resource.all()
 		.then(function (items) {
 			var list = []

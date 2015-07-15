@@ -88,4 +88,41 @@ angular.module('app.controllers.projects.analisys', [])
 			$.loading.error("No ha sido posible abrir el analisis.")
 		});
 	}
+	$scope.addTag = function (tag, $event) {
+		angular.element($event.target).addClass("active")
+		$.loading.show("loading")
+
+		EM('Analisys').add_tag({ id: $scope.anal.id, tag_id: tag.id})
+		.then(function () {
+			return updateAnal()
+		})
+		.then(function () {
+			$.loading.show("success", 1800)
+		})
+		.catch(function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible agregar la etiqueta.")
+		})
+		.finally(function () {
+			angular.element($event.target).removeClass("active")
+			$('#addTag').modal('hide')
+		})
+	}
+	$scope.rmTag = function (tag) {
+		if(confirm("¿Quitar esta etiqueta?")) {
+			$.loading.show("loading")
+
+			EM('Analisys').rm_tag({ id: $scope.anal.id, tag_id: tag.id })
+			.then(function () {
+				return updateAnal()
+			})
+			.then(function () {
+				$.loading.show("success", 1800)
+			})
+			.catch(function (err) {
+				console.error(err)
+				$.loading.error("No ha sido posible quitar la etiqueta")
+			})
+		}
+	}
 }])

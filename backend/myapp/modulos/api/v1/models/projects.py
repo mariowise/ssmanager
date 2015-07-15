@@ -44,12 +44,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         )
 
     def get_state_two(self, obj):
-        nested = StateTwo.objects.get(ssp_stateTwo = obj)
-        return StateTwoSerializer(nested).data
+        try:
+            nested = StateTwo.objects.get(ssp_stateTwo = obj)
+            return StateTwoSerializer(nested).data
+        except:
+            return None
 
     def get_state_three(self, obj):
-        nested = StateThree.objects.get(ssp_stateThree = obj)
-        return StateThreeSerializer(nested).data
+        try:
+            nested = StateThree.objects.get(ssp_stateThree = obj)
+            return StateThreeSerializer(nested).data
+        except:
+            return None
 
     def get_contribs(self, obj):
         contribs = obj.contribUsers()
@@ -118,4 +124,3 @@ class ProjectViewSet(viewsets.ModelViewSet):
         state = StateThree.objects.get(ssp_stateThree = project)
         serializer = StateThreeSerializer(state)
         return Response(serializer.data, status=200)
-

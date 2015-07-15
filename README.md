@@ -18,7 +18,7 @@ Se trata de una aplicación web construida a partir de las siguientes tecnologí
 * `Django Rest Framework JWT`
 
 
-SSManager Móvil
+[SSManager Móvil](https://github.com/mariowise/ssmanager/tree/master/mobile)
 ---------------
 
 Se trata de una aplicación móvil construida a partir de las siguientes tecnologías:

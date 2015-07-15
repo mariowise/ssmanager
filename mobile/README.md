@@ -1,4 +1,4 @@
-[SSManager Móvil](https://github.com/mariowise/ssmanager/tree/master/mobile)
+SSManager Móvil
 ===============
 
 La aplicación móvil puede ser entendida a partir de trés componentes fundamentales:

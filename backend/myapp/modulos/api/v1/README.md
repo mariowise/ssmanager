@@ -121,53 +121,53 @@ Analisys
 	</tr>
 
 	<tr>
-		<th>`POST`</th>
-		<th>`/api/v1/analisys`</th>
-		<th>List</th>
-		<th>`Array`</th>
-		<th></th>
+		<td><pre>POST</pre></td>
+		<td><pre>/api/v1/analisys</pre></td>
+		<td>List</td>
+		<td><pre>Array</pre></td>
+		<td></td>
 	</tr>
 	<tr>
-		<th>`GET`</th>
-		<th>`/api/v1/analisys/:analisys_id`</th>
-		<th>Show</th>
-		<th>`Object`</th>
-		<th></th>
+		<td><pre>GET</pre></td>
+		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td>Show</td>
+		<td><pre>Object</pre></td>
+		<td></td>
 	</tr>
 	<tr>
-		<th>`POST`</th>
-		<th>`/api/v1/analisys/:analisys_id`</th>
-		<th>Create</th>
-		<th>`Object`</th>
-		<th></th>
+		<td><pre>POST</pre></td>
+		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td>Create</td>
+		<td><pre>Object</pre></td>
+		<td></td>
 	</tr>
 	<tr>
-		<th>`PATCH`</th>
-		<th>`/api/v1/analisys/:analisys_id`</th>
-		<th>Update</th>
-		<th>`Object`</th>
-		<th></th>
+		<td><pre>PATCH</pre></td>
+		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td>Update</td>
+		<td><pre>Object</pre></td>
+		<td></td>
 	</tr>
 	<tr>
-		<th>`DELETE`</th>
-		<th>`/api/v1/analisys/:analisys_id`</th>
-		<th>Delete</th>
-		<th>`null`</th>
-		<th></th>
+		<td><pre>DELETE</pre></td>
+		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td>Delete</td>
+		<td><pre>null</pre></td>
+		<td></td>
 	</tr>
 	<tr>
-		<th>`POST`</th>
-		<th>`/api/v1/analisys/:analisys_id/add_tag`</th>
-		<th>Add tag</th>
-		<th>`Object`</th>
-		<th>`tag_id`</th>
+		<td><pre>POST</pre></td>
+		<td><pre>/api/v1/analisys/:analisys_id/add_tag</pre></td>
+		<td>Add tag</td>
+		<td><pre>Object</pre></td>
+		<td><pre>tag_id</pre></td>
 	</tr>
 	<tr>
-		<th>`POST`</th>
-		<th>`/api/v1/analisys/:analisys_id/rm_tag`</th>
-		<th>Remove tag</th>
-		<th>`Object`</th>
-		<th>`tag_id`</th>
+		<td><pre>POST</pre></td>
+		<td><pre>/api/v1/analisys/:analisys_id/rm_tag</pre></td>
+		<td>Remove tag</td>
+		<td><pre>Object</pre></td>
+		<td><pre>tag_id</pre></td>
 	</tr>
 </table>
 

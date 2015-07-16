@@ -36,11 +36,58 @@ Lo cual entrega un nuevo token renovado, bajo la misma estructura del primero.
 
 * **Solo un token válido puede renovar el token**
 * Un token expirado requiere proveer credenciales de acceso nuevamente.
+* Todo Timestamp es construido por el servidor bajo su hora local.
 
 Toda petición a la API debe contener una cabecera presentando el token del usuario que esta efectuando la operación. 
 
-	**Authorization:** JWT eyJhbGCiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmlvd2lzZSIsIm9yaWdfaWF0IjoxNDM0NTAwMTczLCJ1c2VyX2lkIjo1NzY5NzIwODIxMTg2NTYwLCJlbWFpbCI6Im1hcmlvQHJlcXVpZXMuY2wiLCJleHAiOjE0NDQ4NjgxNzN9.pA824jf2eudn_IaxsD8zT_OoFM2ObdwvY4i3iiRgTas
+	Authorization: JWT eyJhbGCiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmlvd2lzZSIsIm9yaWdfaWF0IjoxNDM0NTAwMTczLCJ1c2VyX2lkIjo1NzY5NzIwODIxMTg2NTYwLCJlbWFpbCI6Im1hcmlvQHJlcXVpZXMuY2wiLCJleHAiOjE0NDQ4NjgxNzN9.pA824jf2eudn_IaxsD8zT_OoFM2ObdwvY4i3iiRgTas
 
+Project
+-------
+
+#### List
+
+	POST /api/v1/projects
+
+#### Show
+
+	GET /api/v1/projects/:project_id
+
+#### Create
+
+	POST /api/v1/projects
+
+#### Update
+
+	PATCH /api/v1/projects/:project_id 
+
+#### Delete
+
+	DELETE /api/v1/projects/:project_id
+
+#### Invite contrib
+
+Recibe mediante formulario el dato `user_id` que lleva el **id** del usuario que esta siendo incluido como contribuyente al proyecto.
+
+	POST /api/v1/projects/:project_id/invite_contrib
+
+#### Remove contrib
+
+Recibe mediante formulario el dato `user_id` que lleva el **id** del usuario que esta siendo eliminado como contribuyente del proyecto.
+
+	POST /api/v1/projects/:project_id/rm_contrib
+
+#### Contribs
+
+Entrega la lista de usuarios que son contribuyentes en un proyecto
+
+	GET /api/v1/projects/:project_id/constribs
+
+#### State three
+
+Entrega el estadio 3 del proyecto `:project_id`
+
+	GET /api/v1/projects/:project_id/state_three
 
 
 

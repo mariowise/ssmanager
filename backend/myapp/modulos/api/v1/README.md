@@ -42,53 +42,6 @@ Toda petición a la API debe contener una cabecera presentando el token del usua
 
 	Authorization: JWT eyJhbGCiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmlvd2lzZSIsIm9yaWdfaWF0IjoxNDM0NTAwMTczLCJ1c2VyX2lkIjo1NzY5NzIwODIxMTg2NTYwLCJlbWFpbCI6Im1hcmlvQHJlcXVpZXMuY2wiLCJleHAiOjE0NDQ4NjgxNzN9.pA824jf2eudn_IaxsD8zT_OoFM2ObdwvY4i3iiRgTas
 
-Project
--------
-
-#### List
-
-	POST /api/v1/projects
-
-#### Show
-
-	GET /api/v1/projects/:project_id
-
-#### Create
-
-	POST /api/v1/projects
-
-#### Update
-
-	PATCH /api/v1/projects/:project_id 
-
-#### Delete
-
-	DELETE /api/v1/projects/:project_id
-
-#### Invite contrib
-
-Recibe mediante formulario el dato `user_id` que lleva el **id** del usuario que esta siendo incluido como contribuyente al proyecto.
-
-	POST /api/v1/projects/:project_id/invite_contrib
-
-#### Remove contrib
-
-Recibe mediante formulario el dato `user_id` que lleva el **id** del usuario que esta siendo eliminado como contribuyente del proyecto.
-
-	POST /api/v1/projects/:project_id/rm_contrib
-
-#### Contribs
-
-Entrega la lista de usuarios que son contribuyentes en un proyecto
-
-	GET /api/v1/projects/:project_id/constribs
-
-#### State three
-
-Entrega el estadio 3 del proyecto `:project_id`
-
-	GET /api/v1/projects/:project_id/state_three
-
 
 Analisys
 --------
@@ -215,7 +168,7 @@ Comments
 		<td><code>/api/v1/comments/:comment_id</code></td>
 		<td>Create</td>
 		<td><code>Object</code></td>
-		<td>`media_id` o `catwoe_id` o `picture_id` o `analisys_id`</td>
+		<td><code>media_id</code> o <code>catwoe_id</code> o <code>picture_id</code> o <code>analisys_id</code></td>
 	</tr>
 	<tr>
 		<td><code>PATCH</code></td>
@@ -290,6 +243,155 @@ Documents
 	<tr>
 		<td><code>DELETE</code></td>
 		<td><code>/api/v1/documents/:document_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Media
+-----
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		name_media: String,
+		description_media: String,
+		url_media: String,
+		uploaded_by: String,
+		date_media: String,
+		type_media: String,
+		comments_media: Array,
+		tags_media: Array,
+		comments: Array,
+		tags: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/media</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/media/:media_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/media/:media_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/media/:media_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/media/:media_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/media/:media_id/add_tag</code></td>
+		<td>Add tag</td>
+		<td><code>Object</code></td>
+		<td><code>tag_id</code></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/media/:media_id/rm_tag</code></td>
+		<td>Remove tag</td>
+		<td><code>Object</code></td>
+		<td><code>tag_id</code></td>
+	</tr>
+</table>
+
+
+Message
+-------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		remitente_mensaje: Integer,
+		receptores_mensaje: Array,
+		asunto_mensaje: String,
+		contenido_mensaje: String,
+		date_mensaje: String,
+		proyecto_mensaje: Integer,
+		url_asoc_mensaje: String,
+		receptores: Array,
+		remitente: Object
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/messages</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/messages/:media_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/messages/:message_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/messages/:message_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/messages/:message_id</code></td>
 		<td>Delete</td>
 		<td><code>null</code></td>
 		<td></td>

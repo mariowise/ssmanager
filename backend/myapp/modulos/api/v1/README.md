@@ -6,7 +6,7 @@ API REST
 La API REST se encuentra construida bajo el framework `django-rest-framework` y trabaja la autenticación mediante la tecnología `JWT`. Es por esto que para poder consumir cualquiera de sus métodos es necesario contar con un `token` válido.
 
 Autenticación
--------
+-------------
 
 Para conseguir un token es necesario efectuar una petición `POST` que contenga tanto el `username` y la `password` de un usuario registrado en el sistema.
 
@@ -89,5 +89,136 @@ Entrega el estadio 3 del proyecto `:project_id`
 
 	GET /api/v1/projects/:project_id/state_three
 
+
+Analisys
+--------
+
+#### Estructura JSON
+
+	{
+		id: Integer
+		name_analisis: String
+		description_analisis: String
+		links_analisis: Array
+		comments_analisis: Array
+		tags_analisis: Array
+		created_by: String
+		date_analisis: String
+		documents: Array
+		comments: Array
+		tag: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<th>`POST`</th>
+		<th>`/api/v1/analisys`</th>
+		<th>List</th>
+		<th>`Array`</th>
+		<th></th>
+	</tr>
+	<tr>
+		<th>`GET`</th>
+		<th>`/api/v1/analisys/:analisys_id`</th>
+		<th>Show</th>
+		<th>`Object`</th>
+		<th></th>
+	</tr>
+	<tr>
+		<th>`POST`</th>
+		<th>`/api/v1/analisys/:analisys_id`</th>
+		<th>Create</th>
+		<th>`Object`</th>
+		<th></th>
+	</tr>
+	<tr>
+		<th>`PATCH`</th>
+		<th>`/api/v1/analisys/:analisys_id`</th>
+		<th>Update</th>
+		<th>`Object`</th>
+		<th></th>
+	</tr>
+	<tr>
+		<th>`DELETE`</th>
+		<th>`/api/v1/analisys/:analisys_id`</th>
+		<th>Delete</th>
+		<th>`null`</th>
+		<th></th>
+	</tr>
+	<tr>
+		<th>`POST`</th>
+		<th>`/api/v1/analisys/:analisys_id/add_tag`</th>
+		<th>Add tag</th>
+		<th>`Object`</th>
+		<th>`tag_id`</th>
+	</tr>
+	<tr>
+		<th>`POST`</th>
+		<th>`/api/v1/analisys/:analisys_id/rm_tag`</th>
+		<th>Remove tag</th>
+		<th>`Object`</th>
+		<th>`tag_id`</th>
+	</tr>
+</table>
+
+
+Comments
+--------
+
+#### List
+
+	POST /api/v1/comments
+
+#### Show
+
+	GET /api/v1/comments/:comment_id
+
+#### Create
+
+Dependiendo de sobre que objeto es creado el comentario debe incluir el campo de formulario `media_id` || `catwoe_id` || `picture_id` || `analisys_id`.
+
+	POST /api/v1/comments
+
+#### Update
+
+	PATCH /api/v1/comments/:comment_id 
+
+#### Delete
+
+	DELETE /api/v1/comments/:comment_id
+
+
+Documents
+---------
+
+#### List
+
+	POST /api/v1/documents
+
+#### Show
+
+	GET /api/v1/documents/:document_id
+
+#### Create
+
+	POST /api/v1/documents
+
+#### Update
+
+	PATCH /api/v1/documents/:document_id 
+
+#### Delete
+
+	DELETE /api/v1/documents/:document_id
 
 

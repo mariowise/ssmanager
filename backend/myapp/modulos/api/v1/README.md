@@ -96,16 +96,16 @@ Analisys
 #### Estructura JSON
 
 	{
-		id: Integer
-		name_analisis: String
-		description_analisis: String
-		links_analisis: Array
-		comments_analisis: Array
-		tags_analisis: Array
-		created_by: String
-		date_analisis: String
-		documents: Array
-		comments: Array
+		id: Integer,
+		name_analisis: String,
+		description_analisis: String,
+		links_analisis: Array,
+		comments_analisis: Array,
+		tags_analisis: Array,
+		created_by: String,
+		date_analisis: String,
+		documents: Array,
+		comments: Array,
 		tag: Array
     }
 
@@ -175,50 +175,123 @@ Analisys
 Comments
 --------
 
-#### List
+#### Estructura JSON
 
-	POST /api/v1/comments
+	{
+		id: Integer,
+		autor_comentary: Integer,
+		date_comentary: String,
+		content_comentary: String,
+		user: Object
+    }
 
-#### Show
+#### Métodos
 
-	GET /api/v1/comments/:comment_id
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
 
-#### Create
-
-Dependiendo de sobre que objeto es creado el comentario debe incluir el campo de formulario `media_id` || `catwoe_id` || `picture_id` || `analisys_id`.
-
-	POST /api/v1/comments
-
-#### Update
-
-	PATCH /api/v1/comments/:comment_id 
-
-#### Delete
-
-	DELETE /api/v1/comments/:comment_id
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/comments</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/comments/:comment_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/comments/:comment_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td>`media_id` o `catwoe_id` o `picture_id` o `analisys_id`</td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/comments/:comment_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/comments/:comment_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
 
 
 Documents
 ---------
 
-#### List
+#### Estructura JSON
 
-	POST /api/v1/documents
+	{
+		id: Integer,
+		name_documento: String,
+		url_documento: String,
+		shared_documento: String,
+		date_documento: String,
+		google_id: String
+    }
 
-#### Show
+#### Métodos
 
-	GET /api/v1/documents/:document_id
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
 
-#### Create
-
-	POST /api/v1/documents
-
-#### Update
-
-	PATCH /api/v1/documents/:document_id 
-
-#### Delete
-
-	DELETE /api/v1/documents/:document_id
-
-
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/documents</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/documents/:document_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/documents/:document_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/documents/:document_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/documents/:document_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>

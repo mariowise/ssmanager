@@ -370,7 +370,7 @@ Message
 	</tr>
 	<tr>
 		<td><code>GET</code></td>
-		<td><code>/api/v1/messages/:media_id</code></td>
+		<td><code>/api/v1/messages/:message_id</code></td>
 		<td>Show</td>
 		<td><code>Object</code></td>
 		<td></td>
@@ -397,3 +397,779 @@ Message
 		<td></td>
 	</tr>
 </table>
+
+
+Notification
+------------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		creador_notificacion: Integer,
+		imagen_notificacion: String,
+		accion_notificacion: String,
+		url_notificacion: String,
+		date_notificacion: String, 
+		users_noRead_notificacion: Array,
+		id_asoc_notificacion: Integer,
+		type_notificacion: String
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/notifications</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/notifications/:notification_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/notifications/:notification_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/notifications/:notification_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/notifications/:notification_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Profile
+-------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		user: Integer,
+		email_public_user: String,
+		url_user: String,
+		company_user: String,
+		position_user: String,
+		mWeb_user: String,
+		mEmail_user: String,
+		photo_user: String,
+		photo_url: String,
+		project_colab_user: Array,
+		id_folder_user: String,
+		mensajes_user_leidos: Array,
+		mensajes_user_noleidos: Array,
+		id_drive_folder: String
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/profiles</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/profiles/:profile_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/profiles/:profile_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/profiles/:profile_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/profiles/:profile_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Project
+-------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		manager: String, 
+		name_ssp: String,
+		description_ssp: String,
+		date_spp: String,
+		id_folder_ssp: String,
+		contribs_ssp: Array,
+		notificaciones_ssp: Array,
+		ids_folder_ssp: String,
+		state_two: Object,
+		state_three: Object,
+		contribs: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/projects</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/projects/:project_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/projects/:project_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/projects/:project_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/projects/:project_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/projects/:project_id/invite_contrib</code></td>
+		<td>Invite contrib</td>
+		<td><code>null</code></td>
+		<td><code>user_id</code></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/projects/:project_id/rm_contrib</code></td>
+		<td>Remove contrib</td>
+		<td><code>null</code></td>
+		<td><code>username</code></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/projects/:project_id/contribs</code></td>
+		<td>Contribs</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/projects/:project_id/state_three</code></td>
+		<td>State three</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Rich-picture
+------------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		name_rp: String,
+		description_rp: String,
+		analisis_rp: String,
+		documentos_rp: String,
+		richPFinal_rp: String,
+		comments_rp: Array,
+		created_by: String,
+		date_rp: String,
+		comments: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/richpictures</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/richpictures/:richpicture_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/richpictures/:richpicture_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/richpictures/:richpicture_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/richpictures/:richpicture_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Root definition
+---------------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		name_DR: String,
+		description_DR: String,
+		created_by: String,
+		date_DR: String
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/root_definition</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/root_definition/:root_definition_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/root_definition/:root_definition_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/root_definition/:root_definition_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/root_definition/:root_definition_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Catwoe
+------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		name_dr: String,
+		description_dr: String,
+		definiciones_dr: String,
+		definicionFinal_dr: String,
+		richPicture_dr: String,
+		clientes_dr: String,
+		actores_dr: String,
+		trans_input_dr: String,
+		trans_output_dr: String,
+		cosmo_dr: String,
+		propietario_dr: String,
+		entorno_dr: String,
+		comments_dr: Array,
+		created_by: String,
+		date_dr: String,
+		comments: Array,
+		roots: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/root_definition_catwoe</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/root_definition_catwoe/:catwoe_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/root_definition_catwoe/:catwoe_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td><code>state_id</code></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/root_definition_catwoe/:catwoe_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/root_definition_catwoe/:catwoe_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+State one
+---------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		ssp_stateOne: Integer,
+		ssp_videos: Array,
+		ssp_imagenes: Array,
+		ssp_audios: Array,
+		ssp_documentos: Array,
+		ssp_analisis: Array,
+		tags_state: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_one</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/state_one/:state_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_one/:state_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td><code>state_id</code></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/state_one/:state_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/state_one/:state_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_one/:state_id/delete_tag</code></td>
+		<td>Delete tag</td>
+		<td><code>Object</code></td>
+		<td><code>tag_id</code></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_one/:state_id/delete_media</code></td>
+		<td>Delete media</td>
+		<td><code>Object</code></td>
+		<td><code>media_id</code></td>
+	</tr>
+</table>
+
+
+State two
+---------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		ssp_stateTwo: Integer,
+		ssp_richPictures: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_two</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/state_two/:state_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_two/:state_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td><code>state_id</code></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/state_two/:state_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/state_two/:state_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+State three
+-----------
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		ssp_stateThree: String,
+		ssp_definicionesRaices: Array,
+		catwoes: Array
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_three</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/state_three/:state_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/state_three/:state_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td><code>state_id</code></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/state_three/:state_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/state_three/:state_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Tag
+---
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		name_tag: String,
+		description_tag: String 
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/tags</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/tags/:tag_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/tags/:tag_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td><code>state_one_id</code></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/tags/:tag_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/tags/:tag_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+</table>
+
+
+Users
+-----
+
+#### Estructura JSON
+
+	{
+		id: Integer,
+		username: String, 
+		first_name: String, 
+		last_name: String, 
+		email: String
+    }
+
+#### Métodos
+
+<table>
+	<tr>
+		<th>Verbo</th>
+		<th>Ruta</th>
+		<th>Método</th>
+		<th>Tipo de dato</th>
+		<th>Parámetros extra</th>
+	</tr>
+
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/users</code></td>
+		<td>List</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/users/:user_id</code></td>
+		<td>Show</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/users/:user_id</code></td>
+		<td>Create</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/users/:user_id</code></td>
+		<td>Update</td>
+		<td><code>Object</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/users/:user_id</code></td>
+		<td>Delete</td>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/users/changepass</code></td>
+		<td>Change password</td>
+		<td><code>Object</code></td>
+		<td><code>oldpassword</code>, <code>newpassword</code></td>
+	</tr>
+	<tr>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/users/colabs</code></td>
+		<td>Colabs</td>
+		<td><code>Array</code></td>
+		<td></td>
+	</tr>
+</table>
+

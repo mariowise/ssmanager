@@ -1,5 +1,14 @@
 [< Volver](https://github.com/mariowise/ssmanager/tree/master/mobile)
 
+Sync
+====
+
+El módulo de sincronización basa su estructura en 3 clases abstractas que heredan sus métodos. `Local`, `Remote` y `Resource`:
+
+* **Local**: Se trata de una clase `wrapper` que contiene todos los métodos que llevan a cabo el almacenamiento de datos de forma local al dispositivo. Para esto, hace uso de `localForage` como librería para lograr almacenar información en repositorios como `localStorage`, `IndexedDB` o `WebSQL`.
+* **Remote**: Se trata de una clase `wrapper` que contiene los métodos que llevan a cabo las labores de almacenamiento remoto de los datos. Hace uso del servicio `$resource` provisto por `Angualar` para comunicarse con la `API REST` del sistema.
+* **Resource**: Se trata de una clase que coordina la utilización de los métodos de la clase `Local` y `Remote` para entregar servicios de almacenamiento. Gestiona los eventos provenientes de ambos mundos. Pretende entregar servicios que permitan presindir de la conexión a internet, se encarga de gestionar las excepciones de las peticiones y hacer uso de la base de datos local como si se tratase de una `cache`.
+
 Remote
 ------
 * param `name`: String. Corresponde al nombre que tendrá la entidad para el EntityManager (Local)

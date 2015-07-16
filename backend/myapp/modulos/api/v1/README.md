@@ -121,53 +121,53 @@ Analisys
 	</tr>
 
 	<tr>
-		<td><pre>POST</pre></td>
-		<td><pre>/api/v1/analisys</pre></td>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/analisys</code></td>
 		<td>List</td>
-		<td><pre>Array</pre></td>
+		<td><code>Array</code></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><pre>GET</pre></td>
-		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td><code>GET</code></td>
+		<td><code>/api/v1/analisys/:analisys_id</code></td>
 		<td>Show</td>
-		<td><pre>Object</pre></td>
+		<td><code>Object</code></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><pre>POST</pre></td>
-		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/analisys/:analisys_id</code></td>
 		<td>Create</td>
-		<td><pre>Object</pre></td>
+		<td><code>Object</code></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><pre>PATCH</pre></td>
-		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td><code>PATCH</code></td>
+		<td><code>/api/v1/analisys/:analisys_id</code></td>
 		<td>Update</td>
-		<td><pre>Object</pre></td>
+		<td><code>Object</code></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><pre>DELETE</pre></td>
-		<td><pre>/api/v1/analisys/:analisys_id</pre></td>
+		<td><code>DELETE</code></td>
+		<td><code>/api/v1/analisys/:analisys_id</code></td>
 		<td>Delete</td>
-		<td><pre>null</pre></td>
+		<td><code>null</code></td>
 		<td></td>
 	</tr>
 	<tr>
-		<td><pre>POST</pre></td>
-		<td><pre>/api/v1/analisys/:analisys_id/add_tag</pre></td>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/analisys/:analisys_id/add_tag</code></td>
 		<td>Add tag</td>
-		<td><pre>Object</pre></td>
-		<td><pre>tag_id</pre></td>
+		<td><code>Object</code></td>
+		<td><code>tag_id</code></td>
 	</tr>
 	<tr>
-		<td><pre>POST</pre></td>
-		<td><pre>/api/v1/analisys/:analisys_id/rm_tag</pre></td>
+		<td><code>POST</code></td>
+		<td><code>/api/v1/analisys/:analisys_id/rm_tag</code></td>
 		<td>Remove tag</td>
-		<td><pre>Object</pre></td>
-		<td><pre>tag_id</pre></td>
+		<td><code>Object</code></td>
+		<td><code>tag_id</code></td>
 	</tr>
 </table>
 

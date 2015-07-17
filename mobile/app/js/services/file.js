@@ -17,7 +17,7 @@ angular.module('app.services.file', [])
 			encodingType: Camera.EncodingType.JPEG,
 			targetWidth: 800,
 			targetHeight: 800,
-			saveToPhotoAlbum: true
+			saveToPhotoAlbum: false
 		}
 		return $cordovaCamera.getPicture(options)
 	}
@@ -62,7 +62,7 @@ angular.module('app.services.file', [])
 			allowEdit: true,
 			targetWidth: 800,
 			targetHeight: 800,
-			saveToPhotoAlbum: true
+			saveToPhotoAlbum: false
 		}
 		return $cordovaCamera.getPicture(options)
 	}
@@ -86,7 +86,9 @@ angular.module('app.services.file', [])
 	 * A partir de una URL si no existe cordova resuelve la misma URL, en caso contrario, 
 	 * revisa si es que se encuentra disponible en el dispositivo el archivo. Si se encuentra, retorna su 
 	 * URI, en caso contrario, comienza la transferencia para descargarlo, resolviendo con su URI fresca.
-	 * Si ocurre algún error con la descarga, rechaza la promsea
+	 * Si ocurre algún error con la descarga, rechaza la promsea. Es importante notar que para
+	 * que este método funcione, es necesario que exista la carpeta `media` el la carpeta de almacenamiento (rw)
+	 * del dispositivo; esta configuración se realiza a la hora de iniciar la aplicación (app.js)
 	 */
 	File.download = function (fileUrl, fname) {
 		if(CONFIG.debug) console.log("File::download running for URL: " + fileUrl)
@@ -95,7 +97,8 @@ angular.module('app.services.file', [])
 		if(typeof cordova != "undefined") {
 			var l = fileUrl.split("/")
 			  , fileName = (fname != undefined) ? fname : ( (l[l.length-1] != "") ? l[l.length-1] : l[l.length-2] )
-			  , mediaPath = cordova.file.documentsDirectory + "media/"
+			  , basePath = cordova.file.applicationStorageDirectory + ((cordova.platformId == "ios") ? "Documents/" : "")
+			  , mediaPath = basePath + "media/"
 			  , fileUri = mediaPath + fileName
 
 			$cordovaFile.checkFile(mediaPath, fileName)

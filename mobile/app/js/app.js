@@ -253,7 +253,7 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function ($q, amMoment, Resource, EM) {
+.run(function ($q, amMoment, Resource, EM, $cordovaFile) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
@@ -273,6 +273,21 @@ angular.module('app', [
 	setInterval(function () {
 		EM('Session').refresh_token()
 	}, 15 * 1000)
+
+	document.addEventListener("deviceready", function () {
+		if(typeof cordova != "undefined") {
+			var basePath = cordova.file.applicationStorageDirectory + ((cordova.platformId == "ios") ? "Documents/" : "")
+			$cordovaFile.checkDir(basePath, "media")
+			.then(null, function (err) {
+				console.log("Creando directorio 'media' en " + basePath)
+				$cordovaFile.createDir(basePath, "media", true)
+				.then(null, function (err) {
+					console.error(err)
+					alert("ERROR FATAL: No ha sido posible crear la carpeta 'media'.")
+				})
+			})
+		}	
+	}, false);
 
 	// testEntity = Resource("Test", "test", { 
 	// 	save: {

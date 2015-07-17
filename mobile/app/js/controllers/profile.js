@@ -73,6 +73,7 @@ angular.module('app.controllers.profile', [])
 			$state.go("app.profile.show")
 		})
 		.catch(function (err) {
+			console.error(err)
 			$.loading.error("No ha sido posible subit la foto")
 		})
 	}

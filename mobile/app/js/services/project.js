@@ -1,19 +1,51 @@
+/*--
+ *-- Project (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.project', [])
 
 .factory('Project', ['Resource', '$q', 'Session', 'User', 'StateOne', function (Resource, $q, Session, User, StateOne) {
 	
 	// Recurso local
 	var Project = Resource('Project', 'projects', {
+		/*--
+		 *-- #### invite_contrib(Object)
+		 *--
+		 *-- * param `Object`: Diccionario que contiene el `id` del proyecto y el `user_id` del usuario que esta siendo invitado.
+		 *-- * return `promise`
+		 *--
+		 *-- Envía una invitación a un usuario para incluirlo como colaborador de un proyecto.
+		 *--
+		 */
 		invite_contrib: {
 			method: 'POST',
 			url: CONFIG.api("projects") + "/:id/invite_contrib/",
 			responseType: 'json'
 		}
+		/*--
+		 *-- #### rm_contrib(Object)
+		 *--
+		 *-- * param `Object`: Diccionario que contiene el `id` del proyecto y el `user_id` del usuario que esta siendo desvinculado.
+		 *-- * return `promise`
+		 *--
+		 *-- Permite desvincular a un usuario de un proyecto.
+		 *--
+		 */
 		, rm_contrib: {
 			method: 'POST',
 			url: CONFIG.api("projects") + "/:id/rm_contrib/",
 			responseType: 'json'
 		}
+		/*--
+		 *-- #### state_three(Object)
+		 *--
+		 *-- * param `Object`: Diccionario que contiene el `id` del proyecto
+		 *-- * return `promise`
+		 *--
+		 *-- Obtiene el Estadio 3 de un proyecto.
+		 *--
+		 */
 		, state_three: {
 			method: 'GET',
 			url: CONFIG.api("projects") + "/:id/state_three/",
@@ -22,9 +54,14 @@ angular.module('app.services.project', [])
 	}) // Nombre del recurso, Nombre del recurso en API (URL)
 	  , response = {}
 
-	/*
-	 * Descarga todos los proyectos en donde el usuario colabora y además todos 
-	 * aquellos en donde es manager
+	/*--
+	 *-- #### pull(Object)
+	 *--
+	 *-- * return `promise`
+	 *--
+	 *-- Descarga todos los proyectos en donde el usuario colabora y además todos 
+	 *-- aquellos en donde es manager
+	 *--
 	 */
 	Project.pull = function () {
 		var d = $q.defer()
@@ -58,6 +95,16 @@ angular.module('app.services.project', [])
 		return d.promise
 	}	
 
+	/*--
+	 *-- #### fetchOne(key)
+	 *--
+	 *-- * param `key`: Object o Number 
+	 *-- * return `promise`
+	 *--
+	 *-- Descarga un proyecto, luego los datos de su administrador, luego descarga todo el Estadio 1
+	 *-- y finalmente deja todo en un objeto enbebido dentro de ambos repositorios replicados.
+	 *--
+	 */
 	Project.fetchOne = function (key) {
 		if(CONFIG.debug) console.log("Project::fetchOne")
 		var d = $q.defer()

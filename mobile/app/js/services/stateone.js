@@ -1,14 +1,37 @@
+/*--
+ *-- StateOne (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.stateone', [])
 
 .factory('StateOne', ['Resource', '$q', 'Session', 'Media', 'File', 'Tag', function (Resource, $q, Session, Media, File, Tag) {
 	
 	// Recurso local
 	var StateOne = Resource('StateOne', 'state_one', {
+		/*--
+		 *-- #### delete_tag(Object)
+		 *--
+		 *-- * param `Object`: Diccionario con el `id` del estadio 1 y `tag_id` de la etiqueta que se quiere eliminar.
+		 *-- * return `promise`
+		 *--
+		 *-- Elimina una etiqueta de un estadio 1.
+		 *--
+		 */
 		delete_tag: {
 			method: "POST",
 			url: CONFIG.api('state_one') + "/:id/delete_tag/",
 			responseType: 'json'
 		}
+		/*--
+		 *-- #### delete_media(Object)
+		 *--
+		 *-- * param `Object`: Diccionario con el `id` del estadio 1 y `media_id` de la etiqueta que se quiere eliminar.
+		 *-- * return `promise`
+		 *--
+		 *-- Elimina una media de un estadio 1.
+		 *--
+		 */
 		, delete_media: {
 			method: "POST",
 			url: CONFIG.api('state_one') + "/:id/delete_media/",
@@ -16,6 +39,16 @@ angular.module('app.services.stateone', [])
 		}
 	})
 
+	/*--
+	 *-- #### fetchOne(key)
+	 *--
+	 *-- * param `key`: Object o Number 
+	 *-- * return `promise`
+	 *--
+	 *-- Descarga un estadio 1, luego desgarga todas las medias y finalmente descarga todas
+	 *-- las etiquetas.
+	 *--
+	 */
 	StateOne.fetchOne = function (key) {
 		var d = $q.defer()
 
@@ -41,6 +74,18 @@ angular.module('app.services.stateone', [])
 		return d.promise
 	}
 
+	/*--
+	 *-- #### addMediaOffline(state, media)
+	 *--
+	 *-- * param `state`: Object o Number 
+	 *-- * param `media`: Object o Number
+	 *-- * return `promise`
+	 *--
+	 *-- Agrega un archivo media al objeto embebido dentro de la base de datos local.
+	 *-- esto es especialmente util cuando no contamos con conexión a internet y se desea
+	 *-- visualizar el objeto dentro de la base de datos local.
+	 *--
+	 */
 	StateOne.addMediaOffline = function (state, media) {
 		var d = $q.defer()
 

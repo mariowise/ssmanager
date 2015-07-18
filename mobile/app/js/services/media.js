@@ -1,14 +1,37 @@
+/*--
+ *-- Media (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.media', [])
 
 .factory('Media', ['Resource', '$q', 'Session', 'Comment', 'File', 'Tag', function (Resource, $q, Session, Comment, File, Tag) {
 	
 	// Recurso local
 	var Media = Resource('Media', 'media', {
+		/*--
+		 *-- #### add_tag(Object)
+		 *--
+		 *-- * param `Object`: Diccionario que contiene el `id` del media y el `tag_id` de la etiqueta.
+		 *-- * return `promise`
+		 *--
+		 *-- Agrega una etiqueta a un Media.
+		 *--
+		 */
 		add_tag: {
 			method: "POST",
 			url: CONFIG.api("media") + "/:id/add_tag/",
 			responseType: "json"
 		}
+		/*--
+		 *-- #### rm_tag(Object)
+		 *--
+		 *-- * param `Object`: Diccionario que contiene el `id` del media y el `tag_id` de la etiqueta.
+		 *-- * return `promise`
+		 *--
+		 *-- Elimina una etiqueta de un Media.
+		 *--
+		 */
 		, rm_tag: {
 			method: "POST",
 			url: CONFIG.api("media") + "/:id/rm_tag/",
@@ -83,7 +106,7 @@ angular.module('app.services.media', [])
 		return d.promise
 	}
 
-	/*
+	/*--
 	 *-- #### pushOne(key)
 	 *--
 	 *-- * param `key`: Object, String o Number
@@ -123,6 +146,17 @@ angular.module('app.services.media', [])
 		return d.promise
 	}
 
+	/*--
+	 *-- #### create(newMedia)
+	 *--
+	 *-- * param `newMedia`: Object
+	 *-- * return `promise`
+	 *-- 
+	 *-- Sobreescribe el método create de `Resource`. Para este caso incluye además la columna de `uploaded_by`
+	 *-- y la fecha `date_media`. Si no tiene internet para lograr la operación, lo almacenad de forma local
+	 *-- declarando además la bandera `__syncPending` dentro del objeto.
+	 *--
+	*/
 	Media.create = function (newMedia) {
 		var d = $q.defer()
 		  , self = this

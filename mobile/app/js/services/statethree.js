@@ -1,3 +1,8 @@
+/*--
+ *-- StateThree (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.statethree', [])
 
 .factory('StateThree', ['Resource', '$q', 'Session', 'Project', 'Catwoe', function (Resource, $q, Session, Project, Catwoe) {
@@ -5,6 +10,18 @@ angular.module('app.services.statethree', [])
 	// Recurso local
 	var StateThree = Resource('StateThree', 'state_three', {}), res = {}	
 
+	/*--
+	 *-- #### addCatwoe(project, catwoe)
+	 *--
+	 *-- * param `project`: Object
+	 *-- * param `catwoe`: Object
+	 *-- * return `promise`
+	 *--
+	 *-- Agrega un Catwoe a un Project. Añade el valor de `created_by` a partir del usuario
+	 *-- que esta usando la aplicaición (`Session.current_user()`) y el valor de `state_id` necesario
+	 *-- en la API.
+	 *--
+	 */
 	StateThree.addCatwoe = function (project, catwoe) {
 		var d = $q.defer()
 

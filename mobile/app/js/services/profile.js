@@ -1,11 +1,30 @@
+/*--
+ *-- Profile (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.profile', [])
 
 .factory('Profile', ['$q', 'Resource', 'Message', function ($q, Resource, Message) {
 
 	var Profile = Resource('Profile', 'profiles')
 
+	/*--
+	 *-- #### fetchOne(Resource::find)
+	 *--
+	 */
 	Profile.fetchOne = Profile.find
 
+	/*--
+	 *-- #### fetchMessages(key)
+	 *--
+	 *-- * param `key`: Object o Number
+	 *-- * return `promise`
+	 *--
+	 *-- Obtiene el perfil y además todos los mensajes leídos y no leídos. Construye
+	 *-- un objeto enbebido y además actualiza en la tabla Message (replicado).
+	 *--
+	 */
 	Profile.fetchMessages = function (key) {
 		var d = $q.defer()
 		  , self = this

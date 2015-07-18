@@ -253,7 +253,7 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function ($q, amMoment, Resource, EM, $cordovaFile) {
+.run(function ($q, amMoment, Resource, EM, $cordovaFile, $cordovaLocalNotification) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 

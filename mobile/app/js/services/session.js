@@ -1,3 +1,8 @@
+/*--
+ *-- Session (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.session', [])
 
 .factory('Session', ['$q', '$http', '$state', 'jwtHelper', 'Resource', 'User', function ($q, $http, $state, jwtHelper, Resource, User) {
@@ -6,6 +11,17 @@ angular.module('app.services.session', [])
 	var Session = Resource('Session', '') // Nombre del recurso, Nombre del recurso en API (URL)
 	  , response = {}
 
+	/*--
+	 *-- #### set_current_user(res)
+	 *--
+	 *-- * param `res`: Object
+	 *-- * return `promise`
+	 *--
+	 *-- Actualiza el valor de sessión local que se tiene respecto del usuario que se encuentra
+	 *-- haciendo uso de la aplicación. Registra además los valores de `local_iat` y `local_exp` 
+	 *-- para verificar cuanto tiempo de vida le queda el `token` (`JWT`)
+	 *--
+	 */
 	Session.set_current_user = function (res) {
 		var now = Math.round(Date.now()/1000)
 		  , d = $q.defer()
@@ -34,6 +50,17 @@ angular.module('app.services.session', [])
 		return d.promise
 	}
 
+	/*--
+	 *-- #### refresh_token()
+	 *--
+	 *-- * return `promise`
+	 *--
+	 *-- Verifica si es necesario actualizar el `token`. Revisa cuanto tiempo falta para que este
+	 *-- expire, y luego verifica si es que ha pasado la mitad de ese tiempo. Si estamos dentro de la 
+	 *-- segunda mitad del tiempo de vida del `token`, entonces efectúa la operación de renovarlo 
+	 *-- en la url `/api/v1/token-refresh/`. En caso contrario, no hace nada.
+	 *--
+	 */
 	Session.refresh_token = function () {
 		// console.log("Session::refresh_token running")
 		var d = $q.defer()
@@ -72,8 +99,10 @@ angular.module('app.services.session', [])
 								setTimeout(function () {
 									Session.delete("current_user")
 									.then(function (current_user) {
-										$.loading.error("La sesión ha expirado")
-										$state.go("login.index")
+										if($state.current.name != "login.index") {
+											$.loading.error("La sesión ha expirado")
+											$state.go("login.index")
+										}
 									})
 								}, 3000)
 
@@ -115,8 +144,10 @@ angular.module('app.services.session', [])
 			setTimeout(function () {
 				Session.delete("current_user")
 				.then(function () {
-					$.loading.error("La sesión ha expirado")
-					$state.go("login.index")
+					if($state.current.name != "login.index") {
+						$.loading.error("La sesión ha expirado")
+						$state.go("login.index")
+					}
 				})
 			}, 3000)
 			d.reject(undefined)

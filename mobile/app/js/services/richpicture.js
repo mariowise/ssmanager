@@ -1,3 +1,8 @@
+/*--
+ *-- RichPicture (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.richpicture', [])
 
 .factory('RichPicture', ['Resource', '$q', 'Document', function (Resource, $q, Document) {
@@ -5,6 +10,15 @@ angular.module('app.services.richpicture', [])
 	// Recurso local
 	var RichPicture = Resource('RichPicture', 'richpictures', {}), res = {}
 
+	/*--
+	 *-- #### fetchOne(key)
+	 *--
+	 *-- * param `key`: Object o Number
+	 *-- * return `promise`
+	 *--
+	 *-- Obtiene un rich-picture y luego descarga los documentos que tiene adjunto.
+	 *--
+	 */
 	RichPicture.fetchOne = function (key) {
 		var d = $q.defer(), self = this
 

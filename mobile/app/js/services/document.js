@@ -1,3 +1,8 @@
+/*--
+ *-- Document (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.document', [])
 
 .factory('Document', ['Resource', '$q', 'File', function (Resource, $q, File) {
@@ -5,6 +10,16 @@ angular.module('app.services.document', [])
 	// Recurso local
 	var Document = Resource('Document', 'documents', {}), response = {}
 
+	/*--
+	 *-- #### fetchOne(key)
+	 *--
+	 *-- * param `key`: Object, Array o Number
+	 *-- * return `promise`
+	 *--
+	 *-- Descarga la imagen del documento en función a la URL `https://docs.google.com/feeds/download/drawings/Export?id=[ID_DOCUMENT]`.
+	 *-- Para que tenga exito, el documento debe tener **permisos de lectura a quien posea el link**.
+	 *-- La imágen queda almacenada en el dispositivo en la carpeta `media`.
+	 */
 	Document.fetchOne = function (key) {
 		var d = $q.defer()
 		  , self = this

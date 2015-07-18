@@ -1,3 +1,8 @@
+/*--
+ *-- File (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.file', [])
 
 .factory('File', ['$q', '$cordovaCamera', '$cordovaFile', '$cordovaFileTransfer', '$cordovaCapture', 'Session', 'Resource', function ($q, $cordovaCamera, $cordovaFile, $cordovaFileTransfer, $cordovaCapture, Session, Resource) {
@@ -5,8 +10,13 @@ angular.module('app.services.file', [])
 	// Recurso local
 	var File = Resource('File', 'files') // Nombre del recurso, Nombre del recurso en API (URL)
 
-	/*
-	 * Configura y toma una foto, retornando la promesa de cuando termine la captura
+	/*--
+	 *-- #### takePhoto()
+	 *--
+	 *-- * return `promise`
+	 *--
+	 *-- Configura y toma una foto, retornando la promesa de cuando termine la captura
+	 *--
 	 */
 	File.takePhoto = function () {
 		var options = {
@@ -22,6 +32,15 @@ angular.module('app.services.file', [])
 		return $cordovaCamera.getPicture(options)
 	}
 
+	/*--
+	 *-- #### takeAudio()
+	 *--
+	 *-- * return `promise`
+	 *--
+	 *-- Captura audio y retorna la ubicación donde queda almacenado en el dispositivo. Esta
+	 *-- configurado para capturar solo 1 audio y con una duración máxima de 1 hora.
+	 *--
+	 */
 	File.takeAudio = function () {
 		var d = $q.defer()
 		  , options = {
@@ -38,6 +57,15 @@ angular.module('app.services.file', [])
 		return d.promise
 	}
 
+	/*--
+	 *-- #### takeVideo()
+	 *--
+	 *-- * return `promise`
+	 *--
+	 *-- Captura video y retorna la ubicación donde queda almacenado l archivo. Esta configurado
+	 *-- para capturar 1 archivo de video y con una duración máxima de 15 minutos.
+	 *--
+	 */
 	File.takeVideo = function () {
 		var d = $q.defer()
 		  , options = {
@@ -54,6 +82,16 @@ angular.module('app.services.file', [])
 		return d.promise
 	}
 
+	/*--
+	 *-- #### selectPhoto()
+	 *--
+	 *-- * return `promise`
+	 *--
+	 *-- Permite elegir un archivo desde la biblioteca de photos. La selección es editada
+	 *-- para conseguir una imagen de 800x800, y el resultado no es almacenado en la 
+	 *-- biblioteca del dispositivo, solo en el `sandbox` de la aplicación.
+	 *--
+	 */
 	File.selectPhoto = function () {
 		var options = {
 			quality: 100,
@@ -67,8 +105,16 @@ angular.module('app.services.file', [])
 		return $cordovaCamera.getPicture(options)
 	}
 
-	/*
-	 * Efectúa la operación de subir un fichero a la nube, devuelve la promesa de esta operación
+	/*--
+	 *-- #### upload(fileUri, url, opt)
+	 *--
+	 *-- * param `fileUri`: Corresponde a la ruta local al dispositivo donde esta el archivo que se quiere subir.
+	 *-- * param `url`: Corresponde a la ruta en internet donde se quiere subir el fichero.
+	 *-- * param `opt`: (Optional) Corresponde al objeto de opciones que es pasado al módulo $cordovaFileTransfer
+	 *-- * return `promise`
+	 *--
+	 *-- Efectúa la operación de subir un fichero a la nube, devuelve la promesa de esta operación
+	 *--
 	 */
 	File.upload = function (fileUri, url, opt) {
 		var ext = fileUri.split(".")
@@ -82,13 +128,19 @@ angular.module('app.services.file', [])
 		return $cordovaFileTransfer.upload(url || fileURL, fileUri, opt || options, true)			
 	}
 
-	/*
-	 * A partir de una URL si no existe cordova resuelve la misma URL, en caso contrario, 
-	 * revisa si es que se encuentra disponible en el dispositivo el archivo. Si se encuentra, retorna su 
-	 * URI, en caso contrario, comienza la transferencia para descargarlo, resolviendo con su URI fresca.
-	 * Si ocurre algún error con la descarga, rechaza la promsea. Es importante notar que para
-	 * que este método funcione, es necesario que exista la carpeta `media` el la carpeta de almacenamiento (rw)
-	 * del dispositivo; esta configuración se realiza a la hora de iniciar la aplicación (app.js)
+	/*-- 
+	 *-- #### download(fileUrl, fname)
+	 *--
+	 *-- * param `fileUrl`: Corresponde a la URL en internet donde se debe obtener el archivo a eliminar
+	 *-- * param `fname`: (Optional) Corresponde al nombre con el que se quiere guardar el archivo. En caso de no proveerlo, intenta encontrarlo dentro de la URL
+	 *-- * return `promise`
+	 *--
+	 *-- A partir de una URL si no existe cordova resuelve la misma URL, en caso contrario, 
+	 *-- revisa si es que se encuentra disponible en el dispositivo el archivo. Si se encuentra, retorna su 
+	 *-- URI, en caso contrario, comienza la transferencia para descargarlo, resolviendo con su URI fresca.
+	 *-- Si ocurre algún error con la descarga, rechaza la promsea. Es importante notar que para
+	 *-- que este método funcione, es necesario que exista la carpeta `media` el la carpeta de almacenamiento (rw)
+	 *-- del dispositivo; esta configuración se realiza a la hora de iniciar la aplicación (app.js)
 	 */
 	File.download = function (fileUrl, fname) {
 		if(CONFIG.debug) console.log("File::download running for URL: " + fileUrl)
@@ -118,9 +170,15 @@ angular.module('app.services.file', [])
 		return d.promise
 	}	
 
-	/*
-	 * Vacía la carpeta rPath ubicada dentro del directorio de documentos asignado a la App por
-	 * el sistema operativo
+	/*-- 
+	 *-- #### clean(rPath)
+	 *--
+	 *-- * param `rPath`: Corresponde a la ruta local del dispositivo que se quiere limpiar.
+	 *-- * return `promise`
+	 *--
+	 *-- Vacía la carpeta rPath ubicada dentro del directorio de documentos asignado a la App por
+	 *-- el sistema operativo
+	 *--
 	 */
 	File.clean = function (rPath) {
 		console.log("File::clean starting to clean documentsDirectory")

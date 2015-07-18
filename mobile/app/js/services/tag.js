@@ -1,3 +1,8 @@
+/*--
+ *-- Tag (Resource)
+ *-- ------
+ *--
+*/
 angular.module('app.services.tag', [])
 
 .factory('Tag', ['Resource', '$q', function (Resource, $q) {

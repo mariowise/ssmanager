@@ -37,11 +37,12 @@ class ProjectSerializer(serializers.ModelSerializer):
         	'notificaciones_ssp',
         	'ids_folder_ssp',
 
-            #Nested
+            # Nested
             'state_two',
             'state_three',
             'contribs'
         )
+        read_only_fields = ('contribs_ssp','notificaciones_ssp', 'ids_folder_ssp',)
 
     def get_state_two(self, obj):
         try:

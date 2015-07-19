@@ -82,4 +82,11 @@ class MessageViewSet(viewsets.ModelViewSet):
         userProfile.mark_message(profile.id, message.id)
         return Response(status=200)
 
-
+    @list_route(methods=['get'])
+    def count(self, request, *args, **kwargs):
+        try:
+            profile = userProfile.objects.get(user = request.user)
+            count = len(profile.returnMensajesNoLeidos())
+            return Response(count, status=200)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)

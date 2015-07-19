@@ -301,4 +301,73 @@ angular.module('app', [
 	// 	function (callback) { testRemote($q, testEntity, callback) },
 	// 	function (callback) { testResource($q, testEntity, callback) }
 	// ])
+
+	// setTimeout(function () {
+	// 	async.series([
+	// 		function (callback) { testRemote2($q, EM('Analisys'), { title: "Analisys", testObject: {
+	// 			'name_analisis': "Test analisys", 
+	//             'description_analisis': "Test description", 
+	//             'links_analisis': [], 
+	//             'comments_analisis': [], 
+	//             'tags_analisis': [], 
+	//             'created_by': "testing"
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('Comment'), { title: "Comment", testObject: {
+	// 			'autor_comentary': '5769720821186560',
+	//             'content_comentary': 'Test comment'
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('Document'), { title: "Document", testObject: {
+	// 			'name_documento': 'Test document',
+	//             'url_documento': 'https://docs.google.com/drawings/d/1AW65GBwMsHQ05l3UnLQItzy1oGL4Kk97Xm72co5bK7k/edit?usp=drivesdk',
+	//             'shared_documento': 'testing',
+	//             'google_id': 'some google id'
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('Media'), { title: "Media", testObject: {
+	// 			'name_media': 'Some name for the test',
+	//             'description_media': 'Some description',
+	//             'url_media': 'https://docs.google.com/drawings/d/1AW65GBwMsHQ05l3UnLQItzy1oGL4Kk97Xm72co5bK7k/edit?usp=drivesdk',
+	//             'uploaded_by': 'testing',
+	//             'type_media': '1',
+	//             'state_one_id': 5161872890265600
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('Message'), { title: "Message", testObject: {
+	// 			'remitente_mensaje': 'testing',
+	//             'receptores_mensaje': [],
+	//             'asunto_mensaje': 'Some subject',
+	//             'contenido_mensaje': 'Some content',
+	//             'proyecto_mensaje': '5714902542974976',
+	//             'url_asoc_mensaje': ''
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('Project'), { title: "Project", testObject: {
+	// 			'manager': 5146248336113664, 
+	//         	'name_ssp': 'Some name',
+	//         	'description_ssp': 'Some description',
+	//         	'ids_folder_ssp': []
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('RichPicture'), { title: "RichPicture", testObject: {
+	// 			'name_rp': 'Some name',
+	//             'description_rp': 'Some description',
+	//             'created_by': 'testing'
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('Catwoe'), { title: "Catwoe", testObject: {
+	// 			'name_dr': 'Some name',
+	//             'description_dr': 'Some description',
+	//             'clientes_dr': 'asdf',
+	//             'actores_dr': 'asdf',
+	//             'trans_input_dr': 'asdf',
+	//             'trans_output_dr': 'asdf',
+	//             'cosmo_dr': 'asdf',
+	//             'propietario_dr': 'asf',
+	//             'entorno_dr': 'asdf',
+	//             'created_by': 'testing',
+	//             'state_id': 5755424754106368
+	// 		} }, callback) },
+	// 		function (callback) { testRemote2($q, EM('Tag'), { title: "Tag", testObject: {
+	// 			'name_tag': 'Some name',
+ //            	'description_tag': 'Some description',
+ //            	'state_one_id': 5161872890265600
+	// 		} }, callback) }
+	// 	])
+	// }, 5000)
 })
+

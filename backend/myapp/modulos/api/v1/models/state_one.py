@@ -21,6 +21,7 @@ class StateOneSerializer(serializers.ModelSerializer):
             'ssp_analisis',
             'tags_state'
         )
+        read_only_fields = ('ssp_videos', 'ssp_imagenes', 'ssp_audios', 'ssp_documentos', 'ssp_analisis', 'tags_state',)
 
 # ViewSets define the view behavior.
 class StateOneViewSet(viewsets.ModelViewSet):

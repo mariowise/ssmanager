@@ -23,7 +23,7 @@ angular.module('app.controllers.projects.stateone', [])
 	})
 
 	$scope.$on('changeState', function (event, newVal) {
-		setState(newVal)
+		$scope.setState(newVal)
 	})
 }])
 

@@ -49,7 +49,7 @@ Analisys
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		name_analisis: String,
 		description_analisis: String,
 		links_analisis: Array,
@@ -131,8 +131,8 @@ Comments
 #### Estructura JSON
 
 	{
-		id: Integer,
-		autor_comentary: Integer,
+		id: Number,
+		autor_comentary: Number,
 		date_comentary: String,
 		content_comentary: String,
 		user: Object
@@ -193,7 +193,7 @@ Documents
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		name_documento: String,
 		url_documento: String,
 		shared_documento: String,
@@ -256,7 +256,7 @@ Media
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		name_media: String,
 		description_media: String,
 		url_media: String,
@@ -338,13 +338,13 @@ Message
 #### Estructura JSON
 
 	{
-		id: Integer,
-		remitente_mensaje: Integer,
+		id: Number,
+		remitente_mensaje: Number,
 		receptores_mensaje: Array,
 		asunto_mensaje: String,
 		contenido_mensaje: String,
 		date_mensaje: String,
-		proyecto_mensaje: Integer,
+		proyecto_mensaje: Number,
 		url_asoc_mensaje: String,
 		receptores: Array,
 		remitente: Object
@@ -405,14 +405,14 @@ Notification
 #### Estructura JSON
 
 	{
-		id: Integer,
-		creador_notificacion: Integer,
+		id: Number,
+		creador_notificacion: Number,
 		imagen_notificacion: String,
 		accion_notificacion: String,
 		url_notificacion: String,
 		date_notificacion: String, 
 		users_noRead_notificacion: Array,
-		id_asoc_notificacion: Integer,
+		id_asoc_notificacion: Number,
 		type_notificacion: String
     }
 
@@ -471,8 +471,8 @@ Profile
 #### Estructura JSON
 
 	{
-		id: Integer,
-		user: Integer,
+		id: Number,
+		user: Number,
 		email_public_user: String,
 		url_user: String,
 		company_user: String,
@@ -543,7 +543,7 @@ Project
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		manager: String, 
 		name_ssp: String,
 		description_ssp: String,
@@ -640,7 +640,7 @@ Rich-picture
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		name_rp: String,
 		description_rp: String,
 		analisis_rp: String,
@@ -707,7 +707,7 @@ Root definition
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		name_DR: String,
 		description_DR: String,
 		created_by: String,
@@ -769,7 +769,7 @@ Catwoe
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		name_dr: String,
 		description_dr: String,
 		definiciones_dr: String,
@@ -844,8 +844,8 @@ State one
 #### Estructura JSON
 
 	{
-		id: Integer,
-		ssp_stateOne: Integer,
+		id: Number,
+		ssp_stateOne: Number,
 		ssp_videos: Array,
 		ssp_imagenes: Array,
 		ssp_audios: Array,
@@ -923,8 +923,8 @@ State two
 #### Estructura JSON
 
 	{
-		id: Integer,
-		ssp_stateTwo: Integer,
+		id: Number,
+		ssp_stateTwo: Number,
 		ssp_richPictures: Array
     }
 
@@ -983,7 +983,7 @@ State three
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		ssp_stateThree: String,
 		ssp_definicionesRaices: Array,
 		catwoes: Array
@@ -1044,7 +1044,7 @@ Tag
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		name_tag: String,
 		description_tag: String 
     }
@@ -1104,7 +1104,7 @@ Users
 #### Estructura JSON
 
 	{
-		id: Integer,
+		id: Number,
 		username: String, 
 		first_name: String, 
 		last_name: String, 

@@ -24,6 +24,7 @@ class RichpictureSerializer(serializers.ModelSerializer):
 
             'comments'
         )
+        read_only_fields = ('documentos_rp','comments_rp',)
 
     def get_comments(self, obj):
         comments = obj.returnComments()

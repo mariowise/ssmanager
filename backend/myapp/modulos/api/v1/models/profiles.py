@@ -23,6 +23,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'mensajes_user_noleidos',
             'id_drive_folder'
         )
+        read_only_fields = ('mensajes_user_leidos','mensajes_user_noleidos',)
 
 # ViewSets define the view behavior.
 class ProfileViewSet(viewsets.ModelViewSet):

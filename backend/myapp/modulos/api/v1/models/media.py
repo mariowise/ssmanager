@@ -31,6 +31,8 @@ class MediaSerializer(serializers.ModelSerializer):
             'comments',
             'tags'
         )
+        read_only_fields = ('comments_media','tags_media',)
+
     def get_comments(self, obj):
         comments = obj.returnComments()
         return CommentSerializer(comments, many = True).data

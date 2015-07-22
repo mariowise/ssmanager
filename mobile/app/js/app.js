@@ -28,7 +28,6 @@ angular.module('app', [
 
 	, 'app.controllers.application'
 	, 'app.controllers.login'
-	, 'app.controllers.index'
 	, 'app.controllers.profile'
 	, 'app.controllers.messages'
 

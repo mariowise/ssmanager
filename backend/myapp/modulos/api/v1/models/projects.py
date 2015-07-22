@@ -15,12 +15,15 @@ from google.appengine.ext import db
 from myapp.modulos.api.v1.models.users import UserSerializer
 from myapp.modulos.api.v1.models.state_three import StateThreeSerializer
 from myapp.modulos.api.v1.models.state_two import StateTwoSerializer
+from myapp.modulos.api.v1.models.notifications import NotificationSerializer
+
 
 # Serializers define the API representation.
 class ProjectSerializer(serializers.ModelSerializer):
     contribs = serializers.SerializerMethodField()
     state_two = serializers.SerializerMethodField()
     state_three = serializers.SerializerMethodField()
+    notifications = serializers.SerializerMethodField()
 
     class Meta:
         model = userSoftSystemProject
@@ -40,7 +43,8 @@ class ProjectSerializer(serializers.ModelSerializer):
             # Nested
             'state_two',
             'state_three',
-            'contribs'
+            'contribs',
+            'notifications'
         )
         read_only_fields = ('contribs_ssp','notificaciones_ssp', 'ids_folder_ssp',)
 
@@ -61,6 +65,9 @@ class ProjectSerializer(serializers.ModelSerializer):
     def get_contribs(self, obj):
         contribs = obj.contribUsers()
         return UserSerializer(contribs, many = True).data
+
+    def get_notifications(self, obj):
+        return NotificationSerializer(obj.returnNotificaciones(), many=True) 
 
 
 # ViewSets define the view behavior.
@@ -124,4 +131,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
         project = self.get_object()
         state = StateThree.objects.get(ssp_stateThree = project)
         serializer = StateThreeSerializer(state)
+        return Response(serializer.data, status=200)
+
+    @detail_route(methods=['get'])
+    def notifications(self, request, *args, **kwargs):
+        project = self.get_object()
+        serializer = NotificationSerializer(project.returnNotificaciones(), many=True)
         return Response(serializer.data, status=200)

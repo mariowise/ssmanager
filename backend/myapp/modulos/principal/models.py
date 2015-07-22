@@ -141,6 +141,7 @@ class userSoftSystemProject(models.Model):
 	def __unicode__(self):
 		return self.name_ssp
 
+	# Estos no son getters son returners jajajajajajajaja
 	def returnNotificaciones(self):
 		try:
 			notificacionesID = self.notificaciones_ssp

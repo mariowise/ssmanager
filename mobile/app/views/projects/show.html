@@ -44,9 +44,7 @@
 				<div class="col-xs-7">
 					<i class="fa fa-user"></i> {{project._manager.username}}
 				</div>
-				<div class="col-xs-5 text-right small">
-					Administrador
-				</div>
+				<div class="col-xs-5 text-right small">Administrador</div>
 			</div>
 			<div class="row row-list" ng-repeat="contrib in project.contribs_ssp">
 				<div class="col-xs-8">
@@ -60,6 +58,14 @@
 			<br>
 		</div>
 		<button class="btn btn-default wide" data-toggle="modal" data-target="#newMessage"><i class="fa fa-envelope-o"></i> Enviar mensaje</button>	
+		<br>
+
+		<div class="view-title text-center"><i class="fa fa-newspaper-o"></i> Noticias</div>
+		<div class="notifications">
+			<div class="notification" ng-repeat="">
+				
+			</div>
+		</div>
 
 	</div>
 </div>

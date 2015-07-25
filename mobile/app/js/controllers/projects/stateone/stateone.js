@@ -4,6 +4,7 @@ angular.module('app.controllers.projects.stateone', [])
 	console.log("StateOneController running")
 
 	$scope.state = {}
+	$scope.loading = true
 
 	$scope.setState = function (state) {
 		if(angular.toJson($scope.state) != angular.toJson(state)) {

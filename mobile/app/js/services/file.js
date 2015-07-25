@@ -96,7 +96,7 @@ angular.module('app.services.file', [])
 		var options = {
 			quality: 100,
 			destinationType: Camera.DestinationType.FILE_URI,
-			sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+			sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
 			allowEdit: true,
 			targetWidth: 800,
 			targetHeight: 800,
@@ -119,11 +119,12 @@ angular.module('app.services.file', [])
 	File.upload = function (fileUri, url, opt) {
 		var ext = fileUri.split(".")
 		  , ext = (ext.length > 0) ? ext[ext.length-1].toLowerCase() : ""
+		  , ext = ext.split("?")[0]
 		  , fname = guid() + ((ext != "") ? "." + ext : ext)
 		  , fileURL = CONFIG.gcs + "&name=" + fname
 		  , options = { headers: { "Content-Type": CONFIG.media[ext] } }
 
-		console.log("Subiendo archivo a " + fileURL + "(" + ext + ")")
+		console.log("Subiendo archivo a " + (url || fileURL) + "(" + ext + ")")
 		console.log([url || fileURL, fileUri, opt || options])
 		return $cordovaFileTransfer.upload(url || fileURL, fileUri, opt || options, true)			
 	}

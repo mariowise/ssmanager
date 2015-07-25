@@ -74,7 +74,7 @@ angular.module('app.controllers.profile', [])
 		})
 		.catch(function (err) {
 			console.error(err)
-			$.loading.error("No ha sido posible subit la foto")
+			$.loading.error("No ha sido posible subir la foto")
 		})
 	}
 }])

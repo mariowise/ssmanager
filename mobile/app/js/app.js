@@ -252,12 +252,13 @@ angular.module('app', [
     // $httpProvider.interceptors.push('tokenInterceptor')
 })
 
-.run(function ($q, amMoment, Resource, EM, $cordovaFile, $cordovaLocalNotification) {
+.run(function ($q, amMoment, Resource, EM, $cordovaFile, $cordovaLocalNotification, $cordovaFile) {
 	// Moment.js locale
 	amMoment.changeLocale('es')
 
 	// Testing ground
 	window.EM = EM
+	window.cordovaFile = $cordovaFile
 
 	window.dropAll = function () {
 		EM('User').drop()

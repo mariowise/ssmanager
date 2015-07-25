@@ -6,64 +6,73 @@
 		<div ng-if="!project.id" class="text-center"><i class="fa fa-circle-o-notch fa-spin"></i></div>
 	</div>
 	<div ng-if="project.id">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<div class="panel-title">Ficha del proyecto</div>
-			</div>
-			<div class="panel-body">
-				<div class="panel-detail">
-					<label>Nombre:</label>
-					<div>{{project.name_ssp}}</div>
 
-					<label>Descripción:</label>
-					<div>{{project.description_ssp}}</div>
+		<div class="row">
+			<div class="col-md-9">
 
-					<label>Fecha de creación:</label>
-					<div>{{project.date_spp | amDateFormat:'DD/MM/YYYY (hh:mm a)'}}</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="panel-title">Ficha del proyecto</div>
+					</div>
+					<div class="panel-body">
+						<div class="panel-detail">
+							<label>Nombre:</label>
+							<div>{{project.name_ssp}}</div>
 
-					<label>Administrador</label>
-					<div>{{project._manager.first_name}} {{project._manager.last_name}}</div>
-					<div class="small">{{project._manager.email}}</div>
+							<label>Descripción:</label>
+							<div>{{project.description_ssp}}</div>
+
+							<label>Fecha de creación:</label>
+							<div>{{project.date_spp | amDateFormat:'DD/MM/YYYY (hh:mm a)'}}</div>
+
+							<label>Administrador</label>
+							<div>{{project._manager.first_name}} {{project._manager.last_name}}</div>
+							<div class="small">{{project._manager.email}}</div>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
 
-		<div class="btn-group-vertical wide" role="group">
-			<div class="btn btn-default" ui-sref="app.project.stateone.show()"><i class="fa fa-chevron-right"></i>Estadio 1</div>
-			<div class="btn btn-default" ui-sref="app.project.statetwo.index()"><i class="fa fa-chevron-right"></i>Estadio 2</div>
-			<div class="btn btn-default" ui-sref="app.project.statethree.index()"><i class="fa fa-chevron-right"></i> Estadio 3</div>
-		</div>
-	
-		<br>
-		<div class="view-title text-center"><i class="fa fa-users"></i> Colaboradores</div>
-		<button class="btn btn-success wide" ng-if="current_user.id == project.manager" data-toggle="modal" data-target="#addUser"><i class="fa fa-plus"></i> Invitar</button>
-		<br>
-		<br>
-		<div class="container">
-			<div class="row row-list" ng-if="project._manager.username">
-				<div class="col-xs-7">
-					<i class="fa fa-user"></i> {{project._manager.username}}
-				</div>
-				<div class="col-xs-5 text-right small">Administrador</div>
 			</div>
-			<div class="row row-list" ng-repeat="contrib in project.contribs_ssp">
-				<div class="col-xs-8">
-					<a ui-sref="app.project.colab({ colab_username: '{{contrib}}' })" ng-if="contrib != current_user.username"><i class="fa fa-user"></i> {{contrib}}</a>
-					<div ng-if="contrib == current_user.username"><i class="fa fa-user"></i> {{contrib}}</div>
-				</div>
-				<div class="col-xs-4 text-right">
-					<a class="small" ng-if="current_user.id == project.manager || contrib == current_user.username" ng-click="rmContrib(contrib)"><i class="fa fa-times"></i> Desvincular</a>
-				</div>
-			</div>
-			<br>
-		</div>
-		<button class="btn btn-default wide" data-toggle="modal" data-target="#newMessage"><i class="fa fa-envelope-o"></i> Enviar mensaje</button>	
-		<br>
-
-		<div class="view-title text-center"><i class="fa fa-newspaper-o"></i> Noticias</div>
-		<div class="notifications">
-			<div class="notification" ng-repeat="">
+			<div class="col-md-3">
 				
+				<div class="btn-group-vertical wide" role="group">
+					<div class="btn btn-default" ui-sref="app.project.stateone.show()"><i class="fa fa-chevron-right"></i>Estadio 1</div>
+					<div class="btn btn-default" ui-sref="app.project.statetwo.index()"><i class="fa fa-chevron-right"></i>Estadio 2</div>
+					<div class="btn btn-default" ui-sref="app.project.statethree.index()"><i class="fa fa-chevron-right"></i> Estadio 3</div>
+				</div>
+
+				<div class="view-title text-center"><i class="fa fa-users"></i> Colaboradores</div>
+				<button class="btn btn-success wide" ng-if="current_user.id == project.manager" data-toggle="modal" data-target="#addUser"><i class="fa fa-plus"></i> Invitar</button>
+				<br>
+				<br>
+
+				<div class="row row-list" ng-if="project._manager.username">
+					<div class="col-xs-7">
+						<i class="fa fa-user"></i> {{project._manager.username}}
+					</div>
+					<div class="col-xs-5 text-right small">Administrador</div>
+				</div>
+				<div class="row row-list" ng-repeat="contrib in project.contribs_ssp">
+					<div class="col-xs-8">
+						<a ui-sref="app.project.colab({ colab_username: '{{contrib}}' })" ng-if="contrib != current_user.username"><i class="fa fa-user"></i> {{contrib}}</a>
+						<div ng-if="contrib == current_user.username"><i class="fa fa-user"></i> {{contrib}}</div>
+					</div>
+					<div class="col-xs-4 text-right">
+						<a class="small" ng-if="current_user.id == project.manager || contrib == current_user.username" ng-click="rmContrib(contrib)"><i class="fa fa-times"></i> Desvincular</a>
+					</div>
+				</div>
+				<br>
+				<button class="btn btn-default wide" data-toggle="modal" data-target="#newMessage"><i class="fa fa-envelope-o"></i> Enviar mensaje</button>	
+				<br>
+				<br>
+
+				<div class="view-title text-center"><i class="fa fa-newspaper-o"></i> Actividad reciente</div>
+				<div class="notifications small">
+					<div class="notification" ng-repeat="ntf in project.notifications">
+						{{ntf.date_notificacion | amCalendar}} - <b>{{ntf.creador_notificacion}}</b> {{ntf.accion_notificacion}}
+					</div>
+				</div>
+
 			</div>
 		</div>
 

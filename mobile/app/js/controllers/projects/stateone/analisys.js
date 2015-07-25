@@ -92,6 +92,7 @@ angular.module('app.controllers.projects.analisys', [])
 		angular.element($event.target).addClass("active")
 		$.loading.show("loading")
 
+		console.log({ id: $scope.anal.id, tag_id: tag.id})
 		EM('Analisys').add_tag({ id: $scope.anal.id, tag_id: tag.id})
 		.then(function () {
 			return updateAnal()

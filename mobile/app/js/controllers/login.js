@@ -3,7 +3,7 @@ angular.module('app.controllers.login', [])
 .controller('login#index', ['$scope', '$state', '$http', '$cordovaOauth', '$cordovaInAppBrowser', 'jwtHelper', 'Session', function ($scope, $state, $http, $cordovaOauth, $cordovaInAppBrowser, jwtHelper, Session) {
 	console.log("login#index running")
 
-	$scope.user = { username: "mariowise", password: "mario123" }
+	$scope.user = { username: "", password: "" }
 
 	$scope.login = function () {
 		$('#loading').show()

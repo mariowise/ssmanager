@@ -289,6 +289,12 @@ angular.module('app', [
 		}	
 	}, false);
 
+	// Botón para atrás de Android
+	document.addEventListener("backbutton", function onBackKeyDown(e) {
+	  e.preventDefault();
+	}, false)
+	
+
 	// testEntity = Resource("Test", "test", { 
 	// 	save: {
 	// 		method: "POST",

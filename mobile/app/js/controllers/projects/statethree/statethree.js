@@ -35,6 +35,9 @@ angular.module('app.controllers.projects.statethree', [])
 			console.error(err)
 			$.loading.error("No ha sido posible crear el CATWOE")
 		})
+	}
+	$scope.clean = function () {
+		$scope.catwoe = {}
 	}	
 }])
 

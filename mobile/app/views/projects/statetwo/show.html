@@ -5,6 +5,7 @@
 	<div class="view-title text-center"><i class="fa fa-file-image-o"></i> Detalle Rich Picture</div>
 
 	<div class="panel panel-default panel-media">
+		<button class="btn btn-link panel-destroy ng-scope" ng-if="media.uploaded_by == current_user.username" ng-click="delete(media.id)"><i class="fa fa-close"></i></button>
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-xs-3 text-center">

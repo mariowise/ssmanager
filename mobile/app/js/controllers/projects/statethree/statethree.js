@@ -21,6 +21,7 @@ angular.module('app.controllers.projects.statethree', [])
 
 .controller('statethree#index', ['$scope', '$state', 'EM', function ($scope, $state, EM) {
 	console.log("statethree#index")
+	console.log($scope)
 
 	$scope.catwoe = {}
 
@@ -31,6 +32,15 @@ angular.module('app.controllers.projects.statethree', [])
 		.then(function (state) {
 			$.loading.show("success", 1800)
 			$scope.$emit('setState', state)
+			if(project = $scope.$parent.$parent.project) {
+				EM('Comment').notify({
+					id_ssp: project.id,
+					url: "/verDefinicionRaiz/" + project.id + "/" + state.id + "/",
+					title: 'Agrego una nueva Definicion Raiz',
+					obj_id: state.id,
+					class_name: "DefinicionRaiz"
+				})
+			}
 		}, function (err) {
 			console.error(err)
 			$.loading.error("No ha sido posible crear el CATWOE")
@@ -67,6 +77,17 @@ angular.module('app.controllers.projects.statethree', [])
 		EM('Comment')._create($scope.comentary)
 		.then(function () {
 			return updateCatwoe()
+		})
+		.then(function () {
+			if(project = $scope.$parent.$parent.project) {
+				EM('Comment').notify({
+					id_ssp: project.id,
+					url: "/verDefinicionRaiz/" + project.id + "/" + $scope.catwoe.id + "/",
+					title: 'Ha comentado una Definicion Raiz',
+					obj_id: $scope.catwoe.id,
+					class_name: "DefinicionRaiz"
+				})
+			}
 		})
 		.then(function (catwoe) {
 			$scope.comentary = {}

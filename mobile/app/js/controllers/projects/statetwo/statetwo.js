@@ -56,6 +56,17 @@ angular.module('app.controllers.projects.statetwo', [])
 			return updatePicture()
 		})
 		.then(function () {
+			if(project = $scope.$parent.$parent.project) {
+				EM('Comment').notify({
+					id_ssp: project.id,
+					url: "/verRichPicture/" + project.id + "/" + $scope.picture.id + "/",
+					title: 'Ha comentado un Rich Picture',
+					obj_id: $scope.picture.id,
+					class_name: "RichPicture"
+				})
+			}
+		})
+		.then(function () {
 			$('#commentModal').modal('hide')
 			$scope.comentary = {}
 			$.loading.show("success", 1800)

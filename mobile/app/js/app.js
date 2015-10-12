@@ -274,6 +274,25 @@ angular.module('app', [
 		EM('Session').refresh_token()
 	}, 15 * 1000)
 
+	// setInterval(function () {
+	// 	$.ajax({
+	// 		url: "http://softsystemanager.appspot.com/api/v1/",
+	// 		error: function (res) {
+	// 			if(res.status == 401) {
+	// 				if(window.no_internet) {
+	// 					$.notice.put("Conectado", "success", 500)
+	// 					window.no_internet = false
+	// 				}
+	// 			} else {
+	// 				if(!window.no_internet) {
+	// 					window.no_internet = true
+	// 					$.notice.put("Sin conexión", "danger")
+	// 				}
+	// 			}
+	// 		}
+	// 	})
+	// }, 5 * 1000)
+
 	document.addEventListener("deviceready", function () {
 		if(typeof cordova != "undefined") {
 			var basePath = cordova.file.applicationStorageDirectory + ((cordova.platformId == "ios") ? "Documents/" : "")
@@ -286,6 +305,7 @@ angular.module('app', [
 					alert("ERROR FATAL: No ha sido posible crear la carpeta 'media'.")
 				})
 			})
+
 		}	
 	}, false);
 

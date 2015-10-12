@@ -50,6 +50,17 @@ angular.module('app.controllers.projects.analisys', [])
 			return updateAnal()
 		})
 		.then(function () {
+			if(project = $scope.$parent.$parent.project) {
+				EM('Comment').notify({
+					id_ssp: project.id,
+					url: "/verAnalisis/" + project.id + "/" + $scope.comentary.analisys_id + "/",
+					title: 'Ha comentado un analisis',
+					obj_id: $scope.comentary.analisys_id,
+					class_name: "Analisis"
+				})
+			}
+		})
+		.then(function () {
 			$('#commentModal').modal('hide')
 			$scope.comentary = {}
 			$.loading.show("success", 1800)

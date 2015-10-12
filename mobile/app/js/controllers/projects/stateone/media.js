@@ -21,7 +21,7 @@ angular.module('app.controllers.projects.media', [])
 	$scope.addComment = function () {
 		$.loading.show("loading")
 
-		EM('Media').addComment($scope.media, $scope.comentary.content_comentary)
+		EM('Media').addComment($scope.media, $scope.comentary.content_comentary, $scope.$parent.$parent.project.id)
 		.then(function (media) {
 			setMedia(media)
 			$scope.comentary = {}

@@ -31,7 +31,7 @@ angular.module('app.controllers.projects.stateone', [])
 .controller('stateone#show', ['$scope', '$state', 'EM', function ($scope, $state, EM) {
 	console.log("stateone#show running")
 
-	$scope.newmedia = {}	
+	$scope.newmedia = {}
 
 	$scope.takeMedia = function (type) {
 		$.loading.show("loading")
@@ -60,6 +60,15 @@ angular.module('app.controllers.projects.stateone', [])
 
 			EM('Media').create(angular.extend({}, $scope.newmedia, { state_one_id: $scope.state.id }))
 			.then(function (media) {
+				if(project = $scope.$parent.$parent.project) {
+					EM('Comment').notify({
+						id_ssp: project.id,
+						url: "/verMedia/" + project.id + "/" + media.id + "/",
+						title: 'Agrego un nuevo archivo',
+						obj_id: media.id,
+						class_name: "Media"
+					})
+				}
 				if(media.__syncPending)
 					return EM('StateOne').addMediaOffline($scope.state, media)
 			})

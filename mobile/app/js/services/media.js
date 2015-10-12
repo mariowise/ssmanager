@@ -51,7 +51,7 @@ angular.module('app.services.media', [])
  	 *-- Consulta además el current_user para registrar el autor del comentario
  	 *-- retorna la media actualizada con el comentario dentro.
 	 */
-	Media.addComment = function (media, msg) {
+	Media.addComment = function (media, msg, project_id) {
 		var d = $q.defer()
 		  , generatedId 
 
@@ -61,9 +61,19 @@ angular.module('app.services.media', [])
 			Comment._create({
 				content_comentary: msg,
 				autor_comentary: current_user.id,
-				media_id: media.id
+				media_id: media.id,
+				project_id: project_id
 			})
-			.then(function (comment) {
+			.then(function () {
+				Comment.notify({
+					id_ssp: project_id,
+					url: "/verMedia/" + project_id + "/" + media.id + "/",
+					title: 'Ha comentado un archivo',
+					obj_id: media.id,
+					class_name: "Media"
+				})
+			})
+			.then(function () {
 				return Media.fetch(media)
 			})
 			.then(d.resolve)

@@ -52,6 +52,7 @@ class RichpictureViewSet(viewsets.ModelViewSet):
 
             state.save()
             rp.delete()
+            
             return Response(status=status.HTTP_202_ACCEPTED)
         except StateTwo.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)

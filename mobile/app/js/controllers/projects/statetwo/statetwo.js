@@ -11,6 +11,7 @@ angular.module('app.controllers.projects.statetwo', [])
 	}
 
 	function updateState() {
+		console.log("StateTwoController::updateState running")
 		EM('RichPicture').fetch($scope.project.state_two.ssp_richPictures)
 		.then(setPictures, null, setPictures)
 	}
@@ -23,8 +24,6 @@ angular.module('app.controllers.projects.statetwo', [])
 
 .controller('statetwo#index', ['$scope', '$state', function ($scope, $state) {
 	console.log("statetwo#index running")
-
-	
 }])
 
 .controller('statetwo#show', ['$scope', '$state', '$stateParams', 'EM', function ($scope, $state, $stateParams, EM) {
@@ -104,11 +103,18 @@ angular.module('app.controllers.projects.statetwo', [])
 
 			EM('RichPicture').delete_rp({ id: $scope.picture.id, statetwo_id: $scope.$parent.$parent.project.state_two.id })
 			.then(function () {
+				return EM('Project').fetch($scope.$parent.$parent.project.id)
+			})
+			.then(function (project) {
+				$scope.$emit('changeProject', project)
+			})
+			.then(function () {
+				$scope.$emit('setProject')
 				$.loading.show("success", 1500)
 				$state.go("app.project.statetwo.index")
 			})
 			.catch(function (err) {
-				
+				console.error("No ha sido posible eliminar el RichPicture")
 			})
 		}
 	}

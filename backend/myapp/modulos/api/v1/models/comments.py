@@ -2,10 +2,11 @@
 from myapp.modulos.estado_1.models import Comentario, Media, Analisis
 from myapp.modulos.estado_2.models import RichPicture
 from myapp.modulos.estado_3.models import DefinicionRaizCATWOE
+from myapp.modulos.comunicacion.functions import notificar
 from rest_framework import serializers, viewsets
 
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rest_framework import status
 from google.appengine.ext import db
 
@@ -64,3 +65,14 @@ class CommentViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    @list_route(methods=['post'])
+    def notify(self, request, *args, **kwargs):
+        id_ssp = request.data["id_ssp"]
+        url = request.data["url"]
+        title = request.data["title"]
+        obj_id = request.data["obj_id"]
+        class_name = request.data["class_name"]
+        
+        notificar(id_ssp, request.user.id, url, title, obj_id, class_name)
+        return Response(status=status.HTTP_201_CREATED)

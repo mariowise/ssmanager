@@ -8,7 +8,13 @@ angular.module('app.services.richpicture', [])
 .factory('RichPicture', ['Resource', '$q', 'Document', function (Resource, $q, Document) {
 
 	// Recurso local
-	var RichPicture = Resource('RichPicture', 'richpictures', {}), res = {}
+	var RichPicture = Resource('RichPicture', 'richpictures', {
+		delete_rp: {
+			method: "POST",
+			url: CONFIG.api('richpictures') + "/:id/delete/",
+			responseType: 'json'
+		}
+	}), res = {}
 
 	/*--
 	 *-- #### fetchOne(key)

@@ -34,6 +34,8 @@ angular.module('app.controllers.projects.statetwo', [])
 	$scope.comentary = {}
 	$scope.edited = {}
 
+	window.scope = $scope
+
 	function setPicture(picture) {
 		if(angular.toJson(picture) != angular.toJson($scope.picture))
 			$scope.picture = picture
@@ -95,5 +97,19 @@ angular.module('app.controllers.projects.statetwo', [])
 			console.error(err)
 			$.loading.error("No ha sido posible actualizar el RichPicture")
 		})
+	}
+	$scope.delete = function (picture_id) {
+		if(confirm("Estas seguro que quieres eliminar este Rich Picture?")) {
+			$.loading.show("loading")
+
+			EM('RichPicture').delete_rp({ id: $scope.picture.id, statetwo_id: $scope.$parent.$parent.project.state_two.id })
+			.then(function () {
+				$.loading.show("success", 1500)
+				$state.go("app.project.statetwo.index")
+			})
+			.catch(function (err) {
+				
+			})
+		}
 	}
 }])

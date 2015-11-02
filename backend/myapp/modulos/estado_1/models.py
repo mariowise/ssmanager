@@ -227,12 +227,20 @@ class Analisis(models.Model):
 			return None
 
 	def returnTags(self):
-		try:
-			tagsID = self.tags_analisis
-			tagAnalisis = []
-			for t in tagsID:
-				tV = Etiqueta.objects.get(id=t)
-				tagAnalisis.append(tV)
-			return tagAnalisis
-		except:
-			return None
+		tags = []
+		for tid in self.tags_analisis:
+			try:
+				tags.append(Etiqueta.objects.get(id=tid))
+			except:
+				pass
+		return tags
+
+		# try:
+		# 	tagsID = self.tags_analisis
+		# 	tagAnalisis = []
+		# 	for t in tagsID:
+		# 		tV = Etiqueta.objects.get(id=t)
+		# 		tagAnalisis.append(tV)
+		# 	return tagAnalisis
+		# except:
+		# 	return None

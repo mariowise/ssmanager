@@ -36,16 +36,13 @@ class AnalisysSerializer(serializers.ModelSerializer):
         read_only_fields = ('links_analisis','comments_analisis', 'tags_analisis',)
 
     def get_documents(self, obj):
-        documents = obj.returnDocuments()
-        return DocumentSerializer(documents, many=True).data
+        return DocumentSerializer(obj.returnDocuments(), many=True).data
 
     def get_comments(self, obj):
-        comments = obj.returnComments()
-        return CommentSerializer(comments, many=True).data
+        return CommentSerializer(obj.returnComments(), many=True).data
 
     def get_tags(self, obj):
-        tags = obj.returnTags()
-        return TagSerializer(tags, many=True).data
+        return TagSerializer(obj.returnTags(), many=True).data
 
 # ViewSets define the view behavior.
 class AnalisysViewSet(viewsets.ModelViewSet):

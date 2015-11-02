@@ -64,10 +64,11 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_contribs(self, obj):
         contribs = obj.contribUsers()
+        contribs.append(obj.manager)
         return UserSerializer(contribs, many = True).data
 
     def get_notifications(self, obj):
-        return NotificationSerializer(obj.returnNotificaciones(), many=True) 
+        return NotificationSerializer(obj.returnNotificaciones(), many=True).data 
 
 
 # ViewSets define the view behavior.

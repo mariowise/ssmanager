@@ -57,14 +57,24 @@ angular.module('app.controllers.projects.statethree', [])
 	$scope.catwoe = {}
 	$scope.comentary = {}
 	$scope.has = {}
+	$scope.rps = []
+
+	window.scope = $scope
+
+	$scope.$on('setProject', function () {
+		EM('RichPicture').find($scope.$parent.$parent.project.state_two.ssp_richPictures)
+		.then(function (pictures) {
+			$scope.rps = pictures
+		})
+	})
 
 	function setCatwoe(catwoe) {
-		if(angular.toJson(catwoe) != angular.toJson($scope.catwoe))
+		if(angular.toJson(catwoe) != angular.toJson($scope.catwoe)) 
 			$scope.catwoe = catwoe
 	}
 
 	function updateCatwoe() {
-		return EM('Catwoe').find($stateParams.catwoe_id)
+		return EM('Catwoe').fetch($stateParams.catwoe_id)
 		.then(setCatwoe, null, setCatwoe)
 	}
 	updateCatwoe()
@@ -158,6 +168,41 @@ angular.module('app.controllers.projects.statethree', [])
 	}
 	$scope.clean = function () {
 		$scope.has = {}
+	}
+	$scope.rmRichPicture = function () {
+		if(confirm("Estas seguro que quieres desvincular este RichPicture?")) {
+			$.loading.show("loading")
+
+			$scope.catwoe.richPicture_dr = null
+			EM('Catwoe')._update($scope.catwoe)
+			.then(function (cat) {
+				setCatwoe(cat)
+				$.loading.show("success", 1500)
+			})
+			.catch(function (err) {
+				console.error(err)
+				$.loading.error("No ha sido posible actualizar la definición raíz")
+			})
+		}
+	}
+	$scope.addPicture = function (rp) {
+		$.loading.show("loading")
+
+		$scope.catwoe.richPicture_dr = String(rp.id)
+		EM('Catwoe')._update($scope.catwoe)
+		.then(function (cat) {
+			updateCatwoe()
+			.then(function () {
+				EM('RichPicture').find(rp.id)
+				.then(function (rp) { $scope.catwoe.rp = rp })
+			})
+			$('#pictureModal').modal('hide')
+			$.loading.show("success", 1500)
+		})
+		.catch(function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible actualizar la definición raíz")
+		})
 	}
 }])
 

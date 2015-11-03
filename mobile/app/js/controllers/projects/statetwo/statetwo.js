@@ -124,7 +124,7 @@ angular.module('app.controllers.projects.statetwo', [])
 		$scope.picture.analisis_rp = analisys.id
 		EM('RichPicture')._update($scope.picture)
 		.then(function (pic) {
-			setPicture(pic)
+			updatePicture()
 			$('#analisysModal').modal('hide')
 			$.loading.show("success", 1500)
 		})

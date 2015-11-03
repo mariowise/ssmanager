@@ -23,6 +23,9 @@
 			<div ng-repeat="file in picture.documents track by $index">
 				<img class="wide" ng-if="$index == 0" src="{{file.local_uri}}">
 			</div>
+			<div class="tag-group">
+				<span class="label label-default float-left" ng-click="rmAnalisys(tag)" ng-if="picture.analisis_rp != null"><i class="fa fa-file-text"></i> {{picture.analisys.name_analisis}}</span>
+			</div>
 		</div>
 		<div class="panel-footer small">
 			<div class="row">
@@ -30,6 +33,7 @@
 					{{picture.date_rp | amCalendar}}
 				</div>
 				<div class="col-xs-6 text-right">
+					<a data-toggle="modal" data-target="#analisysModal" ng-if="picture.analisis_rp == null"><i class="fa fa-plus"></i> Analisis</a>
 					<a ng-click="editPicture()" data-toggle="modal" data-target="#pictureModal"><i class="fa fa-pencil"></i> Editar</a>
 				</div>
 			</div>
@@ -101,3 +105,24 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal picture -->
+<div class="modal fade" id="analisysModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Adjuntar análisis</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="">Análisis del proyecto</label>
+					<div class="select">
+						<div class="select-item" ng-click="addAnalisys(analisys)" ng-repeat="analisys in $parent.$parent.project.state_one.analisys"><i class="fa fa-file-text"></i> {{analisys.name_analisis}}</div>
+					</div>
+				</div>
+			</div> 
+		</div>
+	</div>
+</div>
+

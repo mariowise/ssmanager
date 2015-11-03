@@ -5,7 +5,7 @@
 */
 angular.module('app.services.richpicture', [])
 
-.factory('RichPicture', ['Resource', '$q', 'Document', function (Resource, $q, Document) {
+.factory('RichPicture', ['Resource', '$q', 'Document', 'Analisys', function (Resource, $q, Document, Analisys) {
 
 	// Recurso local
 	var RichPicture = Resource('RichPicture', 'richpictures', {
@@ -32,7 +32,8 @@ angular.module('app.services.richpicture', [])
 		.then(function (pic) {
 			return $q.all([
 				pic, 
-				Document.fetch(pic.documentos_rp)
+				Document.fetch(pic.documentos_rp),
+				(pic.analisis_rp != null) ? Analisys.fetch(pic.analisis_rp) : null
 			])
 		}, null, function (lpic) {
 			if(lpic.documents) 
@@ -41,6 +42,7 @@ angular.module('app.services.richpicture', [])
 		.then(function (all) {
 			var pic = all[0]
 			pic.documents = all[1]
+			pic.analisys = all[2]
 			return self.set(pic.id, pic)
 		})
 		.then(d.resolve)

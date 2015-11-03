@@ -5,7 +5,7 @@
 */
 angular.module('app.services.stateone', [])
 
-.factory('StateOne', ['Resource', '$q', 'Session', 'Media', 'File', 'Tag', function (Resource, $q, Session, Media, File, Tag) {
+.factory('StateOne', ['Resource', '$q', 'Session', 'Media', 'File', 'Tag', 'Analisys', function (Resource, $q, Session, Media, File, Tag, Analisys) {
 	
 	// Recurso local
 	var StateOne = Resource('StateOne', 'state_one', {
@@ -58,7 +58,8 @@ angular.module('app.services.stateone', [])
 			return $q.all([
 				state,
 				Media.fetch(medias),
-				Tag.find(state.tags_state)
+				Tag.find(state.tags_state),
+				Analisys.fetch(state.ssp_analisis)
 			])
 		}, d.reject, function (mstate) {
 			if(mstate.medias && mstate.tags)
@@ -68,6 +69,7 @@ angular.module('app.services.stateone', [])
 			var state = res[0]
 			state.medias = res[1]
 			state.tags = res[2]
+			state.analisys = res[3]
 			StateOne.set(state.id, state)
 			.then(d.resolve, d.reject)
 		})

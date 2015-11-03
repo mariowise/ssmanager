@@ -1,5 +1,6 @@
 
 from myapp.modulos.estado_2.models import StateTwo, RichPicture
+from myapp.modulos.estado_1.models import Analisis
 from myapp.modulos.api.v1.models.documents import DocumentSerializer
 from myapp.modulos.api.v1.models.comments import CommentSerializer
 from rest_framework import serializers, viewsets
@@ -56,5 +57,3 @@ class RichpictureViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_202_ACCEPTED)
         except StateTwo.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-
-    

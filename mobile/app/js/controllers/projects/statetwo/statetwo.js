@@ -31,7 +31,7 @@ angular.module('app.controllers.projects.statetwo', [])
 
 	$scope.picture = {}	
 	$scope.comentary = {}
-	$scope.edited = {}
+	$scope.edited = {}	
 
 	window.scope = $scope
 
@@ -115,6 +115,36 @@ angular.module('app.controllers.projects.statetwo', [])
 			})
 			.catch(function (err) {
 				console.error("No ha sido posible eliminar el RichPicture")
+			})
+		}
+	}
+	$scope.addAnalisys = function (analisys) {
+		$.loading.show("loading")
+
+		$scope.picture.analisis_rp = analisys.id
+		EM('RichPicture')._update($scope.picture)
+		.then(function (pic) {
+			setPicture(pic)
+			$('#analisysModal').modal('hide')
+			$.loading.show("success", 1500)
+		})
+		.catch(function (err) {
+			console.error(err)
+			$.loading.error("No ha sido posible actualizar el RichPicture")
+		})
+	}
+	$scope.rmAnalisys = function () {
+		if(confirm("Estas seguro que quieres desvincular este análisis de este RichPicture?")) {
+			$.loading.show("loading")
+
+			$scope.picture.analisis_rp = null
+			EM('RichPicture')._update($scope.picture)
+			.then(function () {
+				$.loading.show("success", 1500)
+			})
+			.catch(function (err) {
+				console.error(err)
+				$.loading.error("No ha sido posible actualizar el RichPicture")
 			})
 		}
 	}

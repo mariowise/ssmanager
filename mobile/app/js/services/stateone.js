@@ -70,6 +70,10 @@ angular.module('app.services.stateone', [])
 			state.medias = res[1]
 			state.tags = res[2]
 			state.analisys = res[3]
+
+			if(state.syncPendings && state.syncPendings.length > 0)
+				state.medias = state.syncPendings.concat(state.medias)
+
 			StateOne.set(state.id, state)
 			.then(d.resolve, d.reject)
 		})
@@ -93,19 +97,36 @@ angular.module('app.services.stateone', [])
 
 		StateOne.get(state.id)
 		.then(function (state) {
-			state.medias.unshift(media)
-			if(media.type_media == "1")
-				state.ssp_videos.push(media.id)
-			else if(media.type_media == "2")
-				state.ssp_imagenes.push(media.id)
-			else if(media.type_media == "3")
-				state.ssp_audios.push(media.id)
+			// state.medias.unshift(media)
+			// if(media.type_media == "1")
+			// 	state.ssp_videos.push(media.id)
+			// else if(media.type_media == "2")
+			// 	state.ssp_imagenes.push(media.id)
+			// else if(media.type_media == "3")
+			// 	state.ssp_audios.push(media.id)
+
+			if(!state.syncPendings)
+				state.syncPendings = []
+
+			state.syncPendings.push(media)			
+
 			return StateOne.set(state.id, state)
 		})
 		.then(d.resolve)
 		.catch(d.reject)
 
 		return d.promise
+	}
+
+	StateOne.rmMediaOffline = function (state, old_id) {
+		if(state.syncPendings && state.syncPendings.length > 0) {
+			for(var i = 0; i < state.syncPendings.length; i++) {
+				if(String(state.syncPendings[i].id) == String(old_id)) {
+					state.syncPendings.splice(i, 1)
+				}
+			}
+		}
+		return StateOne.set(state.id, state)
 	}
 
 	// Se expone el servicio

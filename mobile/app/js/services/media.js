@@ -131,6 +131,8 @@ angular.module('app.services.media', [])
 
 		self.get(key)
 		.then(function (litem) {
+			console.log("Objeto en cuestión")
+			console.log(litem)
 			if(!litem.__syncPending)
 				d.resolve(litem)
 			else
@@ -176,6 +178,7 @@ angular.module('app.services.media', [])
 			newMedia.uploaded_by = current_user.username
 			newMedia.date_media = moment(Date.now()).toISOString().split("Z")[0]
 
+			console.log("Subiendo uri: " + newMedia.local_uri)
 			File.upload(newMedia.local_uri)
 			.then(function (file) {
 				newMedia.url_media = JSON.parse(file.response).mediaLink
@@ -183,6 +186,7 @@ angular.module('app.services.media', [])
 			})
 			.then(d.resolve)
 			.catch(function (err) {
+				console.log("Almacenando localmente la uri: " + newMedia.local_uri)
 				newMedia.id = Number(guid())
 				newMedia.__syncPending = true
 				newMedia.comments_media = []

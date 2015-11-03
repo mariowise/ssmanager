@@ -24,6 +24,7 @@ angular.module('app.controllers.projects.stateone', [])
 	})
 
 	$scope.$on('changeState', function (event, newVal) {
+		console.log("Actualizando el valor de state")
 		$scope.setState(newVal)
 	})
 }])
@@ -89,10 +90,14 @@ angular.module('app.controllers.projects.stateone', [])
 		var spinner = $('#panel-media-' + media.id + " .panel-sheet-icon")
 		$(spinner).addClass("fa-spin")
 
+		var old_id = media.id
 		EM('Media').syncOne(media)
 		.then(function (media) {
 			$(spinner).removeClass("fa-spin")
 			$.loading.show("loading")
+			return EM('StateOne').rmMediaOffline($scope.state, old_id)
+		})
+		.then(function (state) {
 			return EM('StateOne').fetch($scope.state)
 		})
 		.then(function (state) {
